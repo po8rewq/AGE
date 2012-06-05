@@ -1,0 +1,10 @@
+-main ApplicationMain 
+-D nme_install_tool
+-cp Source
+-cp ../../src/
+-lib nme
+-D mobile
+-cp Export/android/haxe
+-cpp Export/android/obj
+--remap flash:nme
+-D android
