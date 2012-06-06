@@ -74,13 +74,18 @@
     <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\nme.svg" />
     <Compile Include="FrogJump.nmml" />
     <Compile Include="src\FrogJump.hx" />
     <Compile Include="src\GameState.hx" />
     <Compile Include="src\Frog.hx" />
+    <Compile Include="assets\hero_0.png" />
+    <Compile Include="assets\megaman.png" />
+    <Compile Include="assets\nme.svg" />
     <Compile Include="..\..\src\com\revolugame\age\AgeData.hx">
       <Link>com\revolugame\age\AgeData.hx</Link>
+    </Compile>
+    <Compile Include="..\..\src\com\revolugame\age\core\Camera.hx">
+      <Link>com\revolugame\age\core\Camera.hx</Link>
     </Compile>
     <Compile Include="..\..\src\com\revolugame\age\core\Engine.hx">
       <Link>com\revolugame\age\core\Engine.hx</Link>
@@ -103,6 +108,9 @@
     <Compile Include="..\..\src\com\revolugame\age\display\IEntity.hx">
       <Link>com\revolugame\age\display\IEntity.hx</Link>
     </Compile>
+    <Compile Include="..\..\src\com\revolugame\age\display\SpriteMap.hx">
+      <Link>com\revolugame\age\display\SpriteMap.hx</Link>
+    </Compile>
     <Compile Include="..\..\src\com\revolugame\age\display\Text.hx">
       <Link>com\revolugame\age\display\Text.hx</Link>
     </Compile>
@@ -115,8 +123,14 @@
     <Compile Include="..\..\src\com\revolugame\age\managers\TileSheetManager.hx">
       <Link>com\revolugame\age\managers\TileSheetManager.hx</Link>
     </Compile>
+    <Compile Include="..\..\src\com\revolugame\age\system\AgePoint.hx">
+      <Link>com\revolugame\age\system\AgePoint.hx</Link>
+    </Compile>
     <Compile Include="..\..\src\com\revolugame\age\system\AgePreloader.hx">
       <Link>com\revolugame\age\system\AgePreloader.hx</Link>
+    </Compile>
+    <Compile Include="..\..\src\com\revolugame\age\system\Animation.hx">
+      <Link>com\revolugame\age\system\Animation.hx</Link>
     </Compile>
     <Compile Include="..\..\src\com\revolugame\age\system\TileSheetData.hx">
       <Link>com\revolugame\age\system\TileSheetData.hx</Link>
@@ -124,9 +138,8 @@
     <Compile Include="..\..\src\com\revolugame\age\ui\Button.hx">
       <Link>com\revolugame\age\ui\Button.hx</Link>
     </Compile>
-    <Compile Include="com\revolugame\age\display\SpriteMap.hx" />
-    <Compile Include="com\revolugame\age\core\Camera.hx" />
-    <Compile Include="com\revolugame\age\system\AgePoint.hx" />
-    <Compile Include="com\revolugame\age\system\Animation.hx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\" />
   </ItemGroup>
 </Project>

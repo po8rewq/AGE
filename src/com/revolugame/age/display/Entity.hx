@@ -54,14 +54,13 @@ class Entity implements IEntity
 	{
 		if(active && visible)
 		{
-			var srcRect : Rectangle = _spriteMap.getRect();
-            var newBmp : BitmapData = new BitmapData(_spriteMap.width * _spriteMap.cols, _spriteMap.height * _spriteMap.rows, true, 0xcecece);
-            newBmp.copyPixels( _spriteMap.pixels, srcRect, new Point(0, 0), null, null, false);
-
-            #if cpp || neko
+			#if cpp || neko
             // TODO
             #else
-            AgeData.camera.copyPixels( newBmp, newBmp.rect, new Point(x - AgeData.camera.position.x , y - AgeData.camera.position.y) );
+            AgeData.camera.copyPixels( _spriteMap.pixels, 
+            						   _spriteMap.getRect(), 
+            						   new Point(x - AgeData.camera.position.x , y - AgeData.camera.position.y), 
+            						   null, null, false );
             #end
 		}
 	}

@@ -10,10 +10,8 @@ class GameState extends State
 {
 	
 	public override function create() 
-	{
-		trace('created');
-		
-		var frog : Frog = new Frog(50, 10);
+	{		
+		var frog : Frog = new Frog(150, 10);
 		add(frog);
 		frog.play('run');
 		

@@ -2,19 +2,22 @@
 <project>
 	
 	<meta title="FrogJump" package="com.revolugame.FrogJump" version="1.0.0" company="" />
-	<app main="FrogJump" file="FrogJump" path="Export" />
-	
+	<app main="FrogJump" file="FrogJump" path="bin" />
+		
 	<window width="800" height="600" unless="mobile" />
-	<window fps="30" />
+	<window width="0" height="0" orientation="landscape" fullscreen="true" if="mobile" />
+	<window fps="60" background="0xcecece" />
+
+	<app preloader="com.revolugame.age.system.AgePreloader" />
 
 	<source path="src" />
 	<source path="../../src/" />
 	
 	<haxelib name="nme" />
 	
-	<assets path="Assets" rename="assets" include="*" exclude="nme.svg" />
+	<assets path="assets" include="*" exclude="nme.svg" />
 	
-	<icon path="Assets/nme.svg" />
+	<icon path="assets/nme.svg" />
 	
 	<ndll name="std" />
 	<ndll name="regexp" />
