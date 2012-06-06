@@ -6,8 +6,9 @@ import nme.display.BitmapData;
 import com.revolugame.age.managers.AssetsManager;
 import com.revolugame.age.system.Animation;
 
-#if cpp || neko
+#if (cpp || neko)
 import com.revolugame.age.managers.TileSheetManager;
+import com.revolugame.age.system.TileSheetData;
 #end
 
 /**
@@ -32,13 +33,17 @@ class SpriteMap
 	public var pixels(default, null) : BitmapData;
 	
 	/**  */
-	private var _anims : Hash<Animation>;
-	private var _anim : Animation; // The current animation
+	var _anims : Hash<Animation>;
+	var _anim : Animation; // The current animation
 	
 	/** index of current sprite to be used in animation */
-	private var _index : Int;
-	private var _frame : Int;
-	private var _timer:Float;
+	var _index : Int;
+	var _frame : Int;
+	var _timer:Float;
+	
+	#if (cpp || neko)
+	public var tilesheetdata(default, null) : TileSheetData;
+	#end
 	
 	/**
 	 * If the animation has stopped.
@@ -54,6 +59,11 @@ class SpriteMap
 	{
 		// load the image
 		pixels = AssetsManager.getBitmap(pSrc);
+		
+		#if (cpp || neko)
+		if(pixels != null)
+			tilesheetdata = TileSheetManager.addTileSheet(pixels);
+		#end
 		
 		width = pWidth == 0 ? pixels.width : pWidth;
 	    height = pHeight == 0 ? pixels.height : pHeight;
@@ -79,13 +89,12 @@ class SpriteMap
 	            x = col * width;
 	            y = row * height;
 	            rects[i] = new Rectangle(x, y, width, height);
+	            #if (cpp || neko)
+	            tilesheetdata.tilesheet.addTileRect( rects[i] );
+	            #end
 	            ++i;
 	        }
 	    }
-		
-		#if cpp || neko
-		updateTileSheet();
-		#end
 	}
 	
 	/**
@@ -174,12 +183,9 @@ class SpriteMap
 	    return rects[_frame];
 	}
 	
-	#if cpp || neko
-	private function updateTileSheet():Void
+	public function getFrameId():Int
 	{
-		if(pixels != null)
-			TileSheetManager.addTileSheet(_pixels);
+		return _frame;
 	}
-	#end
 
 }

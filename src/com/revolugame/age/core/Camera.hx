@@ -5,18 +5,30 @@ package com.revolugame.age.core;
  * @author Adrien Fischer
  */
 
-#if cpp || neko
+#if (cpp || neko)
 import nme.display.Sprite;
+import com.revolugame.age.system.AgePoint;
 
-class Camera extends Sprite // ou Graphics ??
+class Camera
 {
+	/**
+     * the top-left position of the camera in the World
+     */
+    public var position : AgePoint;
+    
+    /**
+	 * smoothing for tileSheet
+	 */
+	public var antialiasing : Bool;
+    
+    public var screen(default, null) : Sprite;
 	
-	public function new(pWidth: Int,  pHeight: Int)
+	public function new(pWidth: Int,  pHeight: Int, pSmoothing: Bool = false)
 	{
-		super();
+		screen = new Sprite();
+		position = new AgePoint();
+		antialiasing = pSmoothing;
 	}
-	
-	// getScreen : return this ??
 	
 }
 
@@ -29,14 +41,20 @@ import com.revolugame.age.system.AgePoint;
 class Camera extends BitmapData
 {
 	/**
+	 * smoothing for tileSheet
+	 */
+	public var antialiasing : Bool;
+
+	/**
      * the top-left position of the camera in the World
      */
     public var position : AgePoint;
 	
-	public function new(pWidth: Int,  pHeight: Int)
+	public function new(pWidth: Int,  pHeight: Int, pSmoothing: Bool = false)
     {
 		super(pWidth, pHeight);
-		position = new AgePoint();	
+		position = new AgePoint();
+		antialiasing = pSmoothing;
 	}		
 	
 	/**
@@ -47,12 +65,11 @@ class Camera extends BitmapData
         fillRect(rect, 0);
     }
     
-    private var _screen : Bitmap;
     public var screen(getScreen, null): Bitmap;
     private function getScreen():Bitmap
     {
-    	if(_screen == null) _screen = new Bitmap(this);
-    	return _screen;
+    	if(screen == null) screen = new Bitmap(this);
+    	return screen;
     }
 
 }

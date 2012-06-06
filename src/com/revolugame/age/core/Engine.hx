@@ -23,13 +23,17 @@ class Engine extends Sprite
 		AgeData.engine = this;
 		
 		Lib.current.addChild(this);
-		addEventListener(Event.ENTER_FRAME, create);
+		
+		if (stage != null) 
+			create();
+		else 
+			addEventListener(Event.ADDED_TO_STAGE, create);
 	}
 	
-	private function create(pEvt:Event):Void
+	private function create(pEvt:Event = null):Void
     {
-    	if(root == null) return;
-        removeEventListener(Event.ENTER_FRAME, create);
+    	if (hasEventListener(Event.ADDED_TO_STAGE))
+			removeEventListener(Event.ADDED_TO_STAGE, create);
         
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;

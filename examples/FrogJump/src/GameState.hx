@@ -15,9 +15,19 @@ class GameState extends State
 		add(frog);
 		frog.play('run');
 		
-		var frog2 : Frog = new Frog(10, 50);
-		add(frog2);
-		frog2.play('jump');
+		frog = new Frog(10, 50);
+		add(frog);
+		frog.play('jump');
+		
+		frog = new Frog(90, 50);
+		add(frog);
+		frog.play('jump');
+		frog.angle =  90;
+		
+		frog = new Frog(150, 50);
+		add(frog);
+		frog.play('run');
+		frog.alpha = 0.7;
 	}		
 
 }
