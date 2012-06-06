@@ -17,16 +17,12 @@ class TileSheetManager
 	 */
 	public static function addTileSheet(bitmapData:BitmapData):TileSheetData
 	{
-		var tempTileSheetData:TileSheetData;
-		
 		if (containsTileSheet(bitmapData))
-		{
-			tempTileSheetData = getTileSheet(bitmapData);
 			return getTileSheet(bitmapData);
-		}
 		
-		tempTileSheetData = new TileSheetData( new Tilesheet(bitmapData) );		
+		var tempTileSheetData : TileSheetData = new TileSheetData( new Tilesheet(bitmapData) );		
 		tilesheetsData.push(tempTileSheetData);
+		
 		return (tilesheetsData[tilesheetsData.length - 1]);
 	}
 	
@@ -35,7 +31,7 @@ class TileSheetManager
 	 */
 	public static function clearAllDrawData():Void
 	{
-		
+		// TODO
 	}
 	
 	public static function containsTileSheet(bitmapData:BitmapData):Bool
