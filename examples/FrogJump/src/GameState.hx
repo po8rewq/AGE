@@ -17,6 +17,8 @@ class GameState extends State
 		{
 			frog = new Frog( Math.round(Math.random() * AgeData.stageWidth), Math.round(Math.random() * AgeData.stageHeight) );
 			frog.play('run');
+			
+			frog.alpha = 0.8;
 				
 			add(frog);
 		}

@@ -24,9 +24,13 @@ class TileSheetData
 	/** Index in data */
 	private var _currentIndex : Int;
 	
-	public function new (pTilesheet: Tilesheet) 
+	/** */
+	private var useAdditive : Bool;
+	
+	public function new (pTilesheet: Tilesheet, ?pUseAdditive: Bool = false) 
 	{
-		tilesheet = pTilesheet;		
+		tilesheet = pTilesheet;	
+		useAdditive = pUseAdditive;
 	}
 	
 	public function resetData()
@@ -87,7 +91,11 @@ class TileSheetData
 	
 	public function render()
 	{
-		AgeData.camera.screen.graphics.drawTiles( tilesheet, data, AgeData.camera.antialiasing, flags );
+		if(useAdditive)
+			flags |= Graphics.TILE_BLEND_ADD;
+	
+		var cameraGraphics : Graphics = AgeData.camera.screen.graphics;
+		tilesheet.drawTiles( cameraGraphics, data, AgeData.camera.antialiasing, flags );
 	}
 
 }

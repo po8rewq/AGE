@@ -187,5 +187,10 @@ class SpriteMap
 	{
 		return _frame;
 	}
+	
+	public function destroy():Void
+	{
+		// TODO
+	}
 
 }

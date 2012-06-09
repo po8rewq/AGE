@@ -13,4 +13,6 @@ interface IBehavior
 	
 	function enable():Void;
 	function disable():Void;
+	
+	function destroy():Void;
 }

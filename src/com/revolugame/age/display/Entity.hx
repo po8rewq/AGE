@@ -39,6 +39,7 @@ class Entity implements IEntity
 	/** All the behaviors of the actor */
     private var _behaviors : List<IBehavior>;
     
+    /** The visual data */
     private var _spriteMap : SpriteMap;
     
     #if flash
@@ -89,7 +90,7 @@ class Entity implements IEntity
 	
 	public function render():Void
 	{
-		if(active && visible)
+		if(active && visible && onScreen())
 		{
 			#if flash
 			if( scaleX != 1 || scaleY != 1 || angle != 0)
@@ -147,10 +148,16 @@ class Entity implements IEntity
 		}
 	}
 	
-	public function destroy():Void
-	{
-		
-	}
+	/**
+     * His on the screen and need to be rendered
+     * @return Bool
+     */
+    public function onScreen():Bool
+    {
+    	return (x + width >= AgeData.camera.position.x
+        		&& x <= AgeData.camera.position.x + AgeData.stageWidth
+                && y + height >= AgeData.camera.position.y && y <= AgeData.camera.position.y + AgeData.stageHeight);
+    }
 	
 	/**
      * Add a specific behavior
@@ -184,4 +191,17 @@ class Entity implements IEntity
 	    }
 	}
 	
+	public function destroy():Void
+	{
+		_spriteMap.destroy();
+		for(b in _behaviors)
+			b.destroy();
+	}
+
+	public var width(getWidth, null): Int;
+    private function getWidth():Int { return _spriteMap.width; }
+    
+    public var height(getHeight, null): Int;
+    private function getHeight():Int { return _spriteMap.height; }
+			
 }

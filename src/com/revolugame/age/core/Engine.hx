@@ -22,9 +22,6 @@ class Engine extends Sprite
 		AgeData.state = pState;
 		AgeData.engine = this;
 		
-		AgeData.stageHeight = pHeight;
-		AgeData.stageWidth = pWidth;
-		
 		Lib.current.addChild(this);
 		
 		if (stage != null) 
@@ -40,6 +37,9 @@ class Engine extends Sprite
         
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
+        
+        AgeData.stageHeight = stage.stageHeight; //pHeight;
+		AgeData.stageWidth = stage.stageWidth; //pWidth;
         
         // Game start
         init();
@@ -57,7 +57,7 @@ class Engine extends Sprite
         
         #if debug
 		var fps:FPS = new FPS();
-		stage.addChild(fps);
+        stage.addChild(fps);
 		fps.x = 10;
 		fps.y = 10;
 		fps.textColor = 0x000000;
@@ -117,6 +117,7 @@ class Engine extends Sprite
 		#if flash
 	    AgeData.camera.lock();
 	    #end
+	    
 	    if(_delta >= _stepRate)
 	    {
 	        while(_delta >= _stepRate)
@@ -125,11 +126,8 @@ class Engine extends Sprite
 	            AgeData.state.update();
 	        }
 	    }
-	    #if flash
+	    
 	    AgeData.camera.clear();
-	    #else
-	    AgeData.camera.screen.graphics.clear();
-	    #end
 	    
 	    AgeData.state.render();
 	    

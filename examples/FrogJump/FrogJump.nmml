@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<meta title="FrogJump" package="com.revolugame.FrogJump" version="1.0.0" company="" />
+	<meta title="FrogJump" package="com.revolugame.FrogJump" version="1.0.0" company="RevoluGame.com" />
 	<app main="FrogJump" file="FrogJump" path="bin" />
 		
 	<window width="800" height="600" unless="mobile" />
-	<window width="0" height="0" orientation="landscape" fullscreen="true" if="mobile" />
-	<window fps="60" background="0xcecece" />
+	<window orientation="landscape" if="mobile" />
+	
+	<window background="0xcecece" />
+	
+	<window fps="60" />
+	<window fps="62" if="desktop" />
 
 	<app preloader="com.revolugame.age.system.AgePreloader" />
 
 	<source path="src" />
-	<source path="../../src/" />
+	<source path="../../src/" /> <!-- AGE -->
 	
 	<haxelib name="nme" />
 	
