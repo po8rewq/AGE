@@ -2,7 +2,6 @@ package com.revolugame.age.display;
 
 class Group implements IEntity
 {
-	public var exists : Bool;
 	public var visible : Bool;
 	public var x : Int;
 	public var y : Int;
@@ -12,7 +11,6 @@ class Group implements IEntity
 	public function new()
 	{
 		entities = new Array();
-		exists = true;
 		visible = true;
 	}
 	
@@ -28,8 +26,7 @@ class Group implements IEntity
         while(i < entities.length) 
         {
             entity = entities[i];
-            if(entity.exists)
-                entity.update();
+            entity.update();
             ++i;
         }
 	}
@@ -45,8 +42,7 @@ class Group implements IEntity
 	    while(i < len)
 	    {
 	        entity = entities[i];
-	        if(entity.exists)
-	            entity.render();
+	        entity.render();
 	        ++i;
 	    }
 	}

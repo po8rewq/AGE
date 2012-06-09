@@ -6,10 +6,10 @@ package com.revolugame.age.system;
  */
 class AgePoint 
 {
-	public var x : Int;
-	public var y : Int;
+	public var x : Float;
+	public var y : Float;
 	
-	public function new (pX: Int = 0, pY: Int = 0):Void
+	public function new (pX: Float = 0, pY: Float = 0):Void
 	{
 		x = pX;
 		y = pY;

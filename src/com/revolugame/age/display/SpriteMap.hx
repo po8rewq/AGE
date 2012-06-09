@@ -9,6 +9,7 @@ import com.revolugame.age.system.Animation;
 #if (cpp || neko)
 import com.revolugame.age.managers.TileSheetManager;
 import com.revolugame.age.system.TileSheetData;
+import nme.display.BitmapInt32;
 #end
 
 /**
@@ -55,7 +56,13 @@ class SpriteMap
 	 */
 	public var rate:Float;
 	
-	public function new (pSrc: String, pWidth: Int = 0, pHeight: Int = 0):Void
+	public function new () {}
+	
+	#if flash
+	public function loadGraphic(pSrc: String, pWidth: UInt = 0, pHeight: UInt = 0):Void
+	#else
+	public function loadGraphic(pSrc: String, pWidth: Int = 0, pHeight: Int = 0):Void
+	#end
 	{
 		// load the image
 		pixels = AssetsManager.getBitmap(pSrc);
@@ -67,7 +74,15 @@ class SpriteMap
 		
 		width = pWidth == 0 ? pixels.width : pWidth;
 	    height = pHeight == 0 ? pixels.height : pHeight;
+	    
+	    initGraphicsData();
+	}
 	
+	/**
+	 * Initialize everythings needed for graphics
+	 */
+	private function initGraphicsData():Void
+	{
 	    cols = Math.floor(pixels.width / width);
 	    rows = Math.floor(pixels.height / height);
 	
@@ -97,14 +112,47 @@ class SpriteMap
 	    }
 	}
 	
+	#if flash
+	public function makeGraphic(pWidth: UInt, pHeight: UInt, ?pColor: UInt = 0xFF0000):Void
+	#else
+	public function makeGraphic(pWidth: Int, pHeight: Int, ?pColor:BitmapInt32):Void
+	#end
+	{
+		#if (cpp || neko)
+		if (pColor == null)
+		{
+			#if cpp
+			pColor = 0xffffffff;
+			#elseif neko
+			pColor = { rgb: 0xffffff, a: 0xff };
+			#end
+		}
+		#end
+	
+		pixels = AssetsManager.createBitmap(pWidth, pHeight, pColor);
+		
+		#if (cpp || neko)
+		if(pixels != null)
+			tilesheetdata = TileSheetManager.addTileSheet(pixels);
+		#end
+		
+		width = pixels.width;
+		height = pixels.height;
+		
+	    initGraphicsData();
+	}
+	
 	/**
 	 * Animation
 	 * @method update
-	 * @return
+	 * @return if the index has been updated
 	 */
-	public function update():Void
+	public function update():Bool
 	{
-		if(_anim == null || complete) return;
+		if(_anim == null || complete) 
+			return false;
+		
+		var oldIndex : Int = _index;
 				
 		_timer += _anim.frameRate * AgeData.elapsed * rate;
 		if (_timer >= 1)
@@ -131,23 +179,27 @@ class SpriteMap
 			if (_anim != null) 
 				_frame = _anim.frames[_index];
 		}
+		
+		return oldIndex != _index;
 	}
 	
 	/**
 	 * Add an Animation.
-	 * @param	name		Name of the animation.
-	 * @param	frames		Array of frame indices to animate through.
-	 * @param	frameRate	Animation speed.
-	 * @param	loop		If the animation should loop.
-	 * @return	A new Anim object for the animation.
+	 * @param	pName		Name of the animation
+	 * @param	pFrames		Array of frame indices to animate through
+	 * @param	pFrameRate	Animation speed
+	 * @param	pLoop		If the animation should loop
+	 * @return	A new Animation object
 	 */
-	public function add(name: String, frames: Array<Int>, frameRate:Float = 0, loop:Bool = true):Animation
+	public function add(pName: String, pFrames: Array<Int>, pFrameRate:Float = 0, pLoop:Bool = true):Animation
 	{
-		if (_anims.get(name) != null) 
+		if (_anims.get(pName) != null) 
 			throw "Cannot have multiple animations with the same name";
-		var anim:Animation = new Animation(name, frames, frameRate, loop);
-		_anims.set(name, anim);
+			
+		var anim:Animation = new Animation(pName, pFrames, pFrameRate, pLoop);
 		anim.parent = this;
+		
+		_anims.set(pName, anim);
 		return anim;
 	}
 	
@@ -157,10 +209,12 @@ class SpriteMap
 	 * @param	reset		If the animation should force-restart if it is already playing.
 	 * @return	Anim object representing the played animation.
 	 */
-	public function play(name:String = "", reset:Bool = false):Animation
+	public function play(pName:String = "", pReset:Bool = false):Animation
 	{
-		if (!reset && _anim != null && _anim.name == name) return _anim;
-		_anim = _anims.get(name);
+		if (!pReset && _anim != null && _anim.name == pName) 
+		    return _anim;
+		    
+		_anim = _anims.get(pName);
 		if (_anim == null)
 		{
 			_frame = _index = 0;
@@ -174,13 +228,11 @@ class SpriteMap
 	}
 	
 	/**
-	 * returns the bounding rectangle for the indexed sprite
-	 * @param the index of the sprite to get the rect for, defaults to animFrame
-	 * @return the bounding rectangle of indexed sprite
+	 * @return the bounding rectangle
 	 */
-	public function getRect(num:Int = -1):Rectangle
+	public function getRect():Rectangle
 	{
-	    return rects[_frame];
+	    return rects[_frame]; 
 	}
 	
 	public function getFrameId():Int
@@ -190,7 +242,10 @@ class SpriteMap
 	
 	public function destroy():Void
 	{
-		// TODO
+		pixels.dispose();
+		#if !flash
+		TileSheetManager.removeTileSheet(tilesheetdata);
+		#end
 	}
 
 }

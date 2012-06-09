@@ -14,9 +14,11 @@ class Frog extends Entity
 	{
 		super(pX, pY);
 		
-		_spriteMap = new SpriteMap("assets/hero_0.png", 32, 32);
-		_spriteMap.add('run', [2, 3, 4], 5, true);
-		_spriteMap.add('jump', [0, 5], 4, true);
+	//	loadGraphic("assets/hero_0.png", 32, 32);		
+		makeGraphic(32, 32, 0xFFFF0000);
+		
+	//	addAnimation('run', [2, 3, 4], 5, true);
+	//	addAnimation('jump', [0, 5], 4, true);
 	}
 	
 	public function play(n: String)

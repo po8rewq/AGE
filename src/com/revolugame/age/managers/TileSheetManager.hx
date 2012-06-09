@@ -26,12 +26,17 @@ class TileSheetManager
 		return (tilesheetsData[tilesheetsData.length - 1]);
 	}
 	
-	/**
-	 * Clears drawData arrays of all tileSheets
-	 */
-	public static function clearAllDrawData():Void
+	public static function removeTileSheet(data: TileSheetData):Void
 	{
-		// TODO
+		for (tsd in tilesheetsData)
+		{
+			if(tsd == data)
+			{
+				tsd.destroy();
+				tilesheetsData.remove(tsd);
+				return;
+			}
+		}
 	}
 	
 	public static function containsTileSheet(bitmapData:BitmapData):Bool

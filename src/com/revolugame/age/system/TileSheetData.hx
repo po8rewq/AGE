@@ -5,6 +5,7 @@ import nme.display.Tilesheet;
 import nme.display.Graphics;
 
 import com.revolugame.age.AgeData;
+import com.revolugame.age.enums.DirectionsEnum;
 
 /**
  * ...
@@ -40,7 +41,7 @@ class TileSheetData
 		_currentIndex = 0;
 	}
 	
-	public function setPosition(pX: Int, pY: Int)
+	public function setPosition(pX: Float, pY: Float)
 	{
 		data[_currentIndex++] = pX;
 		data[_currentIndex++] = pY;
@@ -50,25 +51,7 @@ class TileSheetData
 	{
 		data[_currentIndex++] = id;
 	}
-	
-	public function setScale(scaleX: Float, scaleY: Float)
-	{
-	 	if(scaleX != 1)
-        {
-        	flags |= Graphics.TILE_SCALE;
-	        data[_currentIndex++] = scaleX;
-		}
-	}
-	
-	public function setRotation(pAngle : Float)
-	{
-		if(pAngle != 0)
-		{
-			flags |= Graphics.TILE_ROTATION;
-			data[_currentIndex++] = -pAngle * 0.017453293;
-		}
-	}
-	
+
 	public function setRGB(pRed: Float, pGreen: Float, pBlue: Float)
 	{
 		if(pRed != 1 || pGreen != 1 || pBlue != 1)
@@ -89,6 +72,31 @@ class TileSheetData
 	    }
 	}
 	
+	public function setTransform(pScaleX: Float, pScaleY: Float, pRotation: Float, pMirrorX: Bool, pMirrorY: Bool):Void
+	{
+		flags |= Graphics.TILE_TRANS_2x2;
+	
+		var dirX:Int = pMirrorX ? -1 : 1;
+		var dirY:Int = pMirrorY ? -1 : 1;
+			
+		if(pRotation != 0)
+		{
+			var cos : Float = Math.cos(-pRotation);
+			var sin : Float = Math.sin(-pRotation);
+			data[_currentIndex++] = dirX * cos * pScaleX;
+			data[_currentIndex++] = dirY * sin * pScaleY;
+			data[_currentIndex++] = -dirX * sin * pScaleX;
+			data[_currentIndex++] = dirY * cos * pScaleY;
+		}
+		else
+		{
+			data[_currentIndex++] = dirX * pScaleX;
+			data[_currentIndex++] = 0;
+			data[_currentIndex++] = 0;
+			data[_currentIndex++] = dirY * pScaleY;
+		}
+	}
+	
 	public function render()
 	{
 		if(useAdditive)
@@ -96,6 +104,13 @@ class TileSheetData
 	
 		var cameraGraphics : Graphics = AgeData.camera.screen.graphics;
 		tilesheet.drawTiles( cameraGraphics, data, AgeData.camera.antialiasing, flags );
+	}
+	
+	public function destroy()
+	{
+		tilesheet.nmeBitmap = null;
+		tilesheet = null;
+		data = null;
 	}
 
 }
