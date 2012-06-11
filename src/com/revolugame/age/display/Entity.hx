@@ -1,251 +1,66 @@
 package com.revolugame.age.display;
 
 import com.revolugame.age.core.IBehavior;
-import com.revolugame.age.system.AgePoint;
+import com.revolugame.age.behaviors.MovementBehavior;
+import com.revolugame.age.behaviors.CollisionBehavior;
 
-import nme.geom.Matrix;
-import nme.geom.Point;
-import nme.geom.Rectangle;
-import nme.display.Bitmap;
-import nme.display.BitmapData;
-import nme.geom.ColorTransform;
+import flash.geom.Rectangle;
 
-#if flash
-import nme.geom.Matrix;
-#else
-import com.revolugame.age.system.TileSheetData;
-import nme.display.BitmapInt32;
-#end
-
-class Entity implements IEntity
-{
-	/** */
-	public var visible : Bool;
-	
-	/** If the entity is active */
-    public var dead : Bool;
-	
-	/** Position sur la scene */
-	public var x : Int;
-	public var y: Int;
-	
-	/** Scale */
-	public var scale : AgePoint;
-	
-	/** Angle */
-	public var rotation : Float;
-	
-	/** Alpha */
-	public var alpha : Float; // TODO flash
-	
+/**
+ * Graphical element with collisions detection and behaviors
+ */
+class Entity extends Image
+{	
 	/** All the behaviors of the actor */
     private var _behaviors : List<IBehavior>;
     
-    /** The visual data */
-    private var _spriteMap : SpriteMap;
-    
-    /**  */
-    public var mirrorX : Bool;
-    public var mirrorY : Bool;
-    
-    public var dirty : Bool;
-    
-//    private var _colorTransform:ColorTransform; // alpha and color flash TODO
-    private var _position : Point;
-    
-    #if flash
-    private var _matrix : Matrix;
-    private var _bmpBuffer : BitmapData;
-    private var _pZero : Point;
-//	public var color(default, setColor):UInt;
-    #else
-//    public var color(default, setColor):BitmapInt32;
-    private var _red : Float;
-    private var _green : Float;
-    private var _blue : Float;
-    #end
+    /** Default behaviors */
+    var _movement : MovementBehavior;
+	var _collisions : CollisionBehavior;
 	
-	public function new(pX: Int = 0, pY: Int = 0):Void
+	/** For the collisions detection */
+	public var isSolid : Bool;
+	
+	/** */
+	var _bounds : Rectangle;
+    
+    public function new(pX: Float = 0, pY: Float = 0):Void
 	{
-		x = pX;
-		y = pY;
+		super(pX, pY);
 		
-		scale = new AgePoint(1, 1);
-		rotation = 0;
-		alpha = 1.0;
+		_behaviors = new List();		
+		addDefaultBehaviors();
 		
-		_position = new Point();
+		isSolid = true;
+	}	
+	
+	private function addDefaultBehaviors():Void
+	{
+		/** Movements */
+		_movement = new MovementBehavior(this);
+		addBehavior(_movement, false);
 		
-		#if flash
-		_matrix = new Matrix();
-		_pZero = new Point();
-		#else
-		_red = 1.0;
-		_green = 1.0;
-		_blue = 1.0;
-		#end
-		
-		dirty = false;
-		
-		visible = true;
-		dead = false;
-		
-		mirrorX = false;
-		mirrorY = false;
-		
-		_behaviors = new List();
+		/** Collisions detections */
+		_collisions = new CollisionBehavior(this);
+		addBehavior(_collisions, false);
 	}
 	
-	/**
-	 * Load an embedded graphic
-	 */
-	public function loadGraphic(pSrc: String, pWidth: Int = 0, pHeight: Int = 0):SpriteMap
+	public override function update():Void
 	{
-	    if(_spriteMap == null) _spriteMap = new SpriteMap();
-		else _spriteMap.destroy();
-		
-	    _spriteMap.loadGraphic(pSrc, pWidth, pHeight);
-	    
-	    #if flash
-		_bmpBuffer = new BitmapData(pWidth, pHeight);
-		#end
-	    
-	    return _spriteMap;
-	}
-	
-	/**
-	 * Create a rectangle
-	 */
-	#if flash
-	public function makeGraphic(pWidth: UInt, pHeight: UInt, pColor: UInt):SpriteMap
-	#else
-	public function makeGraphic(pWidth: Int, pHeight: Int, ?pColor:BitmapInt32):SpriteMap
-	#end
-	{
-		if(_spriteMap == null) _spriteMap = new SpriteMap();
-		else _spriteMap.destroy();
-		
-	    _spriteMap.makeGraphic(pWidth, pHeight, pColor);
-	    
-	    #if flash
-		_bmpBuffer = new BitmapData(pWidth, pHeight);
-		#end
-	    
-	    return _spriteMap;
-	}
-	
-	/**
-	 * Add an animation to the spritemap
-	 */
-	public function addAnimation(pName: String, pFrames: Array<Int>, pFrameRate:Float = 0, pLoop:Bool = true):Void
-	{
-	    if(_spriteMap == null) throw 'SpriteMap is not defined !!';
-	    _spriteMap.add(pName, pFrames, pFrameRate, pLoop);
-	}
-	
-	/**
-	 * Udate animation and behaviors
-	 */
-	public function update():Void
-	{
-		if(!dead)
-		{
-			if(_spriteMap.update())
-				dirty = true;
-		
-			for(b in _behaviors)
+		for(b in _behaviors)
+			if(b.enabled)
 				b.update();
-		}
+		super.update();
 	}
-	
-	public function render():Void
-	{
-		if(!dead && visible && onScreen())
-		{
-			if(dirty) drawFrame();
-		
-			_position.x = x - AgeData.camera.position.x;
-			_position.y = y - AgeData.camera.position.y;
-			
-			#if flash
-			if( scale.x != 1 || scale.y != 1 || rotation != 0 || mirrorX || mirrorY)
-			{
-				_matrix.identity();
-				
-				// mirror
-				var sclX : Float = scale.x * (mirrorX ? -1 : 1);
-				var sclY : Float = scale.y * (mirrorY ? -1 : 1);
-				if(sclX != 1 && sclY != 1)
-					_matrix.scale(sclX, sclY);
-				
-				if(rotation != 0)
-					_matrix.rotate(rotation * 0.017453293);
-	
-				_matrix.translate(_position.x, _position.y);
-				
-				AgeData.camera.draw( _bmpBuffer, _matrix, null, null, null, AgeData.camera.antialiasing );
-			}
-			else
-			{
-				AgeData.camera.copyPixels( _spriteMap.pixels, _spriteMap.getRect(), _position, null, null, true );
-	        }
-			#else
-			var ts : TileSheetData = _spriteMap.tilesheetdata;
-			
-			/** Reset drawing data */
-			ts.resetData();
-			
-            /** Position */
-            ts.setPosition( _position.x, _position.y );
-            
-            /** Set current frame id */
-            ts.setFrameId( _spriteMap.getFrameId() );
-            
-            /** Scale && rotation */
-			ts.setTransform(scale.x, scale.y, rotation, mirrorX, mirrorY);
-            
-            /** rgb */
-			ts.setRGB( _red, _green, _blue );
-            
-            /** alpha */
-            ts.setAlpha(alpha);
-            
-            ts.render();
-            #end
-		}
-	}
-	
-	/**
-	 * Redraw the bitmapdata if needed
-	 */
-	private function drawFrame():Void
-	{
-		#if flash
-		_bmpBuffer.copyPixels( _spriteMap.pixels, _spriteMap.getRect(), _pZero );
-//		if (_colorTransform != null)
-//			_bmpBuffer.colorTransform(_spriteMap.getRect(), _colorTransform);
-		dirty = false;
-		#end
-	}
-	
-	/**
-     * His on the screen and need to be rendered
-     * @return Bool
-     */
-    public function onScreen():Bool
-    {
-    	return (x + width >= AgeData.camera.position.x
-        		&& x <= AgeData.camera.position.x + AgeData.stageWidth
-                && y + height >= AgeData.camera.position.y && y <= AgeData.camera.position.y + AgeData.stageHeight);
-    }
 	
 	/**
      * Add a specific behavior
      */
-	public function addBehavior(b: IBehavior):Void
+	public function addBehavior(b: IBehavior, ?pEnable: Bool = true):Void
 	{
 		_behaviors.push(b);
-		b.enable();
+		if(pEnable)
+			b.enable();
 	}
 	
 	/**
@@ -257,33 +72,100 @@ class Entity implements IEntity
         _behaviors.remove( b );
     }
     
+    public function getBounds():Rectangle
+    {
+    	if(_bounds == null) 
+    	{
+    		_bounds = new Rectangle(x, y, width, height); 
+    	}
+    	else
+    	{
+    		_bounds.x = x;
+    		_bounds.y = y;
+    		_bounds.width = width;
+    		_bounds.height = height;
+    	}
+    	return _bounds;
+    }
+    
     /**
-	 * Callback for a collision detection (with tangible set to true)
-	 * @param otherEntity
-	 * @param type
+	 * Moves the Entity by the amount, retaining integer values for its x and y.
+	 * @param	pX		Horizontal offset.
+	 * @param	pY		Vertical offset.
+	 * @param	pType	An optional collision type to stop flush against upon collision.
+	 * @param	pSweep	If sweeping should be used (prevents fast-moving objects from going through solidType).
 	 */
-	public function collide(otherEntity: Entity, type:String):Void
-	{
-	    if(!dead)
-	    {        
-	        for(b in _behaviors)
-				b.collide(otherEntity, type);
-	    }
-	}
+    public function moveBy(pX:Float, pY:Float, ?pType: Dynamic = null, ?pSweep:Bool = false)
+    {
+    	if(pType != null)
+    	{
+    		// destination point
+	    	var moveX : Float = Math.round(pX);
+	    	var moveY : Float = Math.round(pY);
+    	
+    		var sign : Int;
+    		var e : Entity;
+    		
+    		if( moveX != 0 )
+    		{
+    			if( _collisions.enabled && (pSweep || _collisions.collideWith(pType, x + moveX, y) != null) )
+    			{
+    				sign = AgeUtils.sign(pX);
+    				while(moveX != 0)
+    				{
+    					if( (e = _collisions.collideWith(pType, x + sign, y)) != null )
+    					{
+    						_movement.stopMovementX(e);
+    						break;
+    					}
+    					else
+    					{
+    						_movement.updatePosition(sign, 0);
+    						moveX -= sign;
+    					}
+    				}
+    			}
+    			else
+    			{
+    				_movement.updatePosition(pX, 0);
+    			}
+    		}
+    		
+    		if( moveY != 0 )
+    		{ 
+    			if( _collisions.enabled && (pSweep || _collisions.collideWith(pType, x, y + moveY) != null) )
+    			{
+    				sign = AgeUtils.sign(moveY);
+    				while(moveY != 0)
+    				{
+    					if( (e = _collisions.collideWith(pType, x, y + sign)) != null )
+    					{
+    						_movement.stopMovementY(e);
+    						break;
+    					}
+    					else
+    					{
+    						_movement.updatePosition(0, sign);
+    						moveY -= sign;
+    					}
+    				}
+    			}
+    			else
+    			{
+    				_movement.updatePosition(0, pY);
+    			}
+    		}
+    	}
+    	else
+    	{
+    		_movement.updatePosition(pX, pY);
+    	}
+    }
 	
-	public function destroy():Void
+	public override function destroy():Void
 	{
-		_spriteMap.destroy();
 		for(b in _behaviors)
 			b.destroy();
-		#if flash
-		_bmpBuffer.dispose();
-		#end
+		super.destroy();
 	}
-
-	public var width(getWidth, null): Int;
-    private function getWidth():Int { return _spriteMap.width; }
-    
-    public var height(getHeight, null): Int;
-    private function getHeight():Int { return _spriteMap.height; }
 }

@@ -5,11 +5,11 @@ import com.revolugame.age.display.IEntity;
 
 interface IBehavior
 {
-	var entity : Entity;
-	var enabled : Bool;
+	private var _entity : Entity;
+	var enabled(default, null): Bool;
 	
 	function update():Void;
-	function collide(pWidth: IEntity, pType: String):Void;
+	//function collide(pWidth: IEntity, pType: String):Void;
 	
 	function enable():Void;
 	function disable():Void;

@@ -3,8 +3,10 @@ package com.revolugame.age.display;
 interface IEntity
 {
 	var visible : Bool;
-	var x : Int;
-	var y : Int;
+	var dead : Bool;
+	
+	var x : Float;
+	var y : Float;
 	
 	function update(): Void;
 	function render(): Void;

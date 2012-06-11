@@ -7,6 +7,8 @@ import nme.display.StageAlign;
 import nme.display.StageScaleMode;
 import nme.display.FPS;
 
+import com.revolugame.age.system.Input;
+
 class Engine extends Sprite
 {
 	// Gestion du rafraichissement
@@ -48,6 +50,9 @@ class Engine extends Sprite
         _last = Lib.getTimer();
         _now = _last;
         _delta = 0;
+        
+        // Init and enable input
+        Input.init(stage);
 
 		// Initialisation des données de la camera
 		AgeData.camera = new Camera(stage.stageWidth, stage.stageHeight);
@@ -128,6 +133,9 @@ class Engine extends Sprite
 	    }
 	    
 	    AgeData.camera.clear();
+	    
+	    // update input
+		Input.update();
 	    
 	    AgeData.state.render();
 	    

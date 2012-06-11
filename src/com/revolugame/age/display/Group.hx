@@ -3,8 +3,10 @@ package com.revolugame.age.display;
 class Group implements IEntity
 {
 	public var visible : Bool;
-	public var x : Int;
-	public var y : Int;
+	public var dead : Bool;
+	
+	public var x : Float;
+	public var y : Float;
 	
 	public var entities(default, null) : Array<IEntity>;
 
@@ -12,6 +14,7 @@ class Group implements IEntity
 	{
 		entities = new Array();
 		visible = true;
+		dead = false;
 	}
 	
 	/**
@@ -26,7 +29,8 @@ class Group implements IEntity
         while(i < entities.length) 
         {
             entity = entities[i];
-            entity.update();
+            if(!dead)
+            	entity.update();
             ++i;
         }
 	}
@@ -42,7 +46,8 @@ class Group implements IEntity
 	    while(i < len)
 	    {
 	        entity = entities[i];
-	        entity.render();
+	        if(visible && !dead)
+	        	entity.render();
 	        ++i;
 	    }
 	}
