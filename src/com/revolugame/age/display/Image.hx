@@ -51,6 +51,9 @@ class Image implements IEntity
     public var mirrorX : Bool;
     public var mirrorY : Bool;
     
+    /** The image origin (default 0 0) */
+    public var origin : AgePoint; // TODO
+    
     public var dirty : Bool;
     
 //    private var _colorTransform:ColorTransform; // alpha and color flash TODO
@@ -76,6 +79,8 @@ class Image implements IEntity
 		scale = new AgePoint(1, 1);
 		rotation = 0;
 		alpha = 1.0;
+		
+		origin = new AgePoint();
 		
 		_position = new Point();
 		
@@ -172,20 +177,26 @@ class Image implements IEntity
 			_position.x = x - AgeData.camera.position.x;
 			_position.y = y - AgeData.camera.position.y;
 			
+			// on reapplique la difference du scale
+			if(mirrorX) _position.x += width;
+			if(mirrorY) _position.y += height;
+			
 			#if flash
 			if( scale.x != 1 || scale.y != 1 || rotation != 0 || mirrorX || mirrorY)
 			{
 				_matrix.identity();
 				
+				if(rotation != 0)
+					_matrix.rotate(rotation * 0.017453293);
+				
 				// mirror
 				var sclX : Float = scale.x * (mirrorX ? -1 : 1);
 				var sclY : Float = scale.y * (mirrorY ? -1 : 1);
-				if(sclX != 1 && sclY != 1)
+				if(sclX != 1 || sclY != 1)
+				{
 					_matrix.scale(sclX, sclY);
+				}
 				
-				if(rotation != 0)
-					_matrix.rotate(rotation * 0.017453293);
-	
 				_matrix.translate(_position.x, _position.y);
 				
 				AgeData.camera.draw( _bmpBuffer, _matrix, null, null, null, AgeData.camera.antialiasing );

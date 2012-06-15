@@ -9,6 +9,10 @@ class MovementBehavior implements IBehavior
     private var _entity : Entity;
     public var enabled(default, null) : Bool;
     
+    /** Maximal number of jump (for example for a double jump) */
+    private var _maxJump : Int;
+    private var _currentJumpNumber : Int;
+    
     // Movement variables
     public var velocity		: AgePoint;
 	public var acceleration	: AgePoint;
@@ -20,7 +24,7 @@ class MovementBehavior implements IBehavior
 	
 	public var onGround(default, null): Bool;
 	
-    public function new(pEntity: Entity):Void
+    public function new(pEntity: Entity, ?pMaxJump: Int = 1):Void
     {
         _entity = pEntity;
         
@@ -30,6 +34,8 @@ class MovementBehavior implements IBehavior
         maxVelocity = new AgePoint();
         gravity = new AgePoint();
         
+        _maxJump = pMaxJump;
+        _currentJumpNumber = 0;
         moveSpeed = 0;
         onGround = false;
     }
@@ -83,8 +89,11 @@ class MovementBehavior implements IBehavior
      */
     public function jump()
     {
-    	if(gravity.y != 0)
+    	if(onGround && _currentJumpNumber < _maxJump)
+    	{
     		acceleration.y = -AgeUtils.sign(gravity.y) * maxVelocity.y;
+    		_currentJumpNumber++;
+    	}
     }
     
     public function idle():Bool
@@ -95,7 +104,10 @@ class MovementBehavior implements IBehavior
     public function stopMovementY(pE: Entity)
 	{
 		if (velocity.y * AgeUtils.sign(gravity.y) > 0)
+		{
 			onGround = true;
+			_currentJumpNumber = 0;
+		}
 		
 		velocity.y = 0;
 
@@ -130,7 +142,6 @@ class MovementBehavior implements IBehavior
 	private function applyVelocity()
 	{
 		onGround = false;
-
 		_entity.moveBy( velocity.x, velocity.y, 'solid', true);
 	}
     

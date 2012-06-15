@@ -19,7 +19,13 @@ class Entity extends Image
 	var _collisions : CollisionBehavior;
 	
 	/** For the collisions detection */
-	public var isSolid : Bool;
+	public var solid(getIsSolid, setIsSolid) : Bool;
+	
+	/** For the movements */
+	public var movable(getIsMovable, setIsMovable) : Bool;
+	
+	/** */
+	public var hitbox : Rectangle;
 	
 	/** */
 	var _bounds : Rectangle;
@@ -28,21 +34,7 @@ class Entity extends Image
 	{
 		super(pX, pY);
 		
-		_behaviors = new List();		
-		addDefaultBehaviors();
-		
-		isSolid = true;
-	}	
-	
-	private function addDefaultBehaviors():Void
-	{
-		/** Movements */
-		_movement = new MovementBehavior(this);
-		addBehavior(_movement, false);
-		
-		/** Collisions detections */
-		_collisions = new CollisionBehavior(this);
-		addBehavior(_collisions, false);
+		_behaviors = new List();
 	}
 	
 	public override function update():Void
@@ -75,15 +67,21 @@ class Entity extends Image
     public function getBounds():Rectangle
     {
     	if(_bounds == null) 
+    		_bounds = new Rectangle(0, 0, 0, 0);
+    	
+    	if(hitbox != null)
     	{
-    		_bounds = new Rectangle(x, y, width, height); 
+    		_bounds.x = x + hitbox.x;
+	    	_bounds.y = y + hitbox.y;
+	    	_bounds.width = hitbox.width;
+	    	_bounds.height = hitbox.height;
     	}
     	else
     	{
-    		_bounds.x = x;
-    		_bounds.y = y;
-    		_bounds.width = width;
-    		_bounds.height = height;
+	    	_bounds.x = x;
+	    	_bounds.y = y;
+	    	_bounds.width = width;
+	    	_bounds.height = height;
     	}
     	return _bounds;
     }
@@ -167,5 +165,54 @@ class Entity extends Image
 		for(b in _behaviors)
 			b.destroy();
 		super.destroy();
+	}
+	
+	/** 
+	 * Getters / Settesr for the default behaviors
+	 */
+	private function getIsSolid():Bool
+	{
+		return _collisions != null && _collisions.enabled;
+	}
+	
+	private function setIsSolid(val:Bool):Bool
+	{
+		if(_collisions == null)
+		{
+			_collisions = new CollisionBehavior(this);
+			addBehavior(_collisions);
+		}
+		else if(val && !_collisions.enabled)
+		{
+			_collisions.enable();
+		}
+		else if(!val && _collisions.enabled)
+		{
+			_collisions.disable();
+		}
+		return val;
+	}
+	
+	private function getIsMovable():Bool
+	{
+		return _movement != null && _movement.enabled;
+	}
+	
+	private function setIsMovable(val:Bool):Bool
+	{
+		if(_movement == null)
+		{
+			_movement = new MovementBehavior(this);
+			addBehavior(_movement);
+		}
+		else if(val && !_movement.enabled)
+		{
+			_movement.enable();
+		}
+		else if(!val && _movement.enabled)
+		{
+			_movement.disable();
+		}
+		return val;
 	}
 }

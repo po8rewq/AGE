@@ -38,7 +38,7 @@ class CollisionBehavior implements IBehavior
     		if( e != _entity && Std.is(e, Entity) )
     		{
     			entity = cast e;
-    			if(entity.isSolid && collide(_entity, entity))
+    			if(entity.solid && collide(_entity, entity))
     			{
     				_entity.x = tmpX; _entity.y = tmpY;
     				return entity;
@@ -49,17 +49,12 @@ class CollisionBehavior implements IBehavior
     	return null;
     }
     
+    /**
+     * @return true if pEntity1 collide pEntity2
+     */
     public function collide(pEntity1: Entity, pEntity2: Entity):Bool
     {
-    	return ( collidePoint(pEntity1.x, pEntity1.y, pEntity2.getBounds()) ||
-    			 collidePoint(pEntity1.x + pEntity1.width, pEntity1.y, pEntity2.getBounds() ) ||
-    			 collidePoint(pEntity1.x, pEntity1.y + pEntity1.height, pEntity2.getBounds() ) ||
-    			 collidePoint(pEntity1.x + pEntity1.width, pEntity1.y + pEntity1.height, pEntity2.getBounds() ) );
-    }
-    
-    public function collidePoint(pX1: Float, pY1: Float, pRect: Rectangle):Bool
-    {
-    	return (pX1 >= pRect.x && pX1 <= pRect.x + pRect.width && pY1 >= pRect.y && pY1 <= pRect.y + pRect.height);
+    	return pEntity1.getBounds().intersects( pEntity2.getBounds() );
     }
     
     public function enable()
