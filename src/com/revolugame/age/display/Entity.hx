@@ -26,9 +26,6 @@ class Entity extends Image
 	
 	/** */
 	public var hitbox : Rectangle;
-	
-	/** */
-	var _bounds : Rectangle;
     
     public function new(pX: Float = 0, pY: Float = 0):Void
 	{
@@ -64,7 +61,7 @@ class Entity extends Image
         _behaviors.remove( b );
     }
     
-    public function getBounds():Rectangle
+    public override function getBounds():Rectangle
     {
     	if(_bounds == null) 
     		_bounds = new Rectangle(0, 0, 0, 0);

@@ -1,7 +1,7 @@
 <haxe>
-	<class path="ApplicationMain" params="" file="bin/cpp/linux/haxe/ApplicationMain.hx">
+	<class path="ApplicationMain" params="" file="bin/android/haxe/ApplicationMain.hx">
 		<main public="1" set="method" line="12" static="1"><f a=""><e path="Void"/></f></main>
-		<getAsset public="1" set="method" line="87" static="1"><f a="inName">
+		<getAsset public="1" set="method" line="85" static="1"><f a="inName">
 	<c path="String"/>
 	<d/>
 </f></getAsset>
@@ -158,6 +158,242 @@
 	is less memory and CPU consuming, unless you really need indexed access.
 </haxe_doc>
 	</class>
+	<class path="com.revolugame.age.display.IEntity" params="" file="../../src/com/revolugame/age/display/IEntity.hx" interface="1">
+		<visible public="1"><e path="Bool"/></visible>
+		<dead public="1"><e path="Bool"/></dead>
+		<x public="1"><c path="Float"/></x>
+		<y public="1"><c path="Float"/></y>
+		<update public="1" set="method"><f a=""><e path="Void"/></f></update>
+		<render public="1" set="method"><f a=""><e path="Void"/></f></render>
+		<destroy public="1" set="method"><f a=""><e path="Void"/></f></destroy>
+	</class>
+	<class path="com.revolugame.age.display.Image" params="" file="../../src/com/revolugame/age/display/Image.hx">
+		<implements path="com.revolugame.age.display.IEntity"/>
+		<visible public="1">
+			<e path="Bool"/>
+			<haxe_doc>
+	 * If the graphic should render
+	 </haxe_doc>
+		</visible>
+		<dead public="1">
+			<e path="Bool"/>
+			<haxe_doc>
+	 * If the graphic should update.
+	 </haxe_doc>
+		</dead>
+		<x public="1">
+			<c path="Float"/>
+			<haxe_doc> Position </haxe_doc>
+		</x>
+		<y public="1"><c path="Float"/></y>
+		<scale public="1">
+			<c path="com.revolugame.age.system.AgePoint"/>
+			<haxe_doc> Scale </haxe_doc>
+		</scale>
+		<rotation public="1">
+			<c path="Float"/>
+			<haxe_doc> Angle </haxe_doc>
+		</rotation>
+		<alpha public="1">
+			<c path="Float"/>
+			<haxe_doc> Alpha </haxe_doc>
+		</alpha>
+		<_spriteMap>
+			<c path="com.revolugame.age.display.SpriteMap"/>
+			<haxe_doc> The visual data </haxe_doc>
+		</_spriteMap>
+		<mirrorX public="1">
+			<e path="Bool"/>
+			<haxe_doc>  </haxe_doc>
+		</mirrorX>
+		<mirrorY public="1"><e path="Bool"/></mirrorY>
+		<origin public="1">
+			<c path="com.revolugame.age.system.AgePoint"/>
+			<haxe_doc> The image origin (default 0 0) </haxe_doc>
+		</origin>
+		<dirty public="1"><e path="Bool"/></dirty>
+		<_position><t path="nme.geom.Point"/></_position>
+		<_bounds>
+			<t path="nme.geom.Rectangle"/>
+			<haxe_doc> </haxe_doc>
+		</_bounds>
+		<mouseDown public="1">
+			<e path="Bool"/>
+			<haxe_doc> </haxe_doc>
+		</mouseDown>
+		<loadGraphic public="1" set="method" line="118">
+			<f a="pSrc:?pWidth:?pHeight">
+				<c path="String"/>
+				<c path="Int"/>
+				<c path="Int"/>
+				<c path="com.revolugame.age.display.SpriteMap"/>
+			</f>
+			<haxe_doc>
+	 * Load an embedded graphic
+	 </haxe_doc>
+		</loadGraphic>
+		<makeGraphic public="1" set="method" line="138">
+			<f a="pWidth:pHeight:?pColor">
+				<c path="Int"/>
+				<c path="Int"/>
+				<t path="nme.display.BitmapInt32"/>
+				<c path="com.revolugame.age.display.SpriteMap"/>
+			</f>
+			<haxe_doc>
+	 * Create a rectangle
+	 </haxe_doc>
+		</makeGraphic>
+		<addAnimation public="1" set="method" line="156">
+			<f a="pName:pFrames:?pFrameRate:?pLoop">
+				<c path="String"/>
+				<c path="Array"><c path="Int"/></c>
+				<c path="Float"/>
+				<e path="Bool"/>
+				<e path="Void"/>
+			</f>
+			<haxe_doc>
+	 * Add an animation to the spritemap
+	 </haxe_doc>
+		</addAnimation>
+		<play public="1" set="method" line="162"><f a="pName">
+	<c path="String"/>
+	<e path="Void"/>
+</f></play>
+		<update public="1" set="method" line="170">
+			<f a=""><e path="Void"/></f>
+			<haxe_doc>
+	 * Udate animation and behaviors
+	 </haxe_doc>
+		</update>
+		<render public="1" set="method" line="179"><f a=""><e path="Void"/></f></render>
+		<drawFrame set="method" line="245">
+			<f a=""><e path="Void"/></f>
+			<haxe_doc>
+	 * Redraw the bitmapdata if needed
+	 </haxe_doc>
+		</drawFrame>
+		<onScreen public="1" set="method" line="259">
+			<f a=""><e path="Bool"/></f>
+			<haxe_doc>
+     * His on the screen and need to be rendered
+     * @return Bool
+     </haxe_doc>
+		</onScreen>
+		<getBounds public="1" set="method" line="269">
+			<f a=""><t path="nme.geom.Rectangle"/></f>
+			<haxe_doc>
+	 * @return the bounding box of this image
+	 </haxe_doc>
+		</getBounds>
+		<destroy public="1" set="method" line="282"><f a=""><e path="Void"/></f></destroy>
+		<width public="1" get="getWidth" set="null"><c path="Int"/></width>
+		<getWidth set="method" line="291"><f a=""><c path="Int"/></f></getWidth>
+		<height public="1" get="getHeight" set="null"><c path="Int"/></height>
+		<getHeight set="method" line="294"><f a=""><c path="Int"/></f></getHeight>
+		<new public="1" set="method" line="80"><f a="pX:pY">
+	<c path="Float"/>
+	<c path="Float"/>
+	<e path="Void"/>
+</f></new>
+		<haxe_doc>
+ * Simple graphical element
+ </haxe_doc>
+	</class>
+	<class path="com.revolugame.age.display.Entity" params="" file="../../src/com/revolugame/age/display/Entity.hx">
+		<extends path="com.revolugame.age.display.Image"/>
+		<_behaviors>
+			<c path="List"><c path="com.revolugame.age.core.IBehavior"/></c>
+			<haxe_doc> All the behaviors of the actor </haxe_doc>
+		</_behaviors>
+		<_movement>
+			<c path="com.revolugame.age.behaviors.MovementBehavior"/>
+			<haxe_doc> Default behaviors </haxe_doc>
+		</_movement>
+		<_collisions><c path="com.revolugame.age.behaviors.CollisionBehavior"/></_collisions>
+		<solid public="1" get="getIsSolid" set="setIsSolid">
+			<e path="Bool"/>
+			<haxe_doc> For the collisions detection </haxe_doc>
+		</solid>
+		<movable public="1" get="getIsMovable" set="setIsMovable">
+			<e path="Bool"/>
+			<haxe_doc> For the movements </haxe_doc>
+		</movable>
+		<hitbox public="1">
+			<t path="flash.geom.Rectangle"/>
+			<haxe_doc> </haxe_doc>
+		</hitbox>
+		<update public="1" set="method" line="37" override="1"><f a=""><e path="Void"/></f></update>
+		<addBehavior public="1" set="method" line="48">
+			<f a="b:?pEnable">
+				<c path="com.revolugame.age.core.IBehavior"/>
+				<e path="Bool"/>
+				<e path="Void"/>
+			</f>
+			<haxe_doc>
+     * Add a specific behavior
+     </haxe_doc>
+		</addBehavior>
+		<removeBehavior public="1" set="method" line="58">
+			<f a="b">
+				<c path="com.revolugame.age.core.IBehavior"/>
+				<e path="Void"/>
+			</f>
+			<haxe_doc>
+    * Delete a behavior
+     </haxe_doc>
+		</removeBehavior>
+		<getBounds public="1" set="method" line="64" override="1"><f a=""><t path="flash.geom.Rectangle"/></f></getBounds>
+		<moveBy public="1" set="method" line="93">
+			<f a="pX:pY:?pType:?pSweep">
+				<c path="Float"/>
+				<c path="Float"/>
+				<d/>
+				<e path="Bool"/>
+				<e path="Void"/>
+			</f>
+			<haxe_doc>
+	 * Moves the Entity by the amount, retaining integer values for its x and y.
+	 * @param	pX		Horizontal offset.
+	 * @param	pY		Vertical offset.
+	 * @param	pType	An optional collision type to stop flush against upon collision.
+	 * @param	pSweep	If sweeping should be used (prevents fast-moving objects from going through solidType).
+	 </haxe_doc>
+		</moveBy>
+		<destroy public="1" set="method" line="160" override="1"><f a=""><e path="Void"/></f></destroy>
+		<getIsSolid set="method" line="170">
+			<f a=""><e path="Bool"/></f>
+			<haxe_doc> 
+	 * Getters / Settesr for the default behaviors
+	 </haxe_doc>
+		</getIsSolid>
+		<setIsSolid set="method" line="175"><f a="val">
+	<e path="Bool"/>
+	<e path="Bool"/>
+</f></setIsSolid>
+		<getIsMovable set="method" line="193"><f a=""><e path="Bool"/></f></getIsMovable>
+		<setIsMovable set="method" line="198"><f a="val">
+	<e path="Bool"/>
+	<e path="Bool"/>
+</f></setIsMovable>
+		<new public="1" set="method" line="30"><f a="?pX:?pY">
+	<c path="Float"/>
+	<c path="Float"/>
+	<e path="Void"/>
+</f></new>
+		<haxe_doc>
+ * Graphical element with collisions detection and behaviors
+ </haxe_doc>
+	</class>
+	<class path="Block" params="" file="src/Block.hx">
+		<extends path="com.revolugame.age.display.Entity"/>
+		<new public="1" set="method" line="8"><f a="pX:pY:pWidth:pHeight">
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<e path="Void"/>
+</f></new>
+	</class>
 	<class path="Class" params="T" file="/usr/lib/haxe/std/Class.hx" extern="1"><haxe_doc>
 	An abstract type that represents a Class.
 	See [Type] for the haXe Reflection API.
@@ -276,200 +512,13 @@
 	An abstract type that represents any enum value.
 	See [Type] for the haXe Reflection API.
 </haxe_doc></class>
-	<class path="com.revolugame.age.display.IEntity" params="" file="../../src/com/revolugame/age/display/IEntity.hx" interface="1">
-		<visible public="1"><e path="Bool"/></visible>
-		<dead public="1"><e path="Bool"/></dead>
-		<x public="1"><c path="Float"/></x>
-		<y public="1"><c path="Float"/></y>
-		<update public="1" set="method"><f a=""><e path="Void"/></f></update>
-		<render public="1" set="method"><f a=""><e path="Void"/></f></render>
-		<destroy public="1" set="method"><f a=""><e path="Void"/></f></destroy>
-	</class>
-	<class path="com.revolugame.age.display.Image" params="" file="../../src/com/revolugame/age/display/Image.hx">
-		<implements path="com.revolugame.age.display.IEntity"/>
-		<visible public="1">
-			<e path="Bool"/>
-			<haxe_doc>
-	 * If the graphic should render
-	 </haxe_doc>
-		</visible>
-		<dead public="1">
-			<e path="Bool"/>
-			<haxe_doc>
-	 * If the graphic should update.
-	 </haxe_doc>
-		</dead>
-		<x public="1">
-			<c path="Float"/>
-			<haxe_doc> Position </haxe_doc>
-		</x>
-		<y public="1"><c path="Float"/></y>
-		<scale public="1">
-			<c path="com.revolugame.age.system.AgePoint"/>
-			<haxe_doc> Scale </haxe_doc>
-		</scale>
-		<rotation public="1">
-			<c path="Float"/>
-			<haxe_doc> Angle </haxe_doc>
-		</rotation>
-		<alpha public="1">
-			<c path="Float"/>
-			<haxe_doc> Alpha </haxe_doc>
-		</alpha>
-		<_spriteMap>
-			<c path="com.revolugame.age.display.SpriteMap"/>
-			<haxe_doc> The visual data </haxe_doc>
-		</_spriteMap>
-		<mirrorX public="1">
-			<e path="Bool"/>
-			<haxe_doc>  </haxe_doc>
-		</mirrorX>
-		<mirrorY public="1"><e path="Bool"/></mirrorY>
-		<dirty public="1"><e path="Bool"/></dirty>
-		<_position><t path="nme.geom.Point"/></_position>
-		<loadGraphic public="1" set="method" line="105">
-			<f a="pSrc:?pWidth:?pHeight">
-				<c path="String"/>
-				<c path="Int"/>
-				<c path="Int"/>
-				<c path="com.revolugame.age.display.SpriteMap"/>
-			</f>
-			<haxe_doc>
-	 * Load an embedded graphic
-	 </haxe_doc>
-		</loadGraphic>
-		<makeGraphic public="1" set="method" line="125">
-			<f a="pWidth:pHeight:?pColor">
-				<c path="Int"/>
-				<c path="Int"/>
-				<t path="nme.display.BitmapInt32"/>
-				<c path="com.revolugame.age.display.SpriteMap"/>
-			</f>
-			<haxe_doc>
-	 * Create a rectangle
-	 </haxe_doc>
-		</makeGraphic>
-		<addAnimation public="1" set="method" line="143">
-			<f a="pName:pFrames:?pFrameRate:?pLoop">
-				<c path="String"/>
-				<c path="Array"><c path="Int"/></c>
-				<c path="Float"/>
-				<e path="Bool"/>
-				<e path="Void"/>
-			</f>
-			<haxe_doc>
-	 * Add an animation to the spritemap
-	 </haxe_doc>
-		</addAnimation>
-		<play public="1" set="method" line="149"><f a="pName">
-	<c path="String"/>
-	<e path="Void"/>
-</f></play>
-		<update public="1" set="method" line="157">
-			<f a=""><e path="Void"/></f>
-			<haxe_doc>
-	 * Udate animation and behaviors
-	 </haxe_doc>
-		</update>
-		<render public="1" set="method" line="166"><f a=""><e path="Void"/></f></render>
-		<drawFrame set="method" line="226">
-			<f a=""><e path="Void"/></f>
-			<haxe_doc>
-	 * Redraw the bitmapdata if needed
-	 </haxe_doc>
-		</drawFrame>
-		<onScreen public="1" set="method" line="240">
-			<f a=""><e path="Bool"/></f>
-			<haxe_doc>
-     * His on the screen and need to be rendered
-     * @return Bool
-     </haxe_doc>
-		</onScreen>
-		<destroy public="1" set="method" line="247"><f a=""><e path="Void"/></f></destroy>
-		<width public="1" get="getWidth" set="null"><c path="Int"/></width>
-		<getWidth set="method" line="256"><f a=""><c path="Int"/></f></getWidth>
-		<height public="1" get="getHeight" set="null"><c path="Int"/></height>
-		<getHeight set="method" line="259"><f a=""><c path="Int"/></f></getHeight>
-		<new public="1" set="method" line="71"><f a="pX:pY">
-	<c path="Float"/>
-	<c path="Float"/>
-	<e path="Void"/>
-</f></new>
-		<haxe_doc>
- * Simple graphical element
- </haxe_doc>
-	</class>
-	<class path="com.revolugame.age.display.Entity" params="" file="../../src/com/revolugame/age/display/Entity.hx">
-		<extends path="com.revolugame.age.display.Image"/>
-		<_behaviors>
-			<c path="List"><c path="com.revolugame.age.core.IBehavior"/></c>
-			<haxe_doc> All the behaviors of the actor </haxe_doc>
-		</_behaviors>
-		<_movement>
-			<c path="com.revolugame.age.behaviors.MovementBehavior"/>
-			<haxe_doc> Default behaviors </haxe_doc>
-		</_movement>
-		<_collisions><c path="com.revolugame.age.behaviors.CollisionBehavior"/></_collisions>
-		<isSolid public="1">
-			<e path="Bool"/>
-			<haxe_doc> For the collisions detection </haxe_doc>
-		</isSolid>
-		<_bounds>
-			<t path="flash.geom.Rectangle"/>
-			<haxe_doc> </haxe_doc>
-		</_bounds>
-		<addDefaultBehaviors set="method" line="37"><f a=""><e path="Void"/></f></addDefaultBehaviors>
-		<update public="1" set="method" line="48" override="1"><f a=""><e path="Void"/></f></update>
-		<addBehavior public="1" set="method" line="59">
-			<f a="b:?pEnable">
-				<c path="com.revolugame.age.core.IBehavior"/>
-				<e path="Bool"/>
-				<e path="Void"/>
-			</f>
-			<haxe_doc>
-     * Add a specific behavior
-     </haxe_doc>
-		</addBehavior>
-		<removeBehavior public="1" set="method" line="69">
-			<f a="b">
-				<c path="com.revolugame.age.core.IBehavior"/>
-				<e path="Void"/>
-			</f>
-			<haxe_doc>
-    * Delete a behavior
-     </haxe_doc>
-		</removeBehavior>
-		<getBounds public="1" set="method" line="75"><f a=""><t path="flash.geom.Rectangle"/></f></getBounds>
-		<moveBy public="1" set="method" line="98">
-			<f a="pX:pY:?pType:?pSweep">
-				<c path="Float"/>
-				<c path="Float"/>
-				<d/>
-				<e path="Bool"/>
-				<e path="Void"/>
-			</f>
-			<haxe_doc>
-	 * Moves the Entity by the amount, retaining integer values for its x and y.
-	 * @param	pX		Horizontal offset.
-	 * @param	pY		Vertical offset.
-	 * @param	pType	An optional collision type to stop flush against upon collision.
-	 * @param	pSweep	If sweeping should be used (prevents fast-moving objects from going through solidType).
-	 </haxe_doc>
-		</moveBy>
-		<destroy public="1" set="method" line="165" override="1"><f a=""><e path="Void"/></f></destroy>
-		<new public="1" set="method" line="27"><f a="?pX:?pY">
-	<c path="Float"/>
-	<c path="Float"/>
-	<e path="Void"/>
-</f></new>
-		<haxe_doc>
- * Graphical element with collisions detection and behaviors
- </haxe_doc>
-	</class>
 	<class path="Frog" params="" file="src/Frog.hx">
 		<extends path="com.revolugame.age.display.Entity"/>
-		<update public="1" set="method" line="40" override="1"><f a=""><e path="Void"/></f></update>
-		<new public="1" set="method" line="14"><f a="pX:pY">
+		<update public="1" set="method" line="49" override="1"><f a=""><e path="Void"/></f></update>
+		<moveLeft public="1" set="method" line="73"><f a=""><e path="Void"/></f></moveLeft>
+		<moveRight public="1" set="method" line="80"><f a=""><e path="Void"/></f></moveRight>
+		<jump public="1" set="method" line="87"><f a=""><e path="Void"/></f></jump>
+		<new public="1" set="method" line="16"><f a="pX:pY">
 	<c path="Int"/>
 	<c path="Int"/>
 	<e path="Void"/>
@@ -578,29 +627,11 @@
 	<class path="neash.Loader" params="" file="/usr/lib/haxe/lib/nme/3,3,3/neash/Loader.hx">
 		<moduleInit line="18" static="1"><e path="Bool"/></moduleInit>
 		<moduleName line="19" static="1"><c path="String"/></moduleName>
-		<findHaxeLib public="1" set="method" line="33" static="1"><f a="inLib">
-	<c path="String"/>
-	<c path="String"/>
-</f></findHaxeLib>
-		<load public="1" set="method" line="66" static="1"><f a="func:args">
+		<load public="1" set="method" line="25" static="1"><f a="func:args">
 	<c path="String"/>
 	<c path="Int"/>
 	<d/>
 </f></load>
-		<loaderTrace public="1" set="method" line="128" static="1"><f a="inStr">
-	<c path="String"/>
-	<e path="Void"/>
-</f></loaderTrace>
-		<sysName set="method" line="143" static="1"><f a=""><a><substr set="null"><f a="">
-	<c path="Int"/>
-	<a><toLowerCase set="null"><f a=""><c path="String"/></f></toLowerCase></a>
-</f></substr></a></f></sysName>
-		<tryLoad public="1" set="method" line="155" static="1"><f a="inName:func:args">
-	<c path="String"/>
-	<c path="String"/>
-	<c path="Int"/>
-	<d/>
-</f></tryLoad>
 	</class>
 	<class path="cpp.Lib" params="" file="/usr/lib/haxe/std/cpp/Lib.hx">
 		<load public="1" set="method" line="32" static="1">
@@ -672,323 +703,6 @@
 		Print the specified value on the default output followed by a newline character.
 	</haxe_doc>
 		</println>
-	</class>
-	<class path="sys.io.Process" params="" file="/usr/lib/haxe/std/cpp/_std/sys/io/Process.hx">
-		<_run line="126" static="1"><f a=":">
-	<c path="String"/>
-	<c path="Array"><c path="String"/></c>
-	<unknown/>
-</f></_run>
-		<_exit line="127" static="1"><f a="">
-	<d/>
-	<c path="Int"/>
-</f></_exit>
-		<_pid line="128" static="1"><f a="">
-	<d/>
-	<c path="Int"/>
-</f></_pid>
-		<_close line="129" static="1"><f a="">
-	<d/>
-	<unknown/>
-</f></_close>
-		<p><d/></p>
-		<stdout public="1" set="null"><c path="haxe.io.Input"/></stdout>
-		<stderr public="1" set="null"><c path="haxe.io.Input"/></stderr>
-		<stdin public="1" set="null"><c path="haxe.io.Output"/></stdin>
-		<getPid public="1" set="method" line="110"><f a=""><c path="Int"/></f></getPid>
-		<exitCode public="1" set="method" line="114"><f a=""><c path="Int"/></f></exitCode>
-		<close public="1" set="method" line="118"><f a=""><e path="Void"/></f></close>
-		<kill public="1" set="method" line="122"><f a=""><e path="Void"/></f></kill>
-		<new public="1" set="method" line="103"><f a="cmd:args">
-	<c path="String"/>
-	<c path="Array"><c path="String"/></c>
-	<e path="Void"/>
-</f></new>
-	</class>
-	<class path="haxe.io.Output" params="" file="/usr/lib/haxe/std/haxe/io/Output.hx">
-		<_float_bytes line="253" static="1"><f a=":">
-	<c path="Float"/>
-	<e path="Bool"/>
-	<t path="haxe.io.BytesData"/>
-</f></_float_bytes>
-		<_double_bytes line="254" static="1"><f a=":">
-	<c path="Float"/>
-	<e path="Bool"/>
-	<t path="haxe.io.BytesData"/>
-</f></_double_bytes>
-		<bigEndian public="1" set="setEndian"><e path="Bool"/></bigEndian>
-		<writeByte public="1" set="method" line="37"><f a="c">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeByte>
-		<writeBytes public="1" set="method" line="41"><f a="s:pos:len">
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="Int"/>
-</f></writeBytes>
-		<flush public="1" set="method" line="64"><f a=""><e path="Void"/></f></flush>
-		<close public="1" set="method" line="67"><f a=""><e path="Void"/></f></close>
-		<setEndian set="method" line="70"><f a="b">
-	<e path="Bool"/>
-	<e path="Bool"/>
-</f></setEndian>
-		<write public="1" set="method" line="77"><f a="s">
-	<c path="haxe.io.Bytes"/>
-	<e path="Void"/>
-</f></write>
-		<writeFullBytes public="1" set="method" line="88"><f a="s:pos:len">
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeFullBytes>
-		<writeFloat public="1" set="method" line="96"><f a="x">
-	<c path="Float"/>
-	<e path="Void"/>
-</f></writeFloat>
-		<writeDouble public="1" set="method" line="108"><f a="x">
-	<c path="Float"/>
-	<e path="Void"/>
-</f></writeDouble>
-		<writeInt8 public="1" set="method" line="120"><f a="x">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeInt8>
-		<writeInt16 public="1" set="method" line="126"><f a="x">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeInt16>
-		<writeUInt16 public="1" set="method" line="131"><f a="x">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeUInt16>
-		<writeInt24 public="1" set="method" line="142"><f a="x">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeInt24>
-		<writeUInt24 public="1" set="method" line="147"><f a="x">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeUInt24>
-		<writeInt31 public="1" set="method" line="160"><f a="x">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeInt31>
-		<writeUInt30 public="1" set="method" line="177"><f a="x">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeUInt30>
-		<writeInt32 public="1" set="method" line="192"><f a="x">
-	<c path="haxe.Int32"/>
-	<e path="Void"/>
-</f></writeInt32>
-		<prepare public="1" set="method" line="212">
-			<f a="nbytes">
-				<c path="Int"/>
-				<e path="Void"/>
-			</f>
-			<haxe_doc>
-		Inform that we are about to write at least a specified number of bytes.
-		The underlying implementation can allocate proper working space depending
-		on this information, or simply ignore it. This is not a mandatory call
-		but a tip and is only used in some specific cases.
-	</haxe_doc>
-		</prepare>
-		<writeInput public="1" set="method" line="215"><f a="i:?bufsize">
-	<c path="haxe.io.Input"/>
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeInput>
-		<writeString public="1" set="method" line="237"><f a="s">
-	<c path="String"/>
-	<e path="Void"/>
-</f></writeString>
-		<haxe_doc>
-	An Output is an abstract write. A specific output implementation will only
-	have to override the [writeChar] and maybe the [write], [flush] and [close]
-	methods. See [File.write] and [String.write] for two ways of creating an
-	Output.
-</haxe_doc>
-	</class>
-	<class path="sys.io._Process.Stdin" params="" file="/usr/lib/haxe/std/cpp/_std/sys/io/Process.hx" private="1" module="sys.io.Process">
-		<extends path="haxe.io.Output"/>
-		<_stdin_write line="56" static="1"><f a=":::">
-	<d/>
-	<t path="haxe.io.BytesData"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="Int"/>
-</f></_stdin_write>
-		<_stdin_close line="57" static="1"><f a="">
-	<d/>
-	<unknown/>
-</f></_stdin_close>
-		<p><d/></p>
-		<buf><c path="haxe.io.Bytes"/></buf>
-		<close public="1" set="method" line="37" override="1"><f a=""><e path="Void"/></f></close>
-		<writeByte public="1" set="method" line="42" override="1"><f a="c">
-	<c path="Int"/>
-	<e path="Void"/>
-</f></writeByte>
-		<writeBytes public="1" set="method" line="47" override="1"><f a="buf:pos:len">
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="Int"/>
-</f></writeBytes>
-		<new public="1" set="method" line="32"><f a="p">
-	<unknown/>
-	<e path="Void"/>
-</f></new>
-	</class>
-	<class path="haxe.io.Bytes" params="" file="/usr/lib/haxe/std/haxe/io/Bytes.hx">
-		<alloc public="1" set="method" line="225" static="1"><f a="length">
-	<c path="Int"/>
-	<c path="haxe.io.Bytes"/>
-</f></alloc>
-		<ofString public="1" set="method" line="253" static="1"><f a="s">
-	<c path="String"/>
-	<c path="haxe.io.Bytes"/>
-</f></ofString>
-		<ofData public="1" set="method" line="292" static="1"><f a="b">
-	<t path="haxe.io.BytesData"/>
-	<c path="haxe.io.Bytes"/>
-</f></ofData>
-		<length public="1" set="null"><c path="Int"/></length>
-		<b><t path="haxe.io.BytesData"/></b>
-		<get public="1" get="inline" set="null" line="37"><f a="pos">
-	<c path="Int"/>
-	<c path="Int"/>
-</f></get>
-		<set public="1" get="inline" set="null" line="51"><f a="pos:v">
-	<c path="Int"/>
-	<c path="Int"/>
-	<e path="Void"/>
-</f></set>
-		<blit public="1" set="method" line="65"><f a="pos:src:srcpos:len">
-	<c path="Int"/>
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<e path="Void"/>
-</f></blit>
-		<sub public="1" set="method" line="93"><f a="pos:len">
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="haxe.io.Bytes"/>
-</f></sub>
-		<compare public="1" set="method" line="112"><f a="other">
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-</f></compare>
-		<readString public="1" set="method" line="148"><f a="pos:len">
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="String"/>
-</f></readString>
-		<toString public="1" set="method" line="192"><f a=""><c path="String"/></f></toString>
-		<toHex public="1" set="method" line="207"><f a=""><c path="String"/></f></toHex>
-		<getData public="1" get="inline" set="null" line="221"><f a=""><t path="haxe.io.BytesData"/></f></getData>
-		<new set="method" line="32"><f a="length:b">
-	<c path="Int"/>
-	<t path="haxe.io.BytesData"/>
-	<e path="Void"/>
-</f></new>
-	</class>
-	<class path="haxe.io.Input" params="" file="/usr/lib/haxe/std/haxe/io/Input.hx">
-		<_float_of_bytes line="266" static="1"><f a=":">
-	<t path="haxe.io.BytesData"/>
-	<e path="Bool"/>
-	<c path="Float"/>
-</f></_float_of_bytes>
-		<_double_of_bytes line="267" static="1"><f a=":">
-	<t path="haxe.io.BytesData"/>
-	<e path="Bool"/>
-	<c path="Float"/>
-</f></_double_of_bytes>
-		<bigEndian public="1" set="setEndian"><e path="Bool"/></bigEndian>
-		<readByte public="1" set="method" line="35"><f a=""><c path="Int"/></f></readByte>
-		<readBytes public="1" set="method" line="44"><f a="s:pos:len">
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="Int"/>
-</f></readBytes>
-		<close public="1" set="method" line="65"><f a=""><e path="Void"/></f></close>
-		<setEndian set="method" line="68"><f a="b">
-	<e path="Bool"/>
-	<e path="Bool"/>
-</f></setEndian>
-		<readAll public="1" set="method" line="75"><f a="?bufsize">
-	<c path="Int"/>
-	<c path="haxe.io.Bytes"/>
-</f></readAll>
-		<readFullBytes public="1" set="method" line="96"><f a="s:pos:len">
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<e path="Void"/>
-</f></readFullBytes>
-		<read public="1" set="method" line="104"><f a="nbytes">
-	<c path="Int"/>
-	<c path="haxe.io.Bytes"/>
-</f></read>
-		<readUntil public="1" set="method" line="116"><f a="end">
-	<c path="Int"/>
-	<c path="String"/>
-</f></readUntil>
-		<readLine public="1" set="method" line="124"><f a=""><c path="String"/></f></readLine>
-		<readFloat public="1" set="method" line="141"><f a=""><c path="Float"/></f></readFloat>
-		<readDouble public="1" set="method" line="155"><f a=""><c path="Float"/></f></readDouble>
-		<readInt8 public="1" set="method" line="169"><f a=""><c path="Int"/></f></readInt8>
-		<readInt16 public="1" set="method" line="176"><f a=""><c path="Int"/></f></readInt16>
-		<readUInt16 public="1" set="method" line="185"><f a=""><c path="Int"/></f></readUInt16>
-		<readInt24 public="1" set="method" line="191"><f a=""><c path="Int"/></f></readInt24>
-		<readUInt24 public="1" set="method" line="201"><f a=""><c path="Int"/></f></readUInt24>
-		<readInt31 public="1" set="method" line="208"><f a=""><c path="Int"/></f></readInt31>
-		<readUInt30 public="1" set="method" line="225"><f a=""><c path="Int"/></f></readUInt30>
-		<readInt32 public="1" set="method" line="234"><f a=""><c path="haxe.Int32"/></f></readInt32>
-		<readString public="1" set="method" line="249"><f a="len">
-	<c path="Int"/>
-	<c path="String"/>
-</f></readString>
-		<haxe_doc>
-	An Input is an abstract reader. See other classes in the [haxe.io] package
-	for several possible implementations.
-</haxe_doc>
-	</class>
-	<class path="sys.io._Process.Stdout" params="" file="/usr/lib/haxe/std/cpp/_std/sys/io/Process.hx" private="1" module="sys.io.Process">
-		<extends path="haxe.io.Input"/>
-		<_stdout_read line="90" static="1"><f a=":::">
-	<d/>
-	<t path="haxe.io.BytesData"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="Int"/>
-</f></_stdout_read>
-		<_stderr_read line="91" static="1"><f a=":::">
-	<d/>
-	<t path="haxe.io.BytesData"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="Int"/>
-</f></_stderr_read>
-		<p><d/></p>
-		<out><e path="Bool"/></out>
-		<buf><c path="haxe.io.Bytes"/></buf>
-		<readByte public="1" set="method" line="73" override="1"><f a=""><c path="Int"/></f></readByte>
-		<readBytes public="1" set="method" line="79" override="1"><f a="str:pos:len">
-	<c path="haxe.io.Bytes"/>
-	<c path="Int"/>
-	<c path="Int"/>
-	<c path="Int"/>
-</f></readBytes>
-		<new public="1" set="method" line="67"><f a="p:out">
-	<unknown/>
-	<e path="Bool"/>
-	<e path="Void"/>
-</f></new>
 	</class>
 	<class path="neash.display.DisplayObject" params="" file="/usr/lib/haxe/lib/nme/3,3,3/neash/display/DisplayObject.hx">
 		<extends path="neash.events.EventDispatcher"/>
@@ -2197,12 +1911,23 @@
 	</class>
 	<class path="com.revolugame.age.core.State" params="" file="../../src/com/revolugame/age/core/State.hx">
 		<extends path="com.revolugame.age.display.Group"/>
-		<create public="1" set="method" line="13"><f a=""><e path="Void"/></f></create>
-		<new public="1" set="method" line="8"><f a=""><e path="Void"/></f></new>
+		<create public="1" set="method" line="18"><f a=""><e path="Void"/></f></create>
+		<handleMouseDown public="1" set="method" line="20"><f a="pX:pY">
+	<c path="Float"/>
+	<c path="Float"/>
+	<e path="Void"/>
+</f></handleMouseDown>
+		<handleMouseUp public="1" set="method" line="40"><f a=""><e path="Void"/></f></handleMouseUp>
+		<new public="1" set="method" line="13"><f a=""><e path="Void"/></f></new>
 	</class>
 	<class path="GameState" params="" file="src/GameState.hx">
 		<extends path="com.revolugame.age.core.State"/>
-		<create public="1" set="method" line="14" override="1"><f a=""><e path="Void"/></f></create>
+		<_top><c path="TouchKey"/></_top>
+		<_left><c path="TouchKey"/></_left>
+		<_right><c path="TouchKey"/></_right>
+		<_frog><c path="Frog"/></_frog>
+		<create public="1" set="method" line="19" override="1"><f a=""><e path="Void"/></f></create>
+		<update public="1" set="method" line="44" override="1"><f a=""><e path="Void"/></f></update>
 		<new public="1" set="method" line="11"><f a=""><e path="Void"/></f></new>
 		<haxe_doc>
  * ...
@@ -3385,6 +3110,14 @@
 	This class gives you access to many base functionalities of system platforms. Looks in [sys] sub packages for more system APIs.
 </haxe_doc>
 	</class>
+	<class path="TouchKey" params="" file="src/TouchKey.hx">
+		<extends path="com.revolugame.age.display.Image"/>
+		<new public="1" set="method" line="8"><f a="pX:pY">
+	<c path="Int"/>
+	<c path="Int"/>
+	<e path="Void"/>
+</f></new>
+	</class>
 	<enum path="ValueType" params="" file="/usr/lib/haxe/std/cpp/_std/Type.hx" module="Type">
 		<TUnknown/>
 		<TObject/>
@@ -3615,17 +3348,35 @@
 		<stageWidth public="1" static="1"><c path="Int"/></stageWidth>
 		<stageHeight public="1" static="1"><c path="Int"/></stageHeight>
 	</class>
-	<class path="com.revolugame.age.AgeUtils" params="" file="../../src/com/revolugame/age/AgeUtils.hx"><sign public="1" get="inline" set="null" line="11" static="1">
-	<f a="value">
-		<c path="Float"/>
-		<c path="Int"/>
-	</f>
-	<haxe_doc><![CDATA[
+	<class path="com.revolugame.age.AgeUtils" params="" file="../../src/com/revolugame/age/AgeUtils.hx">
+		<sign public="1" get="inline" set="null" line="13" static="1">
+			<f a="value">
+				<c path="Float"/>
+				<c path="Int"/>
+			</f>
+			<haxe_doc><![CDATA[
 	 * Finds the sign of the provided value.
 	 * @param	value		The Float to evaluate.
 	 * @return	1 if value > 0, -1 if value < 0, and 0 when value == 0.
 	 ]]></haxe_doc>
-</sign></class>
+		</sign>
+		<pointInRect public="1" get="inline" set="null" line="26" static="1">
+			<f a="pX:pY:pRect">
+				<c path="Int"/>
+				<c path="Int"/>
+				<t path="flash.geom.Rectangle"/>
+				<e path="Bool"/>
+			</f>
+			<haxe_doc>
+	 * Returns true if the given x/y coordinate is within the given rectangular block
+	 * 
+	 * @param	pX		The X value to test
+	 * @param	pY		The Y value to test
+	 * @param	pRect	The Rectanglt to test within
+	 * @return	true if is within the rect
+	 </haxe_doc>
+		</pointInRect>
+	</class>
 	<class path="com.revolugame.age.core.IBehavior" params="" file="../../src/com/revolugame/age/core/IBehavior.hx" interface="1">
 		<_entity><c path="com.revolugame.age.display.Entity"/></_entity>
 		<enabled public="1" set="null"><e path="Bool"/></enabled>
@@ -3645,20 +3396,19 @@
 	<c path="Float"/>
 	<c path="com.revolugame.age.display.Entity"/>
 </f></collideWith>
-		<collide public="1" set="method" line="52"><f a="pEntity1:pEntity2">
-	<c path="com.revolugame.age.display.Entity"/>
-	<c path="com.revolugame.age.display.Entity"/>
-	<e path="Bool"/>
-</f></collide>
-		<collidePoint public="1" set="method" line="60"><f a="pX1:pY1:pRect">
-	<c path="Float"/>
-	<c path="Float"/>
-	<t path="flash.geom.Rectangle"/>
-	<e path="Bool"/>
-</f></collidePoint>
-		<enable public="1" set="method" line="65"><f a=""><e path="Void"/></f></enable>
-		<disable public="1" set="method" line="70"><f a=""><e path="Void"/></f></disable>
-		<destroy public="1" set="method" line="75"><f a=""><e path="Void"/></f></destroy>
+		<collide public="1" set="method" line="55">
+			<f a="pEntity1:pEntity2">
+				<c path="com.revolugame.age.display.Entity"/>
+				<c path="com.revolugame.age.display.Entity"/>
+				<e path="Bool"/>
+			</f>
+			<haxe_doc>
+     * @return true if pEntity1 collide pEntity2
+     </haxe_doc>
+		</collide>
+		<enable public="1" set="method" line="60"><f a=""><e path="Void"/></f></enable>
+		<disable public="1" set="method" line="65"><f a=""><e path="Void"/></f></disable>
+		<destroy public="1" set="method" line="70"><f a=""><e path="Void"/></f></destroy>
 		<new public="1" set="method" line="15"><f a="pEntity">
 	<c path="com.revolugame.age.display.Entity"/>
 	<e path="Void"/>
@@ -3668,6 +3418,11 @@
 		<implements path="com.revolugame.age.core.IBehavior"/>
 		<_entity><c path="com.revolugame.age.display.Entity"/></_entity>
 		<enabled public="1" set="null"><e path="Bool"/></enabled>
+		<_maxJump>
+			<c path="Int"/>
+			<haxe_doc> Maximal number of jump (for example for a double jump) </haxe_doc>
+		</_maxJump>
+		<_currentJumpNumber><c path="Int"/></_currentJumpNumber>
 		<velocity public="1"><c path="com.revolugame.age.system.AgePoint"/></velocity>
 		<acceleration public="1"><c path="com.revolugame.age.system.AgePoint"/></acceleration>
 		<friction public="1"><c path="com.revolugame.age.system.AgePoint"/></friction>
@@ -3675,44 +3430,45 @@
 		<gravity public="1"><c path="com.revolugame.age.system.AgePoint"/></gravity>
 		<moveSpeed public="1"><c path="Float"/></moveSpeed>
 		<onGround public="1" set="null"><e path="Bool"/></onGround>
-		<update public="1" set="method" line="37"><f a=""><e path="Void"/></f></update>
-		<updatePosition public="1" set="method" line="49"><f a="pX:pY">
+		<update public="1" set="method" line="43"><f a=""><e path="Void"/></f></update>
+		<updatePosition public="1" set="method" line="57"><f a="pX:pY">
 	<c path="Float"/>
 	<c path="Float"/>
 	<e path="Void"/>
 </f></updatePosition>
-		<setPosition public="1" set="method" line="55"><f a="pX:pY">
+		<setPosition public="1" set="method" line="63"><f a="pX:pY">
 	<c path="Float"/>
 	<c path="Float"/>
 	<e path="Void"/>
 </f></setPosition>
-		<moveTop public="1" set="method" line="61"><f a=""><e path="Void"/></f></moveTop>
-		<moveBottom public="1" set="method" line="66"><f a=""><e path="Void"/></f></moveBottom>
-		<moveLeft public="1" set="method" line="71"><f a=""><e path="Void"/></f></moveLeft>
-		<moveRight public="1" set="method" line="76"><f a=""><e path="Void"/></f></moveRight>
-		<jump public="1" set="method" line="84">
+		<moveTop public="1" set="method" line="69"><f a=""><e path="Void"/></f></moveTop>
+		<moveBottom public="1" set="method" line="74"><f a=""><e path="Void"/></f></moveBottom>
+		<moveLeft public="1" set="method" line="79"><f a=""><e path="Void"/></f></moveLeft>
+		<moveRight public="1" set="method" line="84"><f a=""><e path="Void"/></f></moveRight>
+		<jump public="1" set="method" line="92">
 			<f a=""><e path="Void"/></f>
 			<haxe_doc>
      *
      </haxe_doc>
 		</jump>
-		<idle public="1" set="method" line="90"><f a=""><e path="Bool"/></f></idle>
-		<stopMovementY public="1" set="method" line="95"><f a="pE">
+		<idle public="1" set="method" line="101"><f a=""><e path="Bool"/></f></idle>
+		<stopMovementY public="1" set="method" line="106"><f a="pE">
 	<c path="com.revolugame.age.display.Entity"/>
 	<e path="Void"/>
 </f></stopMovementY>
-		<stopMovementX public="1" set="method" line="106"><f a="pE">
+		<stopMovementX public="1" set="method" line="120"><f a="pE">
 	<c path="com.revolugame.age.display.Entity"/>
 	<e path="Void"/>
 </f></stopMovementX>
-		<applyGravity set="method" line="114"><f a=""><e path="Void"/></f></applyGravity>
-		<checkMaxVelocity set="method" line="121"><f a=""><e path="Void"/></f></checkMaxVelocity>
-		<applyVelocity set="method" line="130"><f a=""><e path="Void"/></f></applyVelocity>
-		<enable public="1" set="method" line="137"><f a=""><e path="Void"/></f></enable>
-		<disable public="1" set="method" line="142"><f a=""><e path="Void"/></f></disable>
-		<destroy public="1" set="method" line="147"><f a=""><e path="Void"/></f></destroy>
-		<new public="1" set="method" line="23"><f a="pEntity">
+		<applyGravity set="method" line="128"><f a=""><e path="Void"/></f></applyGravity>
+		<checkMaxVelocity set="method" line="135"><f a=""><e path="Void"/></f></checkMaxVelocity>
+		<applyVelocity set="method" line="144"><f a=""><e path="Void"/></f></applyVelocity>
+		<enable public="1" set="method" line="150"><f a=""><e path="Void"/></f></enable>
+		<disable public="1" set="method" line="155"><f a=""><e path="Void"/></f></disable>
+		<destroy public="1" set="method" line="160"><f a=""><e path="Void"/></f></destroy>
+		<new public="1" set="method" line="27"><f a="pEntity:?pMaxJump">
 	<c path="com.revolugame.age.display.Entity"/>
+	<c path="Int"/>
 	<e path="Void"/>
 </f></new>
 	</class>
@@ -4024,28 +3780,36 @@
 	</class>
 	<class path="com.revolugame.age.system.Input" params="" file="../../src/com/revolugame/age/system/Input.hx">
 		<lastKey public="1" static="1"><c path="Int"/></lastKey>
-		<keyString public="1" line="13" static="1"><c path="String"/></keyString>
-		<_key line="15" static="1"><c path="Array"><e path="Bool"/></c></_key>
-		<_keyNum line="16" static="1"><c path="Int"/></_keyNum>
-		<_press line="17" static="1"><c path="Array"><c path="Int"/></c></_press>
-		<_pressNum line="18" static="1"><c path="Int"/></_pressNum>
-		<_release line="19" static="1"><c path="Array"><c path="Int"/></c></_release>
-		<_releaseNum line="20" static="1"><c path="Int"/></_releaseNum>
-		<_control line="21" static="1"><c path="Hash"><c path="Array"><c path="Int"/></c></c></_control>
-		<kKeyStringMax get="inline" set="null" line="23" static="1"><c path="Int"/></kKeyStringMax>
-		<init public="1" set="method" line="25" static="1"><f a="pStage">
+		<keyString public="1" line="14" static="1"><c path="String"/></keyString>
+		<_key line="16" static="1"><c path="Array"><e path="Bool"/></c></_key>
+		<_keyNum line="17" static="1"><c path="Int"/></_keyNum>
+		<_press line="18" static="1"><c path="Array"><c path="Int"/></c></_press>
+		<_pressNum line="19" static="1"><c path="Int"/></_pressNum>
+		<_release line="20" static="1"><c path="Array"><c path="Int"/></c></_release>
+		<_releaseNum line="21" static="1"><c path="Int"/></_releaseNum>
+		<_control line="22" static="1"><c path="Hash"><c path="Array"><c path="Int"/></c></c></_control>
+		<kKeyStringMax get="inline" set="null" line="24" static="1"><c path="Int"/></kKeyStringMax>
+		<init public="1" set="method" line="26" static="1"><f a="pStage">
 	<t path="flash.display.Stage"/>
 	<e path="Void"/>
 </f></init>
-		<onKeyDown set="method" line="31" static="1"><f a="pEvt">
+		<onKeyDown set="method" line="35" static="1"><f a="pEvt">
 	<t path="flash.events.KeyboardEvent"/>
 	<e path="Void"/>
 </f></onKeyDown>
-		<onKeyUp set="method" line="58" static="1"><f a="pEvt">
+		<onKeyUp set="method" line="62" static="1"><f a="pEvt">
 	<t path="flash.events.KeyboardEvent"/>
 	<e path="Void"/>
 </f></onKeyUp>
-		<indexOf set="method" line="75" static="1">
+		<onMouseDown set="method" line="73" static="1"><f a="pEvt">
+	<t path="flash.events.MouseEvent"/>
+	<e path="Void"/>
+</f></onMouseDown>
+		<onMouseUp set="method" line="78" static="1"><f a="pEvt">
+	<t path="flash.events.MouseEvent"/>
+	<e path="Void"/>
+</f></onMouseUp>
+		<indexOf set="method" line="89" static="1">
 			<f a="a:v">
 				<c path="Array"><c path="Int"/></c>
 				<c path="Int"/>
@@ -4058,8 +3822,8 @@
 	 * @return	index of value in the array
 	 </haxe_doc>
 		</indexOf>
-		<update public="1" set="method" line="86" static="1"><f a=""><e path="Void"/></f></update>
-		<define public="1" set="method" line="99" static="1">
+		<update public="1" set="method" line="100" static="1"><f a=""><e path="Void"/></f></update>
+		<define public="1" set="method" line="113" static="1">
 			<f a="name:keys">
 				<c path="String"/>
 				<c path="Array"><c path="Int"/></c>
@@ -4071,7 +3835,7 @@
 	 * @param	keys		The keys to use for the Input.
 	 </haxe_doc>
 		</define>
-		<check public="1" set="method" line="109" static="1">
+		<check public="1" set="method" line="123" static="1">
 			<f a="input">
 				<d/>
 				<e path="Bool"/>
@@ -4082,7 +3846,7 @@
 	 * @return	True or false.
 	 </haxe_doc>
 		</check>
-		<pressed public="1" set="method" line="134" static="1">
+		<pressed public="1" set="method" line="148" static="1">
 			<f a="input">
 				<d/>
 				<e path="Bool"/>
@@ -4093,7 +3857,7 @@
 	 * @return	True or false.
 	 </haxe_doc>
 		</pressed>
-		<released public="1" set="method" line="154" static="1">
+		<released public="1" set="method" line="168" static="1">
 			<f a="input">
 				<d/>
 				<e path="Bool"/>
@@ -4399,6 +4163,7 @@
 	</class>
 	<typedef path="flash.display.Stage" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/display/Stage.hx"><t path="nme.display.Stage"/></typedef>
 	<typedef path="flash.events.KeyboardEvent" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/events/KeyboardEvent.hx"><t path="nme.events.KeyboardEvent"/></typedef>
+	<typedef path="flash.events.MouseEvent" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/events/MouseEvent.hx"><t path="nme.events.MouseEvent"/></typedef>
 	<typedef path="flash.geom.Rectangle" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/geom/Rectangle.hx"><t path="nme.geom.Rectangle"/></typedef>
 	<typedef path="flash.ui.Keyboard" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/ui/Keyboard.hx"><t path="nme.ui.Keyboard"/></typedef>
 	<class path="haxe.Int32" params="" file="/usr/lib/haxe/std/cpp/_std/haxe/Int32.hx" extern="1">
@@ -4556,6 +4321,60 @@
 	<e path="Void"/>
 </f></new>
 	</class>
+	<class path="haxe.io.Bytes" params="" file="/usr/lib/haxe/std/haxe/io/Bytes.hx">
+		<alloc public="1" set="method" line="225" static="1"><f a="length">
+	<c path="Int"/>
+	<c path="haxe.io.Bytes"/>
+</f></alloc>
+		<ofString public="1" set="method" line="253" static="1"><f a="s">
+	<c path="String"/>
+	<c path="haxe.io.Bytes"/>
+</f></ofString>
+		<ofData public="1" set="method" line="292" static="1"><f a="b">
+	<t path="haxe.io.BytesData"/>
+	<c path="haxe.io.Bytes"/>
+</f></ofData>
+		<length public="1" set="null"><c path="Int"/></length>
+		<b><t path="haxe.io.BytesData"/></b>
+		<get public="1" get="inline" set="null" line="37"><f a="pos">
+	<c path="Int"/>
+	<c path="Int"/>
+</f></get>
+		<set public="1" get="inline" set="null" line="51"><f a="pos:v">
+	<c path="Int"/>
+	<c path="Int"/>
+	<e path="Void"/>
+</f></set>
+		<blit public="1" set="method" line="65"><f a="pos:src:srcpos:len">
+	<c path="Int"/>
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<e path="Void"/>
+</f></blit>
+		<sub public="1" set="method" line="93"><f a="pos:len">
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="haxe.io.Bytes"/>
+</f></sub>
+		<compare public="1" set="method" line="112"><f a="other">
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+</f></compare>
+		<readString public="1" set="method" line="148"><f a="pos:len">
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="String"/>
+</f></readString>
+		<toString public="1" set="method" line="192"><f a=""><c path="String"/></f></toString>
+		<toHex public="1" set="method" line="207"><f a=""><c path="String"/></f></toHex>
+		<getData public="1" get="inline" set="null" line="221"><f a=""><t path="haxe.io.BytesData"/></f></getData>
+		<new set="method" line="32"><f a="length:b">
+	<c path="Int"/>
+	<t path="haxe.io.BytesData"/>
+	<e path="Void"/>
+</f></new>
+	</class>
 	<class path="haxe.io.BytesBuffer" params="" file="/usr/lib/haxe/std/haxe/io/BytesBuffer.hx">
 		<b><t path="haxe.io.BytesData"/></b>
 		<addByte public="1" get="inline" set="null" line="55"><f a="byte">
@@ -4602,6 +4421,174 @@
 	The possible IO errors that can occur
 </haxe_doc>
 	</enum>
+	<class path="haxe.io.Input" params="" file="/usr/lib/haxe/std/haxe/io/Input.hx">
+		<_float_of_bytes line="266" static="1"><f a=":">
+	<t path="haxe.io.BytesData"/>
+	<e path="Bool"/>
+	<c path="Float"/>
+</f></_float_of_bytes>
+		<_double_of_bytes line="267" static="1"><f a=":">
+	<t path="haxe.io.BytesData"/>
+	<e path="Bool"/>
+	<c path="Float"/>
+</f></_double_of_bytes>
+		<bigEndian public="1" set="setEndian"><e path="Bool"/></bigEndian>
+		<readByte public="1" set="method" line="35"><f a=""><c path="Int"/></f></readByte>
+		<readBytes public="1" set="method" line="44"><f a="s:pos:len">
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+</f></readBytes>
+		<close public="1" set="method" line="65"><f a=""><e path="Void"/></f></close>
+		<setEndian set="method" line="68"><f a="b">
+	<e path="Bool"/>
+	<e path="Bool"/>
+</f></setEndian>
+		<readAll public="1" set="method" line="75"><f a="?bufsize">
+	<c path="Int"/>
+	<c path="haxe.io.Bytes"/>
+</f></readAll>
+		<readFullBytes public="1" set="method" line="96"><f a="s:pos:len">
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<e path="Void"/>
+</f></readFullBytes>
+		<read public="1" set="method" line="104"><f a="nbytes">
+	<c path="Int"/>
+	<c path="haxe.io.Bytes"/>
+</f></read>
+		<readUntil public="1" set="method" line="116"><f a="end">
+	<c path="Int"/>
+	<c path="String"/>
+</f></readUntil>
+		<readLine public="1" set="method" line="124"><f a=""><c path="String"/></f></readLine>
+		<readFloat public="1" set="method" line="141"><f a=""><c path="Float"/></f></readFloat>
+		<readDouble public="1" set="method" line="155"><f a=""><c path="Float"/></f></readDouble>
+		<readInt8 public="1" set="method" line="169"><f a=""><c path="Int"/></f></readInt8>
+		<readInt16 public="1" set="method" line="176"><f a=""><c path="Int"/></f></readInt16>
+		<readUInt16 public="1" set="method" line="185"><f a=""><c path="Int"/></f></readUInt16>
+		<readInt24 public="1" set="method" line="191"><f a=""><c path="Int"/></f></readInt24>
+		<readUInt24 public="1" set="method" line="201"><f a=""><c path="Int"/></f></readUInt24>
+		<readInt31 public="1" set="method" line="208"><f a=""><c path="Int"/></f></readInt31>
+		<readUInt30 public="1" set="method" line="225"><f a=""><c path="Int"/></f></readUInt30>
+		<readInt32 public="1" set="method" line="234"><f a=""><c path="haxe.Int32"/></f></readInt32>
+		<readString public="1" set="method" line="249"><f a="len">
+	<c path="Int"/>
+	<c path="String"/>
+</f></readString>
+		<haxe_doc>
+	An Input is an abstract reader. See other classes in the [haxe.io] package
+	for several possible implementations.
+</haxe_doc>
+	</class>
+	<class path="haxe.io.Output" params="" file="/usr/lib/haxe/std/haxe/io/Output.hx">
+		<_float_bytes line="253" static="1"><f a=":">
+	<c path="Float"/>
+	<e path="Bool"/>
+	<t path="haxe.io.BytesData"/>
+</f></_float_bytes>
+		<_double_bytes line="254" static="1"><f a=":">
+	<c path="Float"/>
+	<e path="Bool"/>
+	<t path="haxe.io.BytesData"/>
+</f></_double_bytes>
+		<bigEndian public="1" set="setEndian"><e path="Bool"/></bigEndian>
+		<writeByte public="1" set="method" line="37"><f a="c">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeByte>
+		<writeBytes public="1" set="method" line="41"><f a="s:pos:len">
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+</f></writeBytes>
+		<flush public="1" set="method" line="64"><f a=""><e path="Void"/></f></flush>
+		<close public="1" set="method" line="67"><f a=""><e path="Void"/></f></close>
+		<setEndian set="method" line="70"><f a="b">
+	<e path="Bool"/>
+	<e path="Bool"/>
+</f></setEndian>
+		<write public="1" set="method" line="77"><f a="s">
+	<c path="haxe.io.Bytes"/>
+	<e path="Void"/>
+</f></write>
+		<writeFullBytes public="1" set="method" line="88"><f a="s:pos:len">
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeFullBytes>
+		<writeFloat public="1" set="method" line="96"><f a="x">
+	<c path="Float"/>
+	<e path="Void"/>
+</f></writeFloat>
+		<writeDouble public="1" set="method" line="108"><f a="x">
+	<c path="Float"/>
+	<e path="Void"/>
+</f></writeDouble>
+		<writeInt8 public="1" set="method" line="120"><f a="x">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeInt8>
+		<writeInt16 public="1" set="method" line="126"><f a="x">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeInt16>
+		<writeUInt16 public="1" set="method" line="131"><f a="x">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeUInt16>
+		<writeInt24 public="1" set="method" line="142"><f a="x">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeInt24>
+		<writeUInt24 public="1" set="method" line="147"><f a="x">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeUInt24>
+		<writeInt31 public="1" set="method" line="160"><f a="x">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeInt31>
+		<writeUInt30 public="1" set="method" line="177"><f a="x">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeUInt30>
+		<writeInt32 public="1" set="method" line="192"><f a="x">
+	<c path="haxe.Int32"/>
+	<e path="Void"/>
+</f></writeInt32>
+		<prepare public="1" set="method" line="212">
+			<f a="nbytes">
+				<c path="Int"/>
+				<e path="Void"/>
+			</f>
+			<haxe_doc>
+		Inform that we are about to write at least a specified number of bytes.
+		The underlying implementation can allocate proper working space depending
+		on this information, or simply ignore it. This is not a mandatory call
+		but a tip and is only used in some specific cases.
+	</haxe_doc>
+		</prepare>
+		<writeInput public="1" set="method" line="215"><f a="i:?bufsize">
+	<c path="haxe.io.Input"/>
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeInput>
+		<writeString public="1" set="method" line="237"><f a="s">
+	<c path="String"/>
+	<e path="Void"/>
+</f></writeString>
+		<haxe_doc>
+	An Output is an abstract write. A specific output implementation will only
+	have to override the [writeChar] and maybe the [write], [flush] and [close]
+	methods. See [File.write] and [String.write] for two ways of creating an
+	Output.
+</haxe_doc>
+	</class>
 	<class path="neash.Lib" params="" file="/usr/lib/haxe/lib/nme/3,3,3/neash/Lib.hx">
 		<FULLSCREEN public="1" line="23" static="1"><c path="Int"/></FULLSCREEN>
 		<BORDERLESS public="1" line="24" static="1"><c path="Int"/></BORDERLESS>
@@ -4673,6 +4660,10 @@
 </f></setPackage>
 		<nmeGetCurrent set="method" line="175" static="1"><f a=""><c path="neash.display.MovieClip"/></f></nmeGetCurrent>
 		<nmeGetStage set="method" line="187" static="1"><f a=""><c path="neash.display.Stage"/></f></nmeGetStage>
+		<nme_post_ui_callback line="201" static="1"><f a="">
+	<f a=""><e path="Void"/></f>
+	<unknown/>
+</f></nme_post_ui_callback>
 		<nme_set_package line="203" static="1"><f a=":::">
 	<c path="String"/>
 	<c path="String"/>
@@ -5994,7 +5985,7 @@
 	<c path="Float"/>
 	<unknown/>
 </f></nme_stage_set_next_wake>
-		<nme_stage_request_render line="902" static="1"><unknown/></nme_stage_request_render>
+		<nme_stage_request_render line="902" static="1"><f a=""><e path="Void"/></f></nme_stage_request_render>
 		<nme_stage_show_cursor line="903" static="1"><f a=":">
 	<d/>
 	<e path="Bool"/>
@@ -8576,11 +8567,12 @@
 	<typedef path="nme.display.Tilesheet" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/display/Tilesheet.hx"><c path="neash.display.Tilesheet"/></typedef>
 	<typedef path="nme.events.Event" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/events/Event.hx"><c path="neash.events.Event"/></typedef>
 	<typedef path="nme.events.KeyboardEvent" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/events/KeyboardEvent.hx"><c path="neash.events.KeyboardEvent"/></typedef>
+	<typedef path="nme.events.MouseEvent" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/events/MouseEvent.hx"><c path="neash.events.MouseEvent"/></typedef>
 	<typedef path="nme.geom.ColorTransform" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/geom/ColorTransform.hx"><c path="neash.geom.ColorTransform"/></typedef>
 	<typedef path="nme.geom.Matrix" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/geom/Matrix.hx"><c path="neash.geom.Matrix"/></typedef>
 	<typedef path="nme.geom.Point" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/geom/Point.hx"><c path="neash.geom.Point"/></typedef>
 	<typedef path="nme.geom.Rectangle" params="" file="/usr/lib/haxe/lib/nme/3,3,3/nme/geom/Rectangle.hx"><c path="neash.geom.Rectangle"/></typedef>
-	<class path="nme.installer.Assets" params="" file="bin/cpp/linux/haxe/nme/installer/Assets.hx">
+	<class path="nme.installer.Assets" params="" file="bin/android/haxe/nme/installer/Assets.hx">
 		<cachedBitmapData public="1" line="19" static="1"><c path="Hash"><t path="nme.display.BitmapData"/></c></cachedBitmapData>
 		<initialized line="21" static="1"><e path="Bool"/></initialized>
 		<resourceNames line="22" static="1"><c path="Hash"><c path="String"/></c></resourceNames>
@@ -8963,4 +8955,99 @@
 		<SeekCur/>
 		<SeekBegin/>
 	</enum>
+	<class path="sys.io._Process.Stdin" params="" file="/usr/lib/haxe/std/cpp/_std/sys/io/Process.hx" private="1" module="sys.io.Process">
+		<extends path="haxe.io.Output"/>
+		<_stdin_write line="56" static="1"><f a=":::">
+	<d/>
+	<t path="haxe.io.BytesData"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+</f></_stdin_write>
+		<_stdin_close line="57" static="1"><f a="">
+	<d/>
+	<unknown/>
+</f></_stdin_close>
+		<p><d/></p>
+		<buf><c path="haxe.io.Bytes"/></buf>
+		<close public="1" set="method" line="37" override="1"><f a=""><e path="Void"/></f></close>
+		<writeByte public="1" set="method" line="42" override="1"><f a="c">
+	<c path="Int"/>
+	<e path="Void"/>
+</f></writeByte>
+		<writeBytes public="1" set="method" line="47" override="1"><f a="buf:pos:len">
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+</f></writeBytes>
+		<new public="1" set="method" line="32"><f a="p">
+	<unknown/>
+	<e path="Void"/>
+</f></new>
+	</class>
+	<class path="sys.io._Process.Stdout" params="" file="/usr/lib/haxe/std/cpp/_std/sys/io/Process.hx" private="1" module="sys.io.Process">
+		<extends path="haxe.io.Input"/>
+		<_stdout_read line="90" static="1"><f a=":::">
+	<d/>
+	<t path="haxe.io.BytesData"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+</f></_stdout_read>
+		<_stderr_read line="91" static="1"><f a=":::">
+	<d/>
+	<t path="haxe.io.BytesData"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+</f></_stderr_read>
+		<p><d/></p>
+		<out><e path="Bool"/></out>
+		<buf><c path="haxe.io.Bytes"/></buf>
+		<readByte public="1" set="method" line="73" override="1"><f a=""><c path="Int"/></f></readByte>
+		<readBytes public="1" set="method" line="79" override="1"><f a="str:pos:len">
+	<c path="haxe.io.Bytes"/>
+	<c path="Int"/>
+	<c path="Int"/>
+	<c path="Int"/>
+</f></readBytes>
+		<new public="1" set="method" line="67"><f a="p:out">
+	<unknown/>
+	<e path="Bool"/>
+	<e path="Void"/>
+</f></new>
+	</class>
+	<class path="sys.io.Process" params="" file="/usr/lib/haxe/std/cpp/_std/sys/io/Process.hx">
+		<_run line="126" static="1"><f a=":">
+	<c path="String"/>
+	<c path="Array"><c path="String"/></c>
+	<unknown/>
+</f></_run>
+		<_exit line="127" static="1"><f a="">
+	<d/>
+	<c path="Int"/>
+</f></_exit>
+		<_pid line="128" static="1"><f a="">
+	<d/>
+	<c path="Int"/>
+</f></_pid>
+		<_close line="129" static="1"><f a="">
+	<d/>
+	<unknown/>
+</f></_close>
+		<p><d/></p>
+		<stdout public="1" set="null"><c path="haxe.io.Input"/></stdout>
+		<stderr public="1" set="null"><c path="haxe.io.Input"/></stderr>
+		<stdin public="1" set="null"><c path="haxe.io.Output"/></stdin>
+		<getPid public="1" set="method" line="110"><f a=""><c path="Int"/></f></getPid>
+		<exitCode public="1" set="method" line="114"><f a=""><c path="Int"/></f></exitCode>
+		<close public="1" set="method" line="118"><f a=""><e path="Void"/></f></close>
+		<kill public="1" set="method" line="122"><f a=""><e path="Void"/></f></kill>
+		<new public="1" set="method" line="103"><f a="cmd:args">
+	<c path="String"/>
+	<c path="Array"><c path="String"/></c>
+	<e path="Void"/>
+</f></new>
+	</class>
 </haxe>

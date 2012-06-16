@@ -2,6 +2,7 @@ package com.revolugame.age.system;
 
 import flash.display.Stage;
 import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
 import flash.ui.Keyboard;
 
 /**
@@ -24,8 +25,11 @@ class Input
 
     public static function init(pStage: Stage)
     {
-        pStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false,  2);
-		pStage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false,  2);
+        pStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		pStage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		
+		pStage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		pStage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
     }
     
     private static function onKeyDown(pEvt:KeyboardEvent)
@@ -64,6 +68,16 @@ class Input
 			_keyNum--;
 			_release[_releaseNum++] = code;
 		}
+    }
+    
+    private static function onMouseDown(pEvt:MouseEvent)
+    {
+    	AgeData.state.handleMouseDown(AgeData.engine.mouseX, AgeData.engine.mouseY);
+    }
+    
+    private static function onMouseUp(pEvt:MouseEvent)
+    {
+    	AgeData.state.handleMouseUp();
     }
     
     /**

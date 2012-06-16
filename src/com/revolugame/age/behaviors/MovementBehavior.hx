@@ -45,10 +45,12 @@ class MovementBehavior implements IBehavior
     	// Apply acceleration and velocity
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
+		
 		applyVelocity();
 		applyGravity();
 		checkMaxVelocity();
 		
+		// reset
 		acceleration.x = acceleration.y = 0;
     }
     

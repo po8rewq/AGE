@@ -70,11 +70,19 @@ class Image implements IEntity
 //    private var _green : Float;
 //    private var _blue : Float;
     #end
+    
+    /** */
+	var _bounds : Rectangle;
+    
+    /** */
+    public var mouseDown : Bool;
 
 	public function new(pX: Float, pY: Float)
 	{
 		x = pX;
 		y = pY;
+		
+		mouseDown = false;
 		
 		scale = new AgePoint(1, 1);
 		rotation = 0;
@@ -253,6 +261,22 @@ class Image implements IEntity
     	return (x + width >= AgeData.camera.position.x
         		&& x <= AgeData.camera.position.x + AgeData.stageWidth
                 && y + height >= AgeData.camera.position.y && y <= AgeData.camera.position.y + AgeData.stageHeight);
+    }
+	
+	/**
+	 * @return the bounding box of this image
+	 */
+	public function getBounds():Rectangle
+    {
+    	if(_bounds == null) 
+    		_bounds = new Rectangle(0, 0, 0, 0);
+    	
+    	_bounds.x = x;
+	    _bounds.y = y;
+	    _bounds.width = width;
+	    _bounds.height = height;
+    	
+    	return _bounds;
     }
 	
 	public function destroy(): Void
