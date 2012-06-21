@@ -57,7 +57,6 @@ class Image implements IEntity
     public var dirty : Bool;
     
 //    private var _colorTransform:ColorTransform; // alpha and color flash TODO
- //   private var _position : Point; // TODO REMOVE
     
     #if flash
     private var _matrix : Matrix;
@@ -91,8 +90,6 @@ class Image implements IEntity
 		alpha = 1.0;
 		
 		origin = new AgePoint();
-		
-//		_position = new Point(); // TODO remove
 		
 		#if flash
 		_matrix = new Matrix();
