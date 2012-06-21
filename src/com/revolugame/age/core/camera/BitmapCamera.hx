@@ -1,4 +1,4 @@
-package com.revolugame.age.core;
+package com.revolugame.age.core.camera;
 
 import nme.display.BitmapData;
 import nme.display.Bitmap;

@@ -1,6 +1,8 @@
-package com.revolugame.age.core;
+package com.revolugame.age.core.camera;
 
 import com.revolugame.age.system.AgePoint;
+
+import flash.geom.Rectangle;
 
 interface ICamera
 {
@@ -13,6 +15,16 @@ interface ICamera
 	 * smoothing for tileSheet
 	 */
 	var antialiasing : Bool;
+	
+	/**
+	 * Lock before drawing
+	 */
+	function lock():Void;
+	
+	/**
+	 * Unlock after drawing
+	 */
+	function unlock(changeRect:Rectangle = null):Void;
 	
 	/**
      * Clear the screen to white

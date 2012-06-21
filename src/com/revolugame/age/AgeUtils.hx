@@ -17,7 +17,6 @@ class AgeUtils
 	 
 	/**
 	 * Returns true if the given x/y coordinate is within the given rectangular block
-	 * 
 	 * @param	pX		The X value to test
 	 * @param	pY		The Y value to test
 	 * @param	pRect	The Rectanglt to test within
@@ -26,6 +25,15 @@ class AgeUtils
 	public static inline function pointInRect(pX:Int, pY:Int, pRect:Rectangle):Bool
 	{
         return( pX >= pRect.x && pX <= pRect.x + pRect.width && pY >= pRect.y && pY <= pRect.y + pRect.height );
+	}
+
+	/**
+     * Return an integer between the 2 values
+     * @param
+	 */
+	public static inline function rand(pLow: Int = 0,  pHight: Int = 1):Int
+	{
+		return Math.floor( Math.random() * ( 1 + pHight - pLow ) ) + pLow;
 	}
 
 }

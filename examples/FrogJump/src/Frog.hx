@@ -27,13 +27,13 @@ class Frog extends Entity
 		addAnimation('run', [2, 3, 4], 5, true);
 		addAnimation('jump', [0, 5], 4, false);
 	
-		hitbox = new Rectangle(5,2,11,30);
+	//	hitbox = new Rectangle(5,2,11,30);
 		
 		origin.x = 16;
 		origin.y = 16;
 	
 		_movement.moveSpeed = 0.8;
-		_movement.maxVelocity.x = 0.8 * 4;
+		_movement.maxVelocity.x = 0.9 * 4;
 		_movement.maxVelocity.y = 12;
 		_movement.friction.x = 0.82; // floor friction
 		_movement.friction.y = 0.99; // wall friction

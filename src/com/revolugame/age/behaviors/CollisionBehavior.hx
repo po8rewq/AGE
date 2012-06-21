@@ -1,9 +1,13 @@
 package com.revolugame.age.behaviors;
 
 import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.IEntity;
+import com.revolugame.age.display.Group;
 import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.AgeData;
+
+import com.revolugame.age.enums.CollisionsEnum;
 
 import flash.geom.Rectangle;
 
@@ -35,17 +39,38 @@ class CollisionBehavior implements IBehavior
     	var entity : Entity;
     	for(e in AgeData.state.entities)
     	{
-    		if( e != _entity && Std.is(e, Entity) )
+    		entity = handleGroupCollisions(e);
+    		if(entity != null)
     		{
-    			entity = cast e;
-    			if(entity.solid && collide(_entity, entity))
-    			{
-    				_entity.x = tmpX; _entity.y = tmpY;
-    				return entity;
-    			}
+    		 	_entity.x = tmpX; _entity.y = tmpY;
+    		 	return entity;
     		}
     	}
     	_entity.x = tmpX; _entity.y = tmpY;
+    	return null;
+    }
+    
+    /**
+     * Internal function to handle collisions between groups recursively
+     */
+    private function handleGroupCollisions(e:IEntity):Entity
+    {
+    	var entity : Entity; // valeur de retour
+    	if( e != _entity && Std.is(e, Entity) )
+    	{
+    		entity = cast e;
+    		if(entity.solid && collide(_entity, entity))
+    			return entity;
+    	}
+    	else if( Std.is(e, Group) )
+    	{
+    		var group : Group = cast e;
+    		for(e2 in group.entities)
+    		{
+    			entity = handleGroupCollisions(e2);
+    			if(entity != null) return entity;
+    		}
+    	}
     	return null;
     }
     

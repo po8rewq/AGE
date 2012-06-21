@@ -1,7 +1,8 @@
-package com.revolugame.age.core;
+package com.revolugame.age.core.camera;
 
 import nme.display.Sprite;
 import com.revolugame.age.system.AgePoint;
+import flash.geom.Rectangle;
 
 class SpriteCamera implements ICamera
 {
@@ -23,6 +24,9 @@ class SpriteCamera implements ICamera
 		position = new AgePoint();
 		antialiasing = pSmoothing;
 	}
+	
+	public function lock():Void{}
+	public function unlock(changeRect:Rectangle = null):Void{}
 	
 	public function clear():Void
 	{

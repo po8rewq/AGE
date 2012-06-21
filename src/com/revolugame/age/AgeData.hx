@@ -3,6 +3,7 @@ package com.revolugame.age;
 import com.revolugame.age.core.Engine;
 import com.revolugame.age.core.State;
 import com.revolugame.age.core.Camera;
+import com.revolugame.age.core.Renderer;
 
 class AgeData implements haxe.Public
 {
@@ -21,6 +22,7 @@ class AgeData implements haxe.Public
 	static var state : State;
 	
 	static var camera : Camera;
+	static var renderer : Renderer;
 	
 	static var stageWidth : Int;
 	static var stageHeight : Int;

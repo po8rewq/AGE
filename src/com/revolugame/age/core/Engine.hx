@@ -8,6 +8,7 @@ import nme.display.StageScaleMode;
 import nme.display.FPS;
 
 import com.revolugame.age.system.Input;
+import com.revolugame.age.core.Renderer;
 
 class Engine extends Sprite
 {
@@ -67,10 +68,12 @@ class Engine extends Sprite
 		fps.y = 10;
 		fps.textColor = 0x000000;
 		#end
+		
+		AgeData.renderer = new Renderer();
 
         // Initialisation du premier ecran
         AgeData.state.create();
-
+        
         addEventListener(Event.ENTER_FRAME, loop);
     }
 	
@@ -119,9 +122,7 @@ class Engine extends Sprite
 	    _delta += _now - _last;
 	    _last = _now;
 	
-		#if flash
 	    AgeData.camera.lock();
-	    #end
 	    
 	    if(_delta >= _stepRate)
 	    {
@@ -139,9 +140,7 @@ class Engine extends Sprite
 	    
 	    AgeData.state.render();
 	    
-	    #if flash
 	    AgeData.camera.unlock();
-	    #end
 	}
 
 }

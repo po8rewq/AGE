@@ -57,7 +57,7 @@ class Image implements IEntity
     public var dirty : Bool;
     
 //    private var _colorTransform:ColorTransform; // alpha and color flash TODO
-    private var _position : Point;
+ //   private var _position : Point; // TODO REMOVE
     
     #if flash
     private var _matrix : Matrix;
@@ -77,6 +77,8 @@ class Image implements IEntity
     /** */
     public var mouseDown : Bool;
 
+	private var _drawingContext : DrawingContext;
+
 	public function new(pX: Float, pY: Float)
 	{
 		x = pX;
@@ -90,7 +92,7 @@ class Image implements IEntity
 		
 		origin = new AgePoint();
 		
-		_position = new Point();
+//		_position = new Point(); // TODO remove
 		
 		#if flash
 		_matrix = new Matrix();
@@ -110,6 +112,8 @@ class Image implements IEntity
 		mirrorY = false;
 		
 		visible = true;
+		
+		_drawingContext = new DrawingContext();
 	}
 	
 	/**
@@ -124,6 +128,8 @@ class Image implements IEntity
 	    
 	    #if flash
 		_bmpBuffer = new BitmapData(pWidth, pHeight);
+		_drawingContext.buffer = _bmpBuffer;
+		dirty = true;
 		#end
 	    
 	    return _spriteMap;
@@ -182,60 +188,18 @@ class Image implements IEntity
 		{
 			if(dirty) drawFrame();
 		
-			_position.x = x - AgeData.camera.position.x;
-			_position.y = y - AgeData.camera.position.y;
+			var px = x - AgeData.camera.position.x;
+			var py = y - AgeData.camera.position.y;
 			
 			// on reapplique la difference du scale
-			if(mirrorX) _position.x += width;
-			if(mirrorY) _position.y += height;
+			if(mirrorX) px += width;
+			if(mirrorY) py += height;
 			
-			#if flash
-			if( scale.x != 1 || scale.y != 1 || rotation != 0 || mirrorX || mirrorY)
-			{
-				_matrix.identity();
-				
-				if(rotation != 0)
-					_matrix.rotate(rotation * 0.017453293);
-				
-				// mirror
-				var sclX : Float = scale.x * (mirrorX ? -1 : 1);
-				var sclY : Float = scale.y * (mirrorY ? -1 : 1);
-				if(sclX != 1 || sclY != 1)
-				{
-					_matrix.scale(sclX, sclY);
-				}
-				
-				_matrix.translate(_position.x, _position.y);
-				
-				AgeData.camera.draw( _bmpBuffer, _matrix, null, null, null, AgeData.camera.antialiasing );
-			}
-			else
-			{
-				AgeData.camera.copyPixels( _spriteMap.pixels, _spriteMap.getRect(), _position, null, null, true );
-	        }
-			#else
-			var ts : TileSheetData = _spriteMap.tilesheetdata;
+			AgeData.renderer.prepareRendering();
 			
-			/** Reset drawing data */
-			ts.resetData();
+			_drawingContext.updateValue( px, py, scale.x, scale.y, rotation, alpha, mirrorX, mirrorY );
 			
-            /** Position */
-            ts.setPosition( _position.x, _position.y );
-            
-            /** Set current frame id */
-            ts.setFrameId( _spriteMap.getFrameId() );
-            
-            /** Scale && rotation */
-			ts.setTransform(scale.x, scale.y, rotation, mirrorX, mirrorY);
-            
-            /** rgb */
-//			ts.setRGB( _red, _green, _blue );
-            
-            /** alpha */
-            ts.setAlpha(alpha);
-            
-            ts.render();
-            #end
+			AgeData.renderer.render( _spriteMap, _drawingContext);
 		}
 	}
 	

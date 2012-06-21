@@ -9,6 +9,8 @@ class Group implements IEntity
 	public var y : Float;
 	
 	public var entities(default, null) : Array<IEntity>;
+	
+	private var _drawingContext : DrawingContext; // NULL
 
 	public function new()
 	{
