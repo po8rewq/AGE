@@ -39,34 +39,19 @@ class GameState extends State
 		add(_platformsGroup);
 	
 		_frog = new Frog(0, 0);
-	//	add(_frog);
-	/*
-		_map = new TileMap();
-		_map.loadMap (TileMap.arrayToCSV( [1,0,1,1,0,1], 3 ), 'gfx/bricks.png', 16, 16 );
-		add(_map);*/
-	/*
-		var e : Block;		
-		e = new Block(30, 90, 300, 20);
-		add(e);
-		
-		e = new Block(230, 150, 200, 20 );
-		add(e);
-		
-		e = new Block(0, AgeData.stageHeight - 10, AgeData.stageWidth, 10 );
-		add(e);*/
 		
 		initLevel();
 		
 		_uiGroup = new Group();
 		add(_uiGroup);
 		#if mobile
-		_top = new TouchKey(AgeData.stageWidth - 50 - 30, AgeData.stageHeight - 50 * 2 - 10);
+		_top = new TouchKey(AgeData.stageWidth - 50 - 30, AgeData.stageHeight - 50 * 2 - 10); _top.name = 'top';
 		_uiGroup.add(_top);
 		
-		_left = new TouchKey(AgeData.stageWidth - 50 * 2 - 10, AgeData.stageHeight - 50);
+		_left = new TouchKey(AgeData.stageWidth - 50 * 2 - 10, AgeData.stageHeight - 50); _left.name = 'left';
 		_uiGroup.add(_left);
 		
-		_right = new TouchKey( AgeData.stageWidth - 50, AgeData.stageHeight - 50);
+		_right = new TouchKey( AgeData.stageWidth - 50, AgeData.stageHeight - 50); _right.name = 'right';
 		_uiGroup.add(_right);
 		#end
 	}
@@ -138,12 +123,18 @@ class GameState extends State
 	{
 		#if mobile
 	    if(_top.mouseDown)
+	    { 
 	        _frog.jump();
+	    }
 	    
 	    if(_left.mouseDown)
+	    {
 	        _frog.moveLeft();
-	    else if(_right.mouseDown)
+	    }
+	    if(_right.mouseDown)
+	    {
 	        _frog.moveRight();
+	    }
 	    #end
 	        
 	    super.update();

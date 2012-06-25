@@ -1,9 +1,11 @@
 package com.revolugame.age.system;
 
-import flash.display.Stage;
-import flash.events.KeyboardEvent;
-import flash.events.MouseEvent;
-import flash.ui.Keyboard;
+import nme.display.Stage;
+import nme.events.KeyboardEvent;
+import nme.events.MouseEvent;
+import nme.events.TouchEvent;
+import nme.ui.Keyboard;
+import nme.ui.Multitouch;
 
 /**
  * From HaxePunk
@@ -28,8 +30,18 @@ class Input
         pStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		pStage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		
-		pStage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-		pStage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+		#if (mobile || flash10_1)
+		if(Multitouch.supportsTouchEvents)
+		{
+			pStage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
+			pStage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+		}
+		else
+		#end
+		{		
+			pStage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			pStage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);		
+		}
     }
     
     private static function onKeyDown(pEvt:KeyboardEvent)
@@ -61,6 +73,15 @@ class Input
     
     private static function onKeyUp(pEvt:KeyboardEvent)
     {
+    	#if android
+    	if(pEvt.keyCode == 27)
+    	{
+    		pEvt.stopImmediatePropagation();
+    		AgeData.state.handleBackButton();
+    	}
+    	return;
+    	#end
+    	
         var code:Int = pEvt.keyCode;
 		if (_key[code])
 		{
@@ -70,15 +91,33 @@ class Input
 		}
     }
     
+    /**
+     * Mouse Down handler
+     */
     private static function onMouseDown(pEvt:MouseEvent)
     {
-    	AgeData.state.handleMouseDown(AgeData.engine.mouseX, AgeData.engine.mouseY);
+    	AgeData.state.handleMouseDown(AgeData.state, AgeData.engine.mouseX, AgeData.engine.mouseY, 0);
     }
+    #if (mobile || flash10_1)
+    private static function onTouchBegin(pEvt:TouchEvent)
+    {
+    	AgeData.state.handleMouseDown(AgeData.state, pEvt.stageX, pEvt.stageY, pEvt.touchPointID);
+    }
+    #end
     
+    /**
+     * Mouse up handler
+     */
     private static function onMouseUp(pEvt:MouseEvent)
     {
-    	AgeData.state.handleMouseUp();
+    	AgeData.state.handleMouseUp(AgeData.state, 0);
     }
+    #if (mobile || flash10_1)
+    private static function onTouchEnd(pEvt:TouchEvent)
+    {
+    	AgeData.state.handleMouseUp(AgeData.state, pEvt.touchPointID);
+    }
+    #end
     
     /**
 	 * Copy of Lambda.indexOf for speed/memory reasons

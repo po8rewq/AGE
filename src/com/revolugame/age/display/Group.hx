@@ -17,6 +17,8 @@ class Group implements IEntity
 		entities = new Array();
 		visible = true;
 		dead = false;
+		x = 0;
+		y = 0;
 	}
 	
 	/**

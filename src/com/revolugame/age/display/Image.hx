@@ -21,6 +21,8 @@ import nme.display.BitmapInt32;
  */
 class Image implements IEntity
 {
+	public var name : String;
+
 	/**
 	 * If the graphic should render
 	 */
@@ -54,6 +56,7 @@ class Image implements IEntity
     /** The image origin (default 0 0) */
     public var origin : AgePoint; // TODO
     
+    /** If we have to re-calc the frame before drawing */
     public var dirty : Bool;
     
 //    private var _colorTransform:ColorTransform; // alpha and color flash TODO
@@ -73,8 +76,14 @@ class Image implements IEntity
     /** */
 	var _bounds : Rectangle;
     
-    /** */
+    /** If the mouse is currently down */
     public var mouseDown : Bool;
+    
+    /** If we have to check for mouse entry (default false) */
+	public var handleMouseEvents : Bool;
+	
+	/** If using touch event */
+	public var touchID : Int;
 
 	private var _drawingContext : DrawingContext;
 
@@ -84,6 +93,7 @@ class Image implements IEntity
 		y = pY;
 		
 		mouseDown = false;
+		handleMouseEvents = false;
 		
 		scale = new AgePoint(1, 1);
 		rotation = 0;
