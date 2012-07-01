@@ -34,6 +34,7 @@ class TileSheetManager
 			{
 				tsd.destroy();
 				tilesheetsData.remove(tsd);
+				tsd = null;
 				return;
 			}
 		}

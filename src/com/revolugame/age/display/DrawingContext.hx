@@ -42,4 +42,9 @@ class DrawingContext
         mirrorY = pMirrorY;
     }
 
+    public function toString():String
+    {
+        return '{x:'+position.x+', y:'+position.y+', scaleX:'+scaleX+', scaleY:'+scaleY+', rotation:'+rotation+'}';
+    }
+
 }

@@ -15,6 +15,7 @@ class State extends Group
 	public function new()
 	{
 		super();
+		parent = null;
 	}
 	
 	public function create() { }
@@ -29,9 +30,12 @@ class State extends Group
 	    	if(Std.is(pParent.entities[i], Image))
 	    	{
 	        	entity = cast pParent.entities[i];	        
-	        	if(entity.handleMouseEvents && !entity.mouseDown && AgeUtils.pointInRect( Math.round(pParent.x + pX), Math.round(pParent.y + pY), entity.getBounds()) )
+	        	if(entity.handleMouseEvents 
+	        	    && !entity.mouseDown 
+	        	    && AgeUtils.pointInRect( Math.round(pX), Math.round(pY), entity.getBounds()) )
 	        	{
 	        		entity.mouseDown = true;
+	        		entity.justPressed = true;
 	        		entity.touchID = pTouchId;
 	        		return;
 	        	}
@@ -57,6 +61,7 @@ class State extends Group
 	    		if(entity.mouseDown && entity.touchID == pTouchId)
 	    		{
 	        		entity.mouseDown = false;
+	        		entity.justPressed = false;
 	        		return;
 	        	}
 	        }

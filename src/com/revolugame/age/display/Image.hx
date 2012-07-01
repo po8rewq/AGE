@@ -22,6 +22,7 @@ import nme.display.BitmapInt32;
 class Image implements IEntity
 {
 	public var name : String;
+	public var parent : Group;
 
 	/**
 	 * If the graphic should render
@@ -78,6 +79,7 @@ class Image implements IEntity
     
     /** If the mouse is currently down */
     public var mouseDown : Bool;
+    public var justPressed(getJustPressed, setJustPressed) : Bool;
     
     /** If we have to check for mouse entry (default false) */
 	public var handleMouseEvents : Bool;
@@ -191,12 +193,12 @@ class Image implements IEntity
 	
 	public function render():Void
 	{
-		if(!dead && visible && onScreen())
+		if(!dead && visible && onScreen() && _spriteMap != null)
 		{
 			if(dirty) drawFrame();
 		
-			var px = x - AgeData.camera.position.x;
-			var py = y - AgeData.camera.position.y;
+			var px = x - AgeData.camera.position.x + parent.x;
+			var py = y - AgeData.camera.position.y + parent.y;
 			
 			// on reapplique la difference du scale
 			if(mirrorX) px += width;
@@ -205,7 +207,7 @@ class Image implements IEntity
 			AgeData.renderer.prepareRendering();
 			
 			_drawingContext.updateValue( px, py, scale.x, scale.y, rotation, alpha, mirrorX, mirrorY );
-			
+
 			AgeData.renderer.render( _spriteMap, _drawingContext);
 		}
 	}
@@ -229,9 +231,10 @@ class Image implements IEntity
      */
     public function onScreen():Bool
     {
-    	return (x + width >= AgeData.camera.position.x
-        		&& x <= AgeData.camera.position.x + AgeData.stageWidth
-                && y + height >= AgeData.camera.position.y && y <= AgeData.camera.position.y + AgeData.stageHeight);
+        var b : Rectangle = getBounds();
+    	return (b.x + b.width >= AgeData.camera.position.x
+        		&& b.x <= AgeData.camera.position.x + AgeData.stageWidth
+                && b.y + b.height >= AgeData.camera.position.y && b.y <= AgeData.camera.position.y + AgeData.stageHeight);
     }
 	
 	/**
@@ -241,9 +244,12 @@ class Image implements IEntity
     {
     	if(_bounds == null) 
     		_bounds = new Rectangle(0, 0, 0, 0);
-    	
-    	_bounds.x = x;
-	    _bounds.y = y;
+        
+        var p : Rectangle = null;
+        if(parent != null) p = parent.getBounds();
+        
+	    _bounds.x = x + (parent != null ? p.x : 0);
+	    _bounds.y = y + (parent != null ? p.y : 0);
 	    _bounds.width = width;
 	    _bounds.height = height;
     	
@@ -252,10 +258,25 @@ class Image implements IEntity
 	
 	public function destroy(): Void
 	{
+	    dead = true;
 		_spriteMap.destroy();
 		#if flash
 		_bmpBuffer.dispose();
 		#end
+	}
+	
+	private function getJustPressed():Bool
+	{
+	    var val : Bool = justPressed;
+	    if(val)
+    	    justPressed = false;
+	    return val;
+	}
+	
+	private function setJustPressed(val: Bool):Bool
+	{
+	    justPressed = val;
+	    return val;
 	}
 
 	public var width(getWidth, null): Int;

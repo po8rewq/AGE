@@ -99,17 +99,17 @@ class TileSheetData
 	
 	public function render()
 	{
-		if(useAdditive)
+	    if(useAdditive)
 			flags |= Graphics.TILE_BLEND_ADD;
 	
-		var cameraGraphics : Graphics = AgeData.camera.screen.graphics;
+		var cameraGraphics : Graphics = AgeData.camera.screen.graphics;		
 		tilesheet.drawTiles( cameraGraphics, data, AgeData.camera.antialiasing, flags );
 	}
 	
 	public function destroy()
-	{
-		tilesheet.nmeBitmap = null;
-		tilesheet = null;
+	{ // FIXME : if there is multiple Entity using the same tilesheet ...
+	//	tilesheet.nmeBitmap = null;
+	//	tilesheet = null;
 		data = null;
 	}
 

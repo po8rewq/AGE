@@ -242,7 +242,8 @@ class SpriteMap
 	
 	public function destroy():Void
 	{
-		pixels.dispose();
+//		pixels.dispose();
+        pixels = null;
 		#if !flash
 		TileSheetManager.removeTileSheet(tilesheetdata);
 		#end

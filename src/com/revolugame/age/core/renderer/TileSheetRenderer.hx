@@ -26,6 +26,8 @@ class TileSheetRenderer implements IRenderer
 	public function render(spritemap: SpriteMap, context: DrawingContext):Void
 	{
 	    var ts : TileSheetData = spritemap.tilesheetdata;
+	    
+	    if(ts.tilesheet == null) return;
 			
 		/** Reset drawing data */
 		ts.resetData();
@@ -43,7 +45,7 @@ class TileSheetRenderer implements IRenderer
 //		ts.setRGB( _red, _green, _blue );
             
         /** alpha */
-      ts.setAlpha(context.alpha);
+        ts.setAlpha(context.alpha);
             
         ts.render();
 	}

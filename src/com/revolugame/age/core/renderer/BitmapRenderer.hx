@@ -24,7 +24,7 @@ class BitmapRenderer implements IRenderer
 	}
 	
 	public function render(spritemap: SpriteMap, context: DrawingContext):Void
-	{
+	{		
 		if( context.scaleX != 1 || context.scaleY != 1 || context.rotation != 0 || context.mirrorX || context.mirrorY)
 		{
 			_matrix.identity();

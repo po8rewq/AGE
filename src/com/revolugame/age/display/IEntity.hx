@@ -10,6 +10,8 @@ interface IEntity
 	var x : Float;
 	var y : Float;
 	
+	var parent : Group;
+	
 	function update(): Void;
 	function render(): Void;
 	function destroy(): Void;

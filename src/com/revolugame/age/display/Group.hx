@@ -1,7 +1,13 @@
 package com.revolugame.age.display;
 
+import nme.geom.Rectangle;
+
 class Group implements IEntity
 {
+    private var _bounds : Rectangle;
+
+    public var parent : Group;
+
 	public var visible : Bool;
 	public var dead : Bool;
 	
@@ -76,6 +82,21 @@ class Group implements IEntity
 	public function add(pEntity: IEntity):Void
 	{
 	    entities.push(pEntity);
+	    pEntity.parent = this;
+	}
+	
+	public function getBounds():Rectangle
+	{
+	    if(_bounds == null) 
+    		_bounds = new Rectangle(0, 0, 0, 0);
+        
+        var p : Rectangle = null;
+        if(parent != null) p = parent.getBounds();
+        
+    	_bounds.x = x + (parent != null ? p.x : 0);
+	    _bounds.y = y + (parent != null ? p.y : 0);
+    	
+    	return _bounds;
 	}
 	
 	/**

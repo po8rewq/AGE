@@ -74,17 +74,20 @@ class Entity extends Image
     	if(_bounds == null) 
     		_bounds = new Rectangle(0, 0, 0, 0);
     	
+    	var p : Rectangle = null;
+        if(parent != null) p = parent.getBounds();
+    	
     	if(hitbox != null)
     	{
-    		_bounds.x = x + hitbox.x;
-	    	_bounds.y = y + hitbox.y;
+    		_bounds.x = x + hitbox.x + (parent != null ? p.x : 0);
+	    	_bounds.y = y + hitbox.y + (parent != null ? p.y : 0);
 	    	_bounds.width = hitbox.width;
 	    	_bounds.height = hitbox.height;
     	}
     	else
     	{
-	    	_bounds.x = x;
-	    	_bounds.y = y;
+	        _bounds.x = x + (parent != null ? p.x : 0);
+    	    _bounds.y = y + (parent != null ? p.y : 0);
 	    	_bounds.width = width;
 	    	_bounds.height = height;
     	}
