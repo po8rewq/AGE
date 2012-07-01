@@ -4,6 +4,6 @@ enum DirectionsEnum
 {
     LEFT;
     RIGHT;
-    TOP;
-    BOTTOM;
+    UP;
+    DOWN;
 }

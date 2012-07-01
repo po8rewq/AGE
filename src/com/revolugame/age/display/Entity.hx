@@ -1,7 +1,7 @@
 package com.revolugame.age.display;
 
 import com.revolugame.age.core.IBehavior;
-import com.revolugame.age.behaviors.MovementBehavior;
+import com.revolugame.age.behaviors.BasicMovementBehavior;
 import com.revolugame.age.behaviors.CollisionBehavior;
 
 import flash.geom.Rectangle;
@@ -15,7 +15,7 @@ class Entity extends Image
     private var _behaviors : List<IBehavior>;
     
     /** Default behaviors */
-    var _movement : MovementBehavior;
+    var _movement : BasicMovementBehavior;
 	var _collisions : CollisionBehavior;
 	
 	/** For the collisions detection */
@@ -50,6 +50,14 @@ class Entity extends Image
 		_behaviors.push(b);
 		if(pEnable)
 			b.enable();
+	}
+	
+	public function hasBehavior(pBehavior : IBehavior):Bool
+	{
+	    for(b in _behaviors)
+	        if(b == pBehavior)
+	            return true;
+	    return false;
 	}
 	
 	/**
@@ -103,7 +111,7 @@ class Entity extends Image
     		
     		if( moveX != 0 )
     		{
-    			if( _collisions.enabled && (pSweep || _collisions.collideWith(pType, x + moveX, y) != null) )
+    			if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(pType, x + moveX, y) != null) )
     			{
     				sign = AgeUtils.sign(pX);
     				while(moveX != 0)
@@ -115,20 +123,20 @@ class Entity extends Image
     					}
     					else
     					{
-    						_movement.updatePosition(sign, 0);
+    						x += sign;
     						moveX -= sign;
     					}
     				}
     			}
     			else
     			{
-    				_movement.updatePosition(pX, 0);
+    				x += pX;
     			}
     		}
     		
     		if( moveY != 0 )
     		{ 
-    			if( _collisions.enabled && (pSweep || _collisions.collideWith(pType, x, y + moveY) != null) )
+    			if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(pType, x, y + moveY) != null) )
     			{
     				sign = AgeUtils.sign(moveY);
     				while(moveY != 0)
@@ -140,20 +148,21 @@ class Entity extends Image
     					}
     					else
     					{
-    						_movement.updatePosition(0, sign);
+    						y += sign;
     						moveY -= sign;
     					}
     				}
     			}
     			else
     			{
-    				_movement.updatePosition(0, pY);
+    				y += pY;
     			}
     		}
     	}
     	else
     	{
-    		_movement.updatePosition(pX, pY);
+    		x += pX;
+    		y += pY;
     	}
     }
 	
@@ -195,14 +204,20 @@ class Entity extends Image
 		return _movement != null && _movement.enabled;
 	}
 	
+	public function setMovementBehavior(b: BasicMovementBehavior)
+	{
+	    _movement = b;
+	    addBehavior(_movement);
+	}
+	
 	private function setIsMovable(val:Bool):Bool
 	{
 		if(_movement == null)
 		{
-			_movement = new MovementBehavior(this);
+			_movement = new BasicMovementBehavior(this);
 			addBehavior(_movement);
 		}
-		else if(val && !_movement.enabled)
+		else if(val && (!_movement.enabled || !hasBehavior(_movement)) )
 		{
 			_movement.enable();
 		}

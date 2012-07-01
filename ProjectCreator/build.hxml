@@ -1,0 +1,3 @@
+-cp src
+-main com.revolugame.age.ProjectCreator
+-neko ../run.n

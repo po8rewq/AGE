@@ -4,6 +4,8 @@ import com.revolugame.age.display.Entity;
 import com.revolugame.age.display.SpriteMap;
 import com.revolugame.age.system.Input;
 import com.revolugame.age.system.Key;
+import com.revolugame.age.behaviors.PlatformMovementBehavior;
+import com.revolugame.age.enums.DirectionsEnum;
 
 import flash.geom.Rectangle;
 
@@ -17,6 +19,7 @@ class Frog extends Entity
 	{
 		super(pX, pY);
 		
+		setMovementBehavior( new PlatformMovementBehavior(this, 0.0, 1.0) );
 		solid = true;
 		movable = true;
 		
@@ -36,8 +39,7 @@ class Frog extends Entity
 		_movement.maxVelocity.x = 0.9 * 4;
 		_movement.maxVelocity.y = 12;
 		_movement.friction.x = 0.82; // floor friction
-		_movement.friction.y = 0.99; // wall friction
-		_movement.gravity.y = 1.0;
+		_movement.friction.y = 0; // wall friction
 	
 	    #if !mobile
 		Input.define('left', [Key.LEFT, Key.A]);
@@ -72,21 +74,21 @@ class Frog extends Entity
 	
 	public function moveLeft() 
 	{ 
-    	_movement.moveLeft();
+    	_movement.moveToDirection( DirectionsEnum.LEFT );
 		mirrorX = true;
-		play('run'); // TODO mirror + animation
+		play('run');
 	}
 	
 	public function moveRight() 
 	{ 
-	    _movement.moveRight();
+	    _movement.moveToDirection( DirectionsEnum.RIGHT );
 		mirrorX = false;
 		play('run');
 	}
 	
 	public function jump() 
 	{
-	    _movement.jump();
+	    cast(_movement, PlatformMovementBehavior).jump();
 	//	play('jump');
 	}
 

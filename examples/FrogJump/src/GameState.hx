@@ -30,7 +30,7 @@ class GameState extends State
 	// Spawn data
     private static inline var _maxJumpWidth   : Int = 140;
     private static inline var _maxJumpHeight  : Int = 40;
-    private static inline var _minJumpHeight  : Int = 30;
+    private static inline var _minJumpHeight  : Int = 40;
 	
 	public override function create() 
 	{
