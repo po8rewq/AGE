@@ -3,6 +3,7 @@ package com.revolugame.age.display;
 import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.behaviors.BasicMovementBehavior;
 import com.revolugame.age.behaviors.CollisionBehavior;
+import com.revolugame.age.system.AgePoint;
 
 import flash.geom.Rectangle;
 
@@ -74,8 +75,8 @@ class Entity extends Image
     	if(_bounds == null) 
     		_bounds = new Rectangle(0, 0, 0, 0);
     	
-    	var p : Rectangle = null;
-        if(parent != null) p = parent.getBounds();
+    	var p : AgePoint = null;
+        if(parent != null) p = parent.getAbsolutePosition();
     	
     	if(hitbox != null)
     	{
@@ -104,10 +105,10 @@ class Entity extends Image
     public function moveBy(pX:Float, pY:Float, ?pType: Dynamic = null, ?pSweep:Bool = false)
     {
     	if(pType != null)
-    	{
+    	{ 
     		// destination point
-	    	var moveX : Float = Math.round(pX);
-	    	var moveY : Float = Math.round(pY);
+	    	var moveX : Int = Math.round(pX); 
+	    	var moveY : Int = Math.round(pY);
     	
     		var sign : Int;
     		var e : Entity;

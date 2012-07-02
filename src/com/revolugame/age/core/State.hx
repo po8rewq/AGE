@@ -22,54 +22,55 @@ class State extends Group
 	
 	public function handleMouseDown(pParent:Group, pX: Float, pY: Float, pTouchId:Int)
 	{
-		var i : Int = 0;
-	    var len : Int = pParent.entities.length;
-	    var entity : Image;
-	    while(i < len)
+	    var img : Image;
+	    var entity = pParent.firstEntity;
+//        for(entity in pParent.entities)
+        while(entity != null)
 	    {
-	    	if(Std.is(pParent.entities[i], Image))
+	    	if(Std.is(entity.object, Image))
 	    	{
-	        	entity = cast pParent.entities[i];	        
-	        	if(entity.handleMouseEvents 
-	        	    && !entity.mouseDown 
-	        	    && AgeUtils.pointInRect( Math.round(pX), Math.round(pY), entity.getBounds()) )
+	    	    img = cast entity.object;
+	        	if(img.handleMouseEvents 
+	        	    && !img.mouseDown 
+	        	    && AgeUtils.pointInRect( Math.round(pX), Math.round(pY), img.getBounds()) )
 	        	{
-	        		entity.mouseDown = true;
-	        		entity.justPressed = true;
-	        		entity.touchID = pTouchId;
+	        		img.mouseDown = true;
+	        		img.justPressed = true;
+	        		img.touchID = pTouchId;
 	        		return;
 	        	}
 	        }
-	        else if(Std.is(pParent.entities[i], Group))
+	        else if(Std.is(entity.object, Group))
 	        {
-	        	handleMouseDown(cast pParent.entities[i], pX, pY, pTouchId);
+	        	handleMouseDown(cast entity.object, pX, pY, pTouchId);
 	        }
-	        ++i;
+	        
+	        entity = entity.next;
 	    }
 	}
 	
 	public function handleMouseUp(pParent:Group, pTouchId:Int)
 	{
-		var i : Int = 0;
-	    var len : Int = pParent.entities.length;
-	    var entity : Image;
-	    while(i < len)
+	    var img : Image;
+        var entity = pParent.firstEntity;
+//        for(entity in pParent.entities)
+        while(entity != null)
 	    {
-	    	if(Std.is(pParent.entities[i], Image))
+	    	if(Std.is(entity.object, Image))
 	    	{
-	    		entity = cast pParent.entities[i];
-	    		if(entity.mouseDown && entity.touchID == pTouchId)
+	    		img = cast entity.object;
+	    		if(img.mouseDown && img.touchID == pTouchId)
 	    		{
-	        		entity.mouseDown = false;
-	        		entity.justPressed = false;
+	        		img.mouseDown = false;
+	        		img.justPressed = false;
 	        		return;
 	        	}
 	        }
-	        else if(Std.is(pParent.entities[i], Group))
+	        else if(Std.is(entity.object, Group))
 	        {
-	        	handleMouseUp(cast pParent.entities[i], pTouchId);
+	        	handleMouseUp(cast entity.object, pTouchId);
 	        }
-	        ++i;
+	        entity = entity.next;
 		}
 	}
 	

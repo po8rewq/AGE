@@ -245,8 +245,8 @@ class Image implements IEntity
     	if(_bounds == null) 
     		_bounds = new Rectangle(0, 0, 0, 0);
         
-        var p : Rectangle = null;
-        if(parent != null) p = parent.getBounds();
+    	var p : AgePoint = null;
+        if(parent != null) p = parent.getAbsolutePosition();
         
 	    _bounds.x = x + (parent != null ? p.x : 0);
 	    _bounds.y = y + (parent != null ? p.y : 0);

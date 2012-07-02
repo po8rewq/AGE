@@ -6,6 +6,7 @@ import com.revolugame.age.display.Group;
 import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.AgeData;
+import com.revolugame.age.system.AgeList;
 
 import com.revolugame.age.enums.CollisionsEnum;
 
@@ -32,19 +33,21 @@ class CollisionBehavior implements IBehavior
     	
     	var tmpX : Float = _entity.x;
     	var tmpY : Float = _entity.y;
-    	
+    	// change the position juste to check collisions
     	_entity.x = pX;
     	_entity.y = pY;
     	
     	var entity : Entity;
-    	for(e in AgeData.state.entities)
+    	var list : AgeList = AgeData.state.firstEntity;
+        while(list != null)
     	{
-    		entity = handleGroupCollisions(e);
+    		entity = handleGroupCollisions(list.object);
     		if(entity != null)
     		{
     		 	_entity.x = tmpX; _entity.y = tmpY;
     		 	return entity;
     		}
+    		list = list.next;
     	}
     	_entity.x = tmpX; _entity.y = tmpY;
     	return null;
@@ -61,16 +64,19 @@ class CollisionBehavior implements IBehavior
     		entity = cast e;
     		if(entity.solid && collide(_entity, entity))
     			return entity;
-    	}
+    	}/*
     	else if( Std.is(e, Group) )
     	{
-    		var group : Group = cast e;
-    		for(e2 in group.entities)
+    	//	var entities : List<IEntity> = cast(e, Group).entities;
+    	//	for(e2 in entities)
+    	    var list : AgeList = cast(e, Group).firstEntity;
+    	    while(list != null)
     		{
-    			entity = handleGroupCollisions(e2);
+    			entity = handleGroupCollisions(list.object);
     			if(entity != null) return entity;
+    			list = list.next;
     		}
-    	}
+    	}*/
     	return null;
     }
     
@@ -79,7 +85,15 @@ class CollisionBehavior implements IBehavior
      */
     public function collide(pEntity1: Entity, pEntity2: Entity):Bool
     {
-    	return pEntity1.getBounds().intersects( pEntity2.getBounds() );
+        var p1 : Rectangle = pEntity1.getBounds();
+        var p2 : Rectangle = pEntity2.getBounds();
+        
+        return (pEntity1.solid && pEntity2.solid 
+                && p1.x + p1.width > p2.x
+                && p1.y + p1.height > p2.y
+                && p1.x < p2.x + p2.width
+                && p1.y < p2.y + p2.height);
+        
     }
     
     public function enable()
