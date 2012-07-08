@@ -83,10 +83,6 @@ class State extends Group
 	public override function render()
 	{
 		super.render();
-		#if debug
-		if(AgeData.quadtree != null)
-			AgeData.quadtree.renderDebug();
-		#end
 	}
 		
 	#if android

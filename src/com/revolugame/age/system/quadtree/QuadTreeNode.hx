@@ -180,20 +180,7 @@ class QuadTreeNode
     	
     	return pColliders;
     }
-    
-    /**
-     * Destroy the node itself
-     *
-    public function destroy()
-    {
-        if(tl != null) tl.destroy();
-        if(tr != null) tr.destroy();
-        if(bl != null) bl.destroy();
-        if(br != null) br.destroy();
-        
-        entities = new List();
-    }
-    */
+   
     /**
      * Get recursively all the children of this node
      */
@@ -239,27 +226,6 @@ class QuadTreeNode
     		br = null;
     	}
     }
-    
-    #if debug
-    /**
-     * 
-     */
-    public function renderNode(graphics: Graphics)
-    {
-    	if( getEntitiesInNode() - entities.length > 0 )
-    	{
-	    	graphics.moveTo(x + halfWidth, y);
-		    graphics.lineTo(x + halfWidth, y + height);
-		    graphics.moveTo(x, y + halfHeight);
-		    graphics.lineTo(x + width, y + halfHeight);
-	    	    	
-		    if(tl != null && tl.getEntitiesInNode() > 0) tl.renderNode(graphics);
-		    if(tr != null && tr.getEntitiesInNode() > 0) tr.renderNode(graphics);
-		    if(bl != null && bl.getEntitiesInNode() > 0) bl.renderNode(graphics);
-		    if(br != null && br.getEntitiesInNode() > 0) br.renderNode(graphics);
-	    }
-    }
-    #end
 
 }
 

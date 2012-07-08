@@ -36,18 +36,6 @@ class QuadTree extends QuadTreeNode
 		}
     }
     
-    #if debug
-    public var spr : Sprite; // TEMPORARY FOR DEBUG
-    public function renderDebug()
-    {    
-    	if(spr == null) spr = new Sprite();
-       	spr.graphics.clear();
-    	spr.graphics.lineStyle(2, 0x000000);
-    	renderNode(spr.graphics);
-    	AgeData.renderer.renderDebugData( spr );
-    }
-    #end
-    
     /**
      * Inserts an item in the node
      * Insertion is not recursive, to reduce function calls and make the tree faster.
