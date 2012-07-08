@@ -16,7 +16,7 @@ class AgeData implements haxe.Public
 	/**
 	 * The AGE major version.
 	 */
-	static inline var VERSION : String = "0.0.1";
+	static inline var VERSION : String = "0.3.0";
 
 	static var engine : Engine;
 	

@@ -6,6 +6,6 @@
     <tag v="nme"/>
     <tag v="game" />
     <description>Haxe NME game engine.</description>
-    <version name="0.2.0">Development build</version>
+    <version name="0.3.0">Development build</version>
     <depends name="nme" />
 </project>
