@@ -46,9 +46,19 @@ class MovementBehavior implements IBehavior
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
 		
-		applyVelocity();
-		applyGravity();
-		checkMaxVelocity();
+		// Apply velocity
+		onGround = false;
+		_entity.moveBy( velocity.x, velocity.y, 'solid', true);
+		
+		//increase velocity based on gravity
+		velocity.x += gravity.x;
+		velocity.y += gravity.y;
+		
+		// check for max velocity
+		if (maxVelocity.x > 0 && Math.abs(velocity.x) > maxVelocity.x)
+			velocity.x = maxVelocity.x * AgeUtils.sign(velocity.x);		
+		if (maxVelocity.y > 0 && Math.abs(velocity.y) > maxVelocity.y)
+			velocity.y = maxVelocity.y * AgeUtils.sign(velocity.y);
 		
 		// reset
 		acceleration.x = acceleration.y = 0;
@@ -123,28 +133,6 @@ class MovementBehavior implements IBehavior
 
 		velocity.y *= friction.y;
 		if (Math.abs(velocity.y) < 1) velocity.y = 0;
-	}
-    
-    private function applyGravity()
-	{
-		//increase velocity based on gravity
-		velocity.x += gravity.x;
-		velocity.y += gravity.y;
-	}
-	
-	private function checkMaxVelocity()
-	{
-		if (maxVelocity.x > 0 && Math.abs(velocity.x) > maxVelocity.x)
-			velocity.x = maxVelocity.x * AgeUtils.sign(velocity.x);
-		
-		if (maxVelocity.y > 0 && Math.abs(velocity.y) > maxVelocity.y)
-			velocity.y = maxVelocity.y * AgeUtils.sign(velocity.y);
-	}
-	
-	private function applyVelocity()
-	{
-		onGround = false;
-		_entity.moveBy( velocity.x, velocity.y, 'solid', true);
 	}
     
     public function enable()

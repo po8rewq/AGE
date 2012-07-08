@@ -9,6 +9,7 @@ import com.revolugame.age.AgeData;
 import com.revolugame.age.system.AgeList;
 
 import com.revolugame.age.enums.CollisionsEnum;
+import com.revolugame.age.system.quadtree.QuadTreeEntity;
 
 import flash.geom.Rectangle;
 
@@ -22,62 +23,38 @@ class CollisionBehavior implements IBehavior
         _entity = pEntity;
     }
     
-    public function update()
-    {
-    
-    }
-        
+    public function update() {}
+     
+    private var _colliders : List<QuadTreeEntity>;   
     public function collideWith(pType: Dynamic, pX: Float, pY: Float):Entity
     {
     	if( AgeData.state == null ) return null;
     	
     	var tmpX : Float = _entity.x;
     	var tmpY : Float = _entity.y;
-    	// change the position juste to check collisions
+    	
+    	// change the position just for collisions detection
     	_entity.x = pX;
     	_entity.y = pY;
     	
-    	var entity : Entity;
-    	var list : AgeList = AgeData.state.firstEntity;
-        while(list != null)
+    	var en : Entity = null;
+  
+  		// Create or clear the potential colliders list
+  		if(_colliders == null) _colliders = new List();
+  		else _colliders.clear();
+  
+    	AgeData.quadtree.getEntityInRect( _entity.getBounds(), _colliders );
+  		
+    	var collideEntity : Entity;
+    	// Check if the entity is colliding with one of te entity in the list
+    	for(entity in _colliders)
     	{
-    		entity = handleGroupCollisions(list.object);
-    		if(entity != null)
-    		{
-    		 	_entity.x = tmpX; _entity.y = tmpY;
-    		 	return entity;
-    		}
-    		list = list.next;
+    		collideEntity = entity.parent;
+    		if(_entity != collideEntity && collide(_entity, collideEntity))
+    			en = collideEntity;
     	}
     	_entity.x = tmpX; _entity.y = tmpY;
-    	return null;
-    }
-    
-    /**
-     * Internal function to handle collisions between groups recursively
-     */
-    private function handleGroupCollisions(e:IEntity):Entity
-    {
-    	var entity : Entity; // valeur de retour
-    	if( e != _entity && Std.is(e, Entity) )
-    	{
-    		entity = cast e;
-    		if(entity.solid && collide(_entity, entity))
-    			return entity;
-    	}/*
-    	else if( Std.is(e, Group) )
-    	{
-    	//	var entities : List<IEntity> = cast(e, Group).entities;
-    	//	for(e2 in entities)
-    	    var list : AgeList = cast(e, Group).firstEntity;
-    	    while(list != null)
-    		{
-    			entity = handleGroupCollisions(list.object);
-    			if(entity != null) return entity;
-    			list = list.next;
-    		}
-    	}*/
-    	return null;
+    	return en;
     }
     
     /**
@@ -108,7 +85,7 @@ class CollisionBehavior implements IBehavior
     
     public function destroy()
     {
-    
+    	_entity = null;
     }
     
 }

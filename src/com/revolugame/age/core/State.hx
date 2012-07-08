@@ -3,6 +3,7 @@ package com.revolugame.age.core;
 import com.revolugame.age.display.Group;
 import com.revolugame.age.AgeUtils;
 import com.revolugame.age.display.IEntity;
+import com.revolugame.age.display.Entity;
 import com.revolugame.age.display.Image;
 
 import flash.geom.Rectangle;
@@ -23,13 +24,11 @@ class State extends Group
 	public function handleMouseDown(pParent:Group, pX: Float, pY: Float, pTouchId:Int)
 	{
 	    var img : Image;
-	    var entity = pParent.firstEntity;
-//        for(entity in pParent.entities)
-        while(entity != null)
+	    for(entity in pParent.entities)
 	    {
-	    	if(Std.is(entity.object, Image))
+	    	if(Std.is(entity, Image))
 	    	{
-	    	    img = cast entity.object;
+	    	    img = cast entity;
 	        	if(img.handleMouseEvents 
 	        	    && !img.mouseDown 
 	        	    && AgeUtils.pointInRect( Math.round(pX), Math.round(pY), img.getBounds()) )
@@ -40,25 +39,21 @@ class State extends Group
 	        		return;
 	        	}
 	        }
-	        else if(Std.is(entity.object, Group))
+	        else if(Std.is(entity, Group))
 	        {
-	        	handleMouseDown(cast entity.object, pX, pY, pTouchId);
+	        	handleMouseDown(cast entity, pX, pY, pTouchId);
 	        }
-	        
-	        entity = entity.next;
 	    }
 	}
 	
 	public function handleMouseUp(pParent:Group, pTouchId:Int)
 	{
-	    var img : Image;
-        var entity = pParent.firstEntity;
-//        for(entity in pParent.entities)
-        while(entity != null)
-	    {
-	    	if(Std.is(entity.object, Image))
+		var img : Image;
+		for(entity in pParent.entities)
+		{
+			if(Std.is(entity, Image))
 	    	{
-	    		img = cast entity.object;
+	    		img = cast entity;
 	    		if(img.mouseDown && img.touchID == pTouchId)
 	    		{
 	        		img.mouseDown = false;
@@ -66,14 +61,34 @@ class State extends Group
 	        		return;
 	        	}
 	        }
-	        else if(Std.is(entity.object, Group))
+	        else if(Std.is(entity, Group))
 	        {
-	        	handleMouseUp(cast entity.object, pTouchId);
+	        	handleMouseUp(cast entity, pTouchId);
 	        }
-	        entity = entity.next;
 		}
 	}
 	
+	public override function update()
+	{
+		// clear the quad tree, and add all children to it for new positions
+		if(AgeData.quadtree != null)
+		{
+			AgeData.quadtree.clear();
+			AgeData.quadtree.initChildren(this);
+		}
+						
+		super.update();
+	}
+	
+	public override function render()
+	{
+		super.render();
+		#if debug
+		if(AgeData.quadtree != null)
+			AgeData.quadtree.renderDebug();
+		#end
+	}
+		
 	#if android
 	public function handleBackButton():Void
 	{

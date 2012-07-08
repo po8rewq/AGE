@@ -5,6 +5,12 @@ import com.revolugame.age.display.SpriteMap;
 import com.revolugame.age.display.DrawingContext;
 import com.revolugame.age.system.TileSheetData;
 
+#if debug
+import nme.display.Tilesheet;
+import nme.display.BitmapData;
+import nme.display.Sprite;
+#end
+
 import flash.geom.Matrix;
 
 /**
@@ -49,5 +55,11 @@ class TileSheetRenderer implements IRenderer
             
         ts.render();
 	}
+
+    #if debug
+    public function renderDebugData(spr:Sprite)
+    { // OSEF
+    }
+    #end
 
 }

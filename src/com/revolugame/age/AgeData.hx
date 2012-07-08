@@ -4,6 +4,7 @@ import com.revolugame.age.core.Engine;
 import com.revolugame.age.core.State;
 import com.revolugame.age.core.Camera;
 import com.revolugame.age.core.Renderer;
+import com.revolugame.age.system.quadtree.QuadTree;
 
 class AgeData implements haxe.Public
 {
@@ -26,5 +27,8 @@ class AgeData implements haxe.Public
 	
 	static var stageWidth : Int;
 	static var stageHeight : Int;
+	
+	// Pour le quadtree .... remove from here ??
+	static var quadtree : QuadTree;
 
 }

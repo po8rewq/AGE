@@ -4,6 +4,8 @@ import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.behaviors.BasicMovementBehavior;
 import com.revolugame.age.behaviors.CollisionBehavior;
 import com.revolugame.age.system.AgePoint;
+import com.revolugame.age.system.quadtree.QuadTree;
+import com.revolugame.age.system.quadtree.QuadTreeEntity;
 
 import flash.geom.Rectangle;
 
@@ -27,6 +29,9 @@ class Entity extends Image
 	
 	/** */
 	public var hitbox : Rectangle;
+	
+	/** Necessaire pour la gestion des collisions */
+	public var quadTreeEntity : QuadTreeEntity;
     
     public function new(pX: Float = 0, pY: Float = 0):Void
 	{
@@ -174,6 +179,10 @@ class Entity extends Image
 	{
 		for(b in _behaviors)
 			b.destroy();
+			
+		quadTreeEntity.destroy();
+		quadTreeEntity = null;
+		
 		super.destroy();
 	}
 	
@@ -191,16 +200,34 @@ class Entity extends Image
 		{
 			_collisions = new CollisionBehavior(this);
 			addBehavior(_collisions);
+			
+			initQuadTree();
 		}
 		else if(val && !_collisions.enabled)
 		{
 			_collisions.enable();
+			
+			initQuadTree();
 		}
 		else if(!val && _collisions.enabled)
 		{
 			_collisions.disable();
 		}
+		
 		return val;
+	}
+	
+	/**
+	 * Initialize the entity for collisions detection
+	 */
+	private function initQuadTree()
+	{			
+		// If this is the first time we are accessing the quad tree
+		if(AgeData.quadtree == null)
+			AgeData.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
+		
+		if(quadTreeEntity == null)
+			quadTreeEntity = new QuadTreeEntity(this);
 	}
 	
 	private function getIsMovable():Bool

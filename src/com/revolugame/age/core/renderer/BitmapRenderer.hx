@@ -6,6 +6,11 @@ import com.revolugame.age.display.DrawingContext;
 
 import flash.geom.Matrix;
 
+
+import flash.display.Sprite;
+import flash.display.BitmapData;
+import flash.geom.Point;
+
 /**
  * Renderer used by flash
  */
@@ -49,5 +54,23 @@ class BitmapRenderer implements IRenderer
 			AgeData.camera.copyPixels( spritemap.pixels, spritemap.getRect(), context.position, null, null, true );
 	    }
 	}
+	
+	#if debug
+	var pt : Point; // TEMPORARY FOR DEBUG
+	var buffer : BitmapData;
+	public function renderDebugData(spr:Sprite)
+	{	
+		if(pt == null) pt = new Point();
+		if(buffer == null) buffer = new BitmapData( Math.round(spr.width), Math.round(spr.height), true, 0xff0000 );
+		else buffer.fillRect( buffer.rect, 0x000000 );
+	
+		if(spr != null && spr.width > 0 && spr.height > 0)
+		{
+			buffer.draw(spr);
+		
+			AgeData.camera.copyPixels( buffer, buffer.rect, pt, null, null, true);
+		}
+	}
+	#end
 
 }

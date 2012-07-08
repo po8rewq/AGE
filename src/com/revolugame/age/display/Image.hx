@@ -280,8 +280,18 @@ class Image implements IEntity
 	}
 
 	public var width(getWidth, null): Int;
-    private function getWidth():Int { return _spriteMap.width; }
+    private function getWidth():Int 
+    { 
+    	if(_spriteMap != null)
+    		return _spriteMap.width; 
+    	return 0;
+    }
     
     public var height(getHeight, null): Int;
-    private function getHeight():Int { return _spriteMap.height; }
+    private function getHeight():Int 
+    { 
+    	if(_spriteMap != null)
+    		return _spriteMap.height; 
+    	return 0;
+    }
 }
