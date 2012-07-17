@@ -1,4 +1,4 @@
-package com.revolugame.age.system;
+package com.revolugame.age.ui;
 
 import nme.display.Stage;
 import nme.events.KeyboardEvent;

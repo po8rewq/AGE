@@ -3,12 +3,17 @@ package com.revolugame.age.system.quadtree;
 import nme.geom.Rectangle;
 import nme.display.Sprite;
 
-import com.revolugame.age.system.quadtree.QuadTreeNode;
+import com.revolugame.age.AgeUtils;
+import com.revolugame.age.display.ICollideEntity;
 import com.revolugame.age.display.Group;
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.system.AgeList;
+import com.revolugame.age.system.quadtree.QuadTreeNode;
 
 class QuadTree extends QuadTreeNode
 {
+    #if debug
+    var cpt : Int;
+    #end
     /**
      * Initializes the head node and stores a little bit of information about the tree.
      */
@@ -22,26 +27,55 @@ class QuadTree extends QuadTreeNode
      */
     public function initChildren(pState: Group):Void
     {
+    #if debug
+    cpt = 0;
+    #end
     	insertGroup(pState);
+    	#if debug
+   // 	trace(cpt);
+    	#end
     }
     
     private function insertGroup(pGroup:Group)
     {
+        var collide : ICollideEntity;
     	for(en in pGroup.entities)
     	{
-			if( Std.is(en, Entity) )
-				insert( cast(en, Entity).quadTreeEntity);
+    	    if(en.dead) continue;
+    	
+    	    if( Std.is(en, ICollideEntity) )
+    	    {
+        	    collide = cast en;
+			    if( collide.solid && AgeUtils.isOnScreen( cast en ) )
+				    insert( collide.quadTreeEntity);
+			}
 			else if( Std.is(en, Group) )
+			{
 				insertGroup( cast en );
+			}
 		}
     }
+    
+    #if debug
+    public var spr : Sprite; // TEMPORARY FOR DEBUG
+    public function renderDebug()
+    {    
+   // 	if(spr == null) spr = new Sprite();
+    //   	spr.graphics.clear();
+   // 	spr.graphics.lineStyle(2, 0x000000);
+    //	renderNode(spr.graphics);
+   // 	AgeData.renderer.renderDebugData( spr );
+    }
+    #end
     
     /**
      * Inserts an item in the node
      * Insertion is not recursive, to reduce function calls and make the tree faster.
      */
     public function insert(pEntity:QuadTreeEntity)
-    {
+    {#if debug
+    cpt++;
+    #end
         var entityRect : Rectangle = pEntity.rect;
         var current : QuadTreeNode = this;
         

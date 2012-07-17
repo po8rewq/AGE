@@ -1,9 +1,9 @@
 package com.revolugame.age.display;
 
+import nme.geom.Rectangle;
+
 interface IEntity
 {
-    private var _drawingContext : DrawingContext;
-
 	var visible : Bool;
 	var dead : Bool;
 	
@@ -12,6 +12,7 @@ interface IEntity
 	
 	var parent : Group;
 	
+	function getBounds():Rectangle;
 	function update(): Void;
 	function render(): Void;
 	function destroy(): Void;

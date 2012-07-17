@@ -27,10 +27,10 @@ class DrawingContext
     public function new()
     {
         position = new Point();
-        updateValue(0, 0, 0, 0, 0, 0, false, false);
+        updateValue(0, 0, 1, 1, 0, 0, false, false);
     }
     
-    public function updateValue(pX: Float = 0, pY: Float = 0, pScaleX: Float = 0, pScaleY: Float = 0, pRotation: Float = 0, pAlpha: Float = 0, pMirrorX: Bool = false, pMirrorY : Bool = false)
+    public function updateValue(pX: Float = 0, pY: Float = 0, pScaleX: Float = 1, pScaleY: Float = 1, pRotation: Float = 0, pAlpha: Float = 0, pMirrorX: Bool = false, pMirrorY : Bool = false)
     {
         position.x = pX;
         position.y = pY;

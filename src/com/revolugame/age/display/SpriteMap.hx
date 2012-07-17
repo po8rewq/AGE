@@ -31,7 +31,7 @@ class SpriteMap
 	public var height(default, null): Int;
 	
 	/** */
-	public var pixels(default, null) : BitmapData;
+	public var pixels/*(default, null)*/ : BitmapData;
 	
 	/**  */
 	var _anims : Hash<Animation>;

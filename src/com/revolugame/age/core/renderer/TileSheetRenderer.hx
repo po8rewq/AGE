@@ -33,7 +33,7 @@ class TileSheetRenderer implements IRenderer
 	{
 	    var ts : TileSheetData = spritemap.tilesheetdata;
 	    
-	    if(ts.tilesheet == null) return;
+	    if(ts == null || ts.tilesheet == null) return;
 			
 		/** Reset drawing data */
 		ts.resetData();
@@ -58,7 +58,7 @@ class TileSheetRenderer implements IRenderer
 
     #if debug
     public function renderDebugData(spr:Sprite)
-    { // OSEF
+    { // OSEF 
     }
     #end
 

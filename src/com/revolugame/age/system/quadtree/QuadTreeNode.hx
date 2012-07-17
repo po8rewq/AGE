@@ -1,6 +1,7 @@
 package com.revolugame.age.system.quadtree;
 
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.ICollideEntity;
+import com.revolugame.age.system.AgeList;
 
 import nme.geom.Rectangle;
 
@@ -143,11 +144,77 @@ class QuadTreeNode
     {
     	if( !entities.remove(pEntity) )
     	{
-    		if(!tl.remove(pEntity) && !tr.remove(pEntity) && !bl.remove(pEntity) && !br.remove(pEntity))
-    			return false;
-    		return true;
+    		var returnValue : Bool = true;
+    		if( tl != null && !tl.remove(pEntity) )
+    		{
+    			returnValue = false;
+    		}
+    		else if(tr != null && !tr.remove(pEntity) )
+    		{
+    			returnValue = false;
+    		}
+    		else if( bl != null && !bl.remove(pEntity) )
+    		{
+    			returnValue = false;
+    		}
+    		else if( br!= null && !br.remove(pEntity) )
+    		{
+    			returnValue = false;
+    		}
+    		return returnValue;
     	}
-    	return true;
+    	else 
+    	{ 
+    		fix(); 
+    		return true; 
+    	}
+    }
+    
+    /**
+     * Fix the tree by removing empty nodes
+     */
+    public function fix()
+    {
+    	// si un noeud n'a qu'une seule entité sur les 4 zones, on degage et on remet ici
+    	if( (tl == null ? 0 : tl.getEntitiesInNode()) +
+    		(tr == null ? 0 : tr.getEntitiesInNode()) + 
+    		(bl == null ? 0 : bl.getEntitiesInNode()) + 
+    		(br == null ? 0 : br.getEntitiesInNode()) <= 1 )
+    	{
+    		// on recupere l'entité
+    		var en : QuadTreeEntity = null;
+    		if(tl != null && tl.getEntitiesInNode() > 0)
+    		{
+    			en = tl.entities.first();
+    			tl.remove( en );
+    			tl.fix();
+    			CachedQuadTreeNode.recycle(tl);
+    		}
+    		else if(tr != null && tr.getEntitiesInNode() > 0)
+    		{
+    			en = tr.entities.first();
+    			tr.remove( en );
+    			tr.fix();
+    			CachedQuadTreeNode.recycle(tr);
+    		}
+    		else if(bl != null && bl.getEntitiesInNode() > 0)
+    		{
+    			en = bl.entities.first();
+    			bl.remove( en );
+    			bl.fix();
+    			CachedQuadTreeNode.recycle(bl);
+    		}
+    		else if(br != null && br.getEntitiesInNode() > 0)
+    		{
+    			en = br.entities.first();
+    			br.remove( en );
+    			br.fix();
+    			CachedQuadTreeNode.recycle(br);
+    		}
+    		
+    		if(en != null)
+    			AgeData.quadtree.insert(en);
+    	}
     }
     
     /**
@@ -155,10 +222,11 @@ class QuadTreeNode
      * @param pRect : The rect we want to test collisions with
      * @param pColliders : List of potential colliders
      */
-    public function getEntityInRect(pRect:Rectangle, pColliders:List<QuadTreeEntity>):List<QuadTreeEntity>
+    public function getEntityInRect(pRect:Rectangle, pColliders:List<ICollideEntity>):List<ICollideEntity>
+    //public function getEntityInRect(pRect:Rectangle, pColliders:AgeList): AgeList
     {
 	    for(i in entities)
-	    	pColliders.add(i);
+	    	pColliders.add(i.parent);
   
     	var onLeft : Bool = pRect.left < x + halfWidth;
     	var onRight: Bool = pRect.right > x + halfWidth;
@@ -226,6 +294,27 @@ class QuadTreeNode
     		br = null;
     	}
     }
+    
+    #if debug
+    /**
+     * 
+     */
+    public function renderNode(graphics: Graphics)
+    {
+    	if( getEntitiesInNode() - entities.length > 0 )
+    	{
+	    	graphics.moveTo(x + halfWidth, y);
+		    graphics.lineTo(x + halfWidth, y + height);
+		    graphics.moveTo(x, y + halfHeight);
+		    graphics.lineTo(x + width, y + halfHeight);
+	    	    	
+		    if(tl != null && tl.getEntitiesInNode() > 0) tl.renderNode(graphics);
+		    if(tr != null && tr.getEntitiesInNode() > 0) tr.renderNode(graphics);
+		    if(bl != null && bl.getEntitiesInNode() > 0) bl.renderNode(graphics);
+		    if(br != null && br.getEntitiesInNode() > 0) br.renderNode(graphics);
+	    }
+    }
+    #end
 
 }
 

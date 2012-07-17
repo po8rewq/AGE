@@ -1,5 +1,6 @@
 package com.revolugame.age;
 
+import com.revolugame.age.display.IEntity;
 import flash.geom.Rectangle;
 
 class AgeUtils
@@ -34,6 +35,18 @@ class AgeUtils
 	public static inline function rand(pLow: Int = 0,  pHight: Int = 1):Int
 	{
 		return Math.floor( Math.random() * ( 1 + pHight - pLow ) ) + pLow;
+	}
+	
+	/**
+     * His on the screen and need to be rendered
+     * @return Bool
+     */
+	public static inline function isOnScreen(entity: IEntity): Bool
+	{
+        var b : Rectangle = entity.getBounds();
+    	return (b.x + b.width >= AgeData.camera.position.x
+        		&& b.x <= AgeData.camera.position.x + AgeData.stageWidth
+                && b.y + b.height >= AgeData.camera.position.y && b.y <= AgeData.camera.position.y + AgeData.stageHeight);
 	}
 
 }

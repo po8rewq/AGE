@@ -63,7 +63,7 @@ class PlatformMovementBehavior extends BasicMovementBehavior
 		}
     }
 	
-	public override function stopMovementX(pE:Entity)
+	public override function stopMovementX()
 	{
         velocity.x = 0;
 
@@ -71,7 +71,7 @@ class PlatformMovementBehavior extends BasicMovementBehavior
 		if (Math.abs(velocity.y) < 1) velocity.y = 0;
 	}
 	
-	public override function stopMovementY(pE:Entity)
+	public override function stopMovementY()
 	{
 		if (velocity.y * AgeUtils.sign(gravity.y) > 0)
 		{

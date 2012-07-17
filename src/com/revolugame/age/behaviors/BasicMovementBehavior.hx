@@ -54,7 +54,7 @@ class BasicMovementBehavior implements IBehavior
 	 * Stop the movement on the Y axe
 	 * @param	pE
 	 */
-	public function stopMovementY(pE: Entity)
+	public function stopMovementY()
 	{
 		velocity.y = 0;
 	}
@@ -63,7 +63,7 @@ class BasicMovementBehavior implements IBehavior
 	 * Stop the movement on the X axe
 	 * @param	pE
 	 */
-	public function stopMovementX(pE:Entity)
+	public function stopMovementX()
 	{
 		velocity.x = 0;
 	}
@@ -88,7 +88,7 @@ class BasicMovementBehavior implements IBehavior
 	 */
 	private function applyVelocity()
 	{
-		_entity.moveBy( velocity.x, velocity.y, 'solid', true);
+		_entity.moveBy( velocity.x, velocity.y, true);
 	}
 	
 	/**

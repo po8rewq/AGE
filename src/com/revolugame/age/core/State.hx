@@ -76,6 +76,8 @@ class State extends Group
 			AgeData.quadtree.clear();
 			AgeData.quadtree.initChildren(this);
 		}
+
+//trace(AgeData.quadtree.getEntitiesInNode());
 						
 		super.update();
 	}
@@ -83,6 +85,10 @@ class State extends Group
 	public override function render()
 	{
 		super.render();
+		#if debug
+		if(AgeData.quadtree != null)
+			AgeData.quadtree.renderDebug();
+		#end
 	}
 		
 	#if android

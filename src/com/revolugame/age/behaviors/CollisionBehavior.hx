@@ -1,32 +1,37 @@
 package com.revolugame.age.behaviors;
 
 import com.revolugame.age.display.Entity;
-import com.revolugame.age.display.IEntity;
+import com.revolugame.age.display.ICollideEntity;
 import com.revolugame.age.display.Group;
 import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.AgeData;
 import com.revolugame.age.system.AgeList;
-
 import com.revolugame.age.enums.CollisionsEnum;
 import com.revolugame.age.system.quadtree.QuadTreeEntity;
 
-import flash.geom.Rectangle;
+import nme.geom.Rectangle;
+import com.revolugame.age.enums.CollisionsEnum;
 
 class CollisionBehavior implements IBehavior
 {
     private var _entity : Entity;
     public var enabled(default, null) : Bool;
     
+    /** Collisions type */
+    public var collisions : CollisionsType; // TODO
+    
     public function new(pEntity: Entity)
     {
         _entity = pEntity;
+        collisions = CollisionsType.ANY;
     }
     
     public function update() {}
      
-    private var _colliders : List<QuadTreeEntity>;   
-    public function collideWith(pType: Dynamic, pX: Float, pY: Float):Entity
+    //private var _colliders : AgeList;
+    private var _colliders : List<ICollideEntity>;   
+    public function collideWith(pX: Float, pY: Float):ICollideEntity
     {
     	if( AgeData.state == null ) return null;
     	
@@ -37,21 +42,19 @@ class CollisionBehavior implements IBehavior
     	_entity.x = pX;
     	_entity.y = pY;
     	
-    	var en : Entity = null;
+    	var en : ICollideEntity = null;
   
   		// Create or clear the potential colliders list
   		if(_colliders == null) _colliders = new List();
   		else _colliders.clear();
-  
-    	AgeData.quadtree.getEntityInRect( _entity.getBounds(), _colliders );
+
+    	AgeData.quadtree.getEntityInRect( _entity.getBounds(), cast _colliders );
   		
-    	var collideEntity : Entity;
     	// Check if the entity is colliding with one of te entity in the list
     	for(entity in _colliders)
     	{
-    		collideEntity = entity.parent;
-    		if(_entity != collideEntity && collide(_entity, collideEntity))
-    			en = collideEntity;
+    		if(_entity != entity && collide(_entity, entity))
+    			en = entity;
     	}
     	_entity.x = tmpX; _entity.y = tmpY;
     	return en;
@@ -60,7 +63,7 @@ class CollisionBehavior implements IBehavior
     /**
      * @return true if pEntity1 collide pEntity2
      */
-    public function collide(pEntity1: Entity, pEntity2: Entity):Bool
+    public function collide(pEntity1: ICollideEntity, pEntity2: ICollideEntity):Bool
     {
         var p1 : Rectangle = pEntity1.getBounds();
         var p2 : Rectangle = pEntity2.getBounds();

@@ -7,7 +7,7 @@ import nme.display.StageAlign;
 import nme.display.StageScaleMode;
 import nme.display.FPS;
 
-import com.revolugame.age.system.Input;
+import com.revolugame.age.ui.Input;
 import com.revolugame.age.core.Renderer;
 
 class Engine extends Sprite

@@ -1,4 +1,4 @@
-package com.revolugame.age.system;
+package com.revolugame.age.ui;
 
 class Key
 {

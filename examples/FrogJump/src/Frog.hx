@@ -2,8 +2,8 @@ package ;
 
 import com.revolugame.age.display.Entity;
 import com.revolugame.age.display.SpriteMap;
-import com.revolugame.age.system.Input;
-import com.revolugame.age.system.Key;
+import com.revolugame.age.ui.Input;
+import com.revolugame.age.ui.Key;
 import com.revolugame.age.behaviors.PlatformMovementBehavior;
 import com.revolugame.age.enums.DirectionsEnum;
 

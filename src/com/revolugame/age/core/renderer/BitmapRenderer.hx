@@ -30,7 +30,7 @@ class BitmapRenderer implements IRenderer
 	
 	public function render(spritemap: SpriteMap, context: DrawingContext):Void
 	{		
-		if( context.scaleX != 1 || context.scaleY != 1 || context.rotation != 0 || context.mirrorX || context.mirrorY)
+		if(context.scaleX != 1 || context.scaleY != 1 || context.rotation != 0 || context.mirrorX || context.mirrorY)
 		{
 			_matrix.identity();
 			
@@ -54,5 +54,25 @@ class BitmapRenderer implements IRenderer
 			AgeData.camera.copyPixels( spritemap.pixels, spritemap.getRect(), context.position, null, null, true );
 	    }
 	}
+	
+	#if debug
+	var pt : Point; // TEMPORARY FOR DEBUG
+	var buffer : BitmapData;
+	public function renderDebugData(spr:Sprite)
+	{	
+	if(spr == null || spr.width == 0 || spr.height == 0) return;
+	
+		if(pt == null) pt = new Point();
+		if(buffer == null) buffer = new BitmapData( Math.round(spr.width), Math.round(spr.height), true, 0xff0000 );
+		else buffer.fillRect( buffer.rect, 0x000000 );
+	
+		if(spr != null && spr.width > 0 && spr.height > 0)
+		{
+			buffer.draw(spr);
+		
+			AgeData.camera.copyPixels( buffer, buffer.rect, pt, null, null, true);
+		}
+	}
+	#end
 
 }

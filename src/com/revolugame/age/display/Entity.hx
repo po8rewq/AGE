@@ -6,13 +6,14 @@ import com.revolugame.age.behaviors.CollisionBehavior;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.system.quadtree.QuadTree;
 import com.revolugame.age.system.quadtree.QuadTreeEntity;
+import com.revolugame.age.display.ICollideEntity;
 
 import flash.geom.Rectangle;
 
 /**
  * Graphical element with collisions detection and behaviors
  */
-class Entity extends Image
+class Entity extends Image, implements ICollideEntity
 {	
 	/** All the behaviors of the actor */
     private var _behaviors : List<IBehavior>;
@@ -87,15 +88,15 @@ class Entity extends Image
     	{
     		_bounds.x = x + hitbox.x + (parent != null ? p.x : 0);
 	    	_bounds.y = y + hitbox.y + (parent != null ? p.y : 0);
-	    	_bounds.width = hitbox.width;
-	    	_bounds.height = hitbox.height;
+	    	_bounds.width = hitbox.width * scale.x;
+	    	_bounds.height = hitbox.height * scale.y;
     	}
     	else
     	{
 	        _bounds.x = x + (parent != null ? p.x : 0);
     	    _bounds.y = y + (parent != null ? p.y : 0);
-	    	_bounds.width = width;
-	    	_bounds.height = height;
+	    	_bounds.width = width * scale.x;
+	    	_bounds.height = height * scale.y;
     	}
     	return _bounds;
     }
@@ -107,72 +108,74 @@ class Entity extends Image
 	 * @param	pType	An optional collision type to stop flush against upon collision.
 	 * @param	pSweep	If sweeping should be used (prevents fast-moving objects from going through solidType).
 	 */
-    public function moveBy(pX:Float, pY:Float, ?pType: Dynamic = null, ?pSweep:Bool = false)
+    public function moveBy(pX:Float, pY:Float, ?pSweep:Bool = false)
     {
-    	if(pType != null)
-    	{ 
-    		// destination point
-	    	var moveX : Int = Math.round(pX); 
-	    	var moveY : Int = Math.round(pY);
+    	if(!movable) return;
+    
+    	// destination point
+	    var moveX : Int = Math.round(pX); 
+	    var moveY : Int = Math.round(pY);
     	
-    		var sign : Int;
-    		var e : Entity;
+    	var sign : Int;
+    	var e : ICollideEntity;
     		
-    		if( moveX != 0 )
-    		{
-    			if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(pType, x + moveX, y) != null) )
-    			{
-    				sign = AgeUtils.sign(pX);
-    				while(moveX != 0)
-    				{
-    					if( (e = _collisions.collideWith(pType, x + sign, y)) != null )
-    					{
-    						_movement.stopMovementX(e);
-    						break;
-    					}
-    					else
-    					{
-    						x += sign;
-    						moveX -= sign;
-    					}
-    				}
-    			}
-    			else
-    			{
-    				x += pX;
-    			}
-    		}
-    		
-    		if( moveY != 0 )
-    		{ 
-    			if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(pType, x, y + moveY) != null) )
-    			{
-    				sign = AgeUtils.sign(moveY);
-    				while(moveY != 0)
-    				{
-    					if( (e = _collisions.collideWith(pType, x, y + sign)) != null )
-    					{
-    						_movement.stopMovementY(e);
-    						break;
-    					}
-    					else
-    					{
-    						y += sign;
-    						moveY -= sign;
-    					}
-    				}
-    			}
-    			else
-    			{
-    				y += pY;
-    			}
-    		}
-    	}
-    	else
+    	if( moveX != 0 )
     	{
-    		x += pX;
-    		y += pY;
+    		if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(x + moveX, y) != null) )
+    		{
+    			sign = AgeUtils.sign(pX);
+    			while(moveX != 0)
+    			{
+    				if( (e = _collisions.collideWith(x + sign, y)) != null )
+    				{
+    					_movement.stopMovementX();
+    					break;
+    				}
+    				else
+    				{
+    					x += sign;
+    					moveX -= sign;
+    				}
+    			}
+    		}
+    		else
+    		{
+    			x += pX;
+    		}
     	}
+    		
+    	if( moveY != 0 )
+    	{ 
+    		if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(x, y + moveY) != null) )
+    		{
+    			sign = AgeUtils.sign(moveY);
+    			while(moveY != 0)
+    			{
+    				if( (e = _collisions.collideWith(x, y + sign)) != null )
+    				{
+    					_movement.stopMovementY();
+    					break;
+    				}
+    				else
+    				{
+    					y += sign;
+    					moveY -= sign;
+    				}
+    			}
+    		}
+    		else
+    		{
+    			y += pY;
+    		}
+    	}
+    	/*
+    	if(quadTreeEntity != null) 
+    	{
+    		if(AgeData.quadtree.remove(quadTreeEntity))
+    		{	// just in case ...
+	   			AgeData.quadtree.insert(quadTreeEntity);
+	   		}
+    	}*/
     }
 	
 	public override function destroy():Void
@@ -180,8 +183,11 @@ class Entity extends Image
 		for(b in _behaviors)
 			b.destroy();
 			
-		quadTreeEntity.destroy();
-		quadTreeEntity = null;
+		if(quadTreeEntity != null)
+		{
+		    quadTreeEntity.destroy();
+		    quadTreeEntity = null;
+		}
 		
 		super.destroy();
 	}
@@ -212,6 +218,15 @@ class Entity extends Image
 		else if(!val && _collisions.enabled)
 		{
 			_collisions.disable();
+			if(quadTreeEntity != null)
+				AgeData.quadtree.remove(quadTreeEntity);
+		}
+		else if(val && quadTreeEntity != null)
+		{
+			if(AgeData.quadtree.remove(quadTreeEntity))
+    		{	// just in case ...
+	   			AgeData.quadtree.insert(quadTreeEntity);
+	   		}
 		}
 		
 		return val;
@@ -227,7 +242,10 @@ class Entity extends Image
 			AgeData.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
 		
 		if(quadTreeEntity == null)
+		{
 			quadTreeEntity = new QuadTreeEntity(this);
+			AgeData.quadtree.insert(quadTreeEntity);
+		}
 	}
 	
 	private function getIsMovable():Bool

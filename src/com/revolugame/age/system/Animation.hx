@@ -3,8 +3,7 @@ package com.revolugame.age.system;
 import com.revolugame.age.display.SpriteMap;
 
 /**
- * Template used by Spritemap to define animations. Don't create
- * these yourself, instead you can fetch them with Spritemap's add().
+ * Template used by Spritemap to define animations.
  */
 class Animation
 {
@@ -61,7 +60,8 @@ class Animation
 	}
 
 	public var parent(null, setParent):SpriteMap;
-	private function setParent(value:SpriteMap):SpriteMap {
+	private function setParent(value:SpriteMap):SpriteMap 
+	{
 		_parent = value;
 		return _parent;
 	}

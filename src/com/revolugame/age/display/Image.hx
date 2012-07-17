@@ -1,6 +1,7 @@
 package com.revolugame.age.display;
 
 import com.revolugame.age.system.AgePoint;
+import com.revolugame.age.AgeUtils;
 
 import nme.geom.Matrix;
 import nme.geom.Point;
@@ -19,7 +20,7 @@ import nme.display.BitmapInt32;
 /**
  * Simple graphical element
  */
-class Image implements IEntity
+class Image implements IEntity, implements IDrawable
 {
 	public var name : String;
 	public var parent : Group;
@@ -136,7 +137,7 @@ class Image implements IEntity
 	    _spriteMap.loadGraphic(pSrc, pWidth, pHeight);
 	    
 	    #if flash
-		_bmpBuffer = new BitmapData(pWidth, pHeight);
+		_bmpBuffer = new BitmapData(width, height);
 		_drawingContext.buffer = _bmpBuffer;
 		dirty = true;
 		#end
@@ -193,14 +194,15 @@ class Image implements IEntity
 	
 	public function render():Void
 	{
-		if(!dead && visible && onScreen() && _spriteMap != null)
+		if(!dead && visible && AgeUtils.isOnScreen(this) && _spriteMap != null)
 		{
 			if(dirty) drawFrame();
 		
-			var px = x - AgeData.camera.position.x + parent.x;
-			var py = y - AgeData.camera.position.y + parent.y;
+			var bounds : Rectangle = getBounds();
+			var px = bounds.x;//x - AgeData.camera.position.x + parent.x;
+			var py = bounds.y;//y - AgeData.camera.position.y + parent.y;
 			
-			// on reapplique la difference du scale
+			// on reapplique la difference du scale .. TODO
 			if(mirrorX) px += width;
 			if(mirrorY) py += height;
 			
@@ -224,18 +226,6 @@ class Image implements IEntity
 		dirty = false;
 		#end
 	}
-	
-	/**
-     * His on the screen and need to be rendered
-     * @return Bool
-     */
-    public function onScreen():Bool
-    {
-        var b : Rectangle = getBounds();
-    	return (b.x + b.width >= AgeData.camera.position.x
-        		&& b.x <= AgeData.camera.position.x + AgeData.stageWidth
-                && b.y + b.height >= AgeData.camera.position.y && b.y <= AgeData.camera.position.y + AgeData.stageHeight);
-    }
 	
 	/**
 	 * @return the bounding box of this image

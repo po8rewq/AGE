@@ -1,6 +1,7 @@
 package com.revolugame.age.display;
 
 import com.revolugame.age.system.AgePoint;
+import nme.geom.Rectangle;
 
 class Group implements IEntity
 {
@@ -14,10 +15,7 @@ class Group implements IEntity
 	public var x : Float;
 	public var y : Float;
 	
-	public var numChildren(default, null):Int;
 	public var entities : List<IEntity>;
-		
-	private var _drawingContext : DrawingContext; // NULL
 
 	public function new()
 	{
@@ -25,7 +23,6 @@ class Group implements IEntity
 		dead = false;
 		x = 0;
 		y = 0;
-		numChildren = 0; // remove
 		entities = new List();
 	}
 	
@@ -64,7 +61,7 @@ class Group implements IEntity
 	 */
 	public function add(pEntity: IEntity):Void
 	{
-	    pEntity.parent = this;	    
+	    pEntity.parent = this;
 	    entities.add(pEntity);
 	}
 	
@@ -88,15 +85,18 @@ class Group implements IEntity
 	/**
 	 * Remove the entity from the screen
 	 * @param pEntity
+	 * @param pDestroy if you want to destroy this entity, and not just remove it from the stage
 	 */
-	public function remove(pEntity: IEntity):Void
+	public function remove(pEntity: IEntity, ?pDestroy: Bool = true):Void
 	{	    
 	    entities.remove(pEntity);
-	    pEntity.destroy();
-	    
-	    // TODO usefull ?
-	    if(AgeData.quadtree != null && Std.is(pEntity, Entity) && cast(pEntity, Entity).solid)
+	    if(pDestroy)
+    	    pEntity.destroy();
+
+   	    if(AgeData.quadtree != null && Std.is(pEntity, Entity) && cast(pEntity, Entity).solid)
 	    	AgeData.quadtree.remove( cast(pEntity, Entity).quadTreeEntity );
 	}
+	
+	public function getBounds():Rectangle { return null; }
 
 }

@@ -48,7 +48,7 @@ class MovementBehavior implements IBehavior
 		
 		// Apply velocity
 		onGround = false;
-		_entity.moveBy( velocity.x, velocity.y, 'solid', true);
+		_entity.moveBy( velocity.x, velocity.y, true);
 		
 		//increase velocity based on gravity
 		velocity.x += gravity.x;
@@ -113,7 +113,7 @@ class MovementBehavior implements IBehavior
     	return velocity.x == 0 && onGround;
     }
     
-    public function stopMovementY(pE: Entity)
+    public function stopMovementY()
 	{
 		if (velocity.y * AgeUtils.sign(gravity.y) > 0)
 		{
@@ -127,7 +127,7 @@ class MovementBehavior implements IBehavior
 		if (Math.abs(velocity.x) < 0.5) velocity.x = 0;
 	}
 
-	public function stopMovementX(pE: Entity)
+	public function stopMovementX()
 	{		
 		velocity.x = 0;
 
