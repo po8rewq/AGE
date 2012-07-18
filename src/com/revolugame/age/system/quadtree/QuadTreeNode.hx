@@ -18,6 +18,8 @@ class QuadTreeNode
     //::// Properties
     //:://///////////////
     
+    public var exists : Bool;
+    
     /** current depth */
     public var depth : Int;
     
@@ -50,6 +52,8 @@ class QuadTreeNode
     
     public function init(pX: Float, pY: Float, pWidth: Float, pHeight: Float, pDepth: Int):Void
     {
+    	exists = true;
+    
         x = pX;
         y = pY;
         width = pWidth;
@@ -125,14 +129,6 @@ class QuadTreeNode
 	    	newNode.entities.add(pEntity);
 	    }
 	    
-    	return true;
-    }
-    
-    /**
-     * Pushes an item up to the parent node. Used when item goes out of range.
-     */
-    public function pushItemUp():Bool
-    {
     	return true;
     }
     
@@ -255,10 +251,10 @@ class QuadTreeNode
     public function getEntitiesInNode():Int
     {
     	return ( entities.length + 
-    		(tl != null ? tl.getEntitiesInNode() : 0) + 
-    		(tr != null ? tr.getEntitiesInNode() : 0) + 
-    		(bl != null ? bl.getEntitiesInNode() : 0) + 
-    		(br != null ? br.getEntitiesInNode() : 0)
+    		(tl != null && tl != this ? tl.getEntitiesInNode() : 0) + 
+    		(tr != null && tr != this ? tr.getEntitiesInNode() : 0) + 
+    		(bl != null && bl != this ? bl.getEntitiesInNode() : 0) + 
+    		(br != null && br != this ? br.getEntitiesInNode() : 0)
     	);
     }    
     
@@ -271,7 +267,6 @@ class QuadTreeNode
     {
     	if(pCurrentList == null) pCurrentList = new List();
     	
-    	var somethingHasChanged : Bool = false;
     	var rect : Rectangle;
     	var prev : Rectangle;
     	
@@ -280,18 +275,16 @@ class QuadTreeNode
     		rect = en.rect;
     		prev = en.previousRect;
     	
+    		// if the position is different than in the previous frame
     		//if(rect.left < x || rect.right > x + width || rect.top < y || rect.bottom > y + height)
     		if(rect.left != prev.left || rect.top != prev.top || rect.right != prev.right || rect.bottom != prev.bottom)
     		{
     			pCurrentList.add(en);
     			remove(en);
-    			somethingHasChanged = true;
     			
     			prev = rect.clone();
     		}
     	}
-    	
-    	if(somethingHasChanged) fix();
     	
     	if(tl != null) tl.reset(pCurrentList);
     	if(tr != null) tr.reset(pCurrentList);
@@ -381,8 +374,12 @@ class CachedQuadTreeNode
 	{
 		if(!_init) init();
 		
-		node.clear();
-		_list.add(node);
+		if(node.exists)
+		{
+			node.exists = false;
+			node.clear();
+			_list.add(node);
+		}
 	}
 	
 	/**

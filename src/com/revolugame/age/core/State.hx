@@ -75,8 +75,12 @@ class State extends Group
 		if(AgeData.quadtree != null)
 		{			
 			var list : List<QuadTreeEntity> = AgeData.quadtree.reset();
-			for(l in list)
-				AgeData.quadtree.insert(l);
+			if(list.length > 0)
+			{
+				AgeData.quadtree.fix();
+				for(l in list)
+					AgeData.quadtree.insert(l);
+			}
 		}
 						
 		super.update();
