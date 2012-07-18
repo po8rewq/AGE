@@ -5,6 +5,7 @@ import com.revolugame.age.AgeUtils;
 import com.revolugame.age.display.IEntity;
 import com.revolugame.age.display.Entity;
 import com.revolugame.age.display.Image;
+import com.revolugame.age.system.quadtree.QuadTreeEntity;
 
 import flash.geom.Rectangle;
 
@@ -72,12 +73,11 @@ class State extends Group
 	{
 		// clear the quad tree, and add all children to it for new positions
 		if(AgeData.quadtree != null)
-		{
-			AgeData.quadtree.clear();
-			AgeData.quadtree.initChildren(this);
+		{			
+			var list : List<QuadTreeEntity> = AgeData.quadtree.reset();
+			for(l in list)
+				AgeData.quadtree.insert(l);
 		}
-
-//trace(AgeData.quadtree.getEntitiesInNode());
 						
 		super.update();
 	}

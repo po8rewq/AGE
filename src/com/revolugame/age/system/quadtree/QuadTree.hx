@@ -21,7 +21,7 @@ class QuadTree extends QuadTreeNode
     {
         super(0, 0, pInitW, pInitH, pDepth);
     }
-    
+        
     /**
      * Insert all entities in the tree
      */
@@ -60,11 +60,11 @@ class QuadTree extends QuadTreeNode
     public var spr : Sprite; // TEMPORARY FOR DEBUG
     public function renderDebug()
     {    
-   // 	if(spr == null) spr = new Sprite();
-    //   	spr.graphics.clear();
-   // 	spr.graphics.lineStyle(2, 0x000000);
-    //	renderNode(spr.graphics);
-   // 	AgeData.renderer.renderDebugData( spr );
+//    	if(spr == null) spr = new Sprite();
+//       	spr.graphics.clear();
+//    	spr.graphics.lineStyle(2, 0x000000);
+//    	renderNode(spr.graphics);
+//    	AgeData.renderer.renderDebugData( spr );
     }
     #end
     

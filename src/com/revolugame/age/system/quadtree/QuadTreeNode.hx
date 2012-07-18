@@ -260,6 +260,45 @@ class QuadTreeNode
     		(bl != null ? bl.getEntitiesInNode() : 0) + 
     		(br != null ? br.getEntitiesInNode() : 0)
     	);
+    }    
+    
+    /**
+     * Check if all entities are rightly at there place, if not return them
+     *
+     * @return all entities to insert again in the quad tree
+     */
+    public function reset( ?pCurrentList: List<QuadTreeEntity> = null):List<QuadTreeEntity>
+    {
+    	if(pCurrentList == null) pCurrentList = new List();
+    	
+    	var somethingHasChanged : Bool = false;
+    	var rect : Rectangle;
+    	var prev : Rectangle;
+    	
+    	for(en in entities)
+    	{
+    		rect = en.rect;
+    		prev = en.previousRect;
+    	
+    		//if(rect.left < x || rect.right > x + width || rect.top < y || rect.bottom > y + height)
+    		if(rect.left != prev.left || rect.top != prev.top || rect.right != prev.right || rect.bottom != prev.bottom)
+    		{
+    			pCurrentList.add(en);
+    			remove(en);
+    			somethingHasChanged = true;
+    			
+    			prev = rect.clone();
+    		}
+    	}
+    	
+    	if(somethingHasChanged) fix();
+    	
+    	if(tl != null) tl.reset(pCurrentList);
+    	if(tr != null) tr.reset(pCurrentList);
+    	if(bl != null) bl.reset(pCurrentList);
+    	if(br != null) br.reset(pCurrentList);
+    	
+    	return pCurrentList;
     }
     
     public function clear()
