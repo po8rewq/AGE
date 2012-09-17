@@ -23,9 +23,9 @@ class QuadTree extends QuadTreeNode
     #if debug
     public var spr : Sprite; // TEMPORARY FOR DEBUG
     public function renderDebug()
-    {    
+    {   
     	if(spr == null) spr = new Sprite();
-       	spr.graphics.clear();
+    	spr.graphics.clear();
     	spr.graphics.lineStyle(2, 0x000000);
     	renderNode(spr.graphics);
     	AgeData.renderer.renderDebugData( spr );
@@ -35,22 +35,21 @@ class QuadTree extends QuadTreeNode
     /**
      * Inserts an item in the node
      * Insertion is not recursive, to reduce function calls and make the tree faster.
+     *
+     * TODO : a déplacer vers la classe QuadTreeNode ??
      */
     public function insert(pEntity:QuadTreeEntity)
     {
-        var entityRect : Rectangle = pEntity.rect;
-        var current : QuadTreeNode = this;
+        var entityRect  : Rectangle = pEntity.rect,
+            current     : QuadTreeNode = this,
+            onLeft      : Bool,
+            onTop       : Bool,
+            onRight     : Bool,
+            onBottom    : Bool,
+            currentX    : Float,
+            currentY    : Float,
+            entities    : List<QuadTreeEntity>;
         
-        // On cherche la position
-        var onLeft      : Bool;
-        var onTop       : Bool;
-        var onRight     : Bool;
-        var onBottom    : Bool;
-        
-        var currentX : Float;
-        var currentY : Float;
-        
-        var entities : List<QuadTreeEntity>;
     	while(true)
     	{
     		entities = current.entities;
@@ -74,10 +73,10 @@ class QuadTree extends QuadTreeNode
 	        // if the entity is not completely in one of the 4 nodes 
 	        if( ( !onTop && !onBottom ) || ( !onLeft && !onRight ) )
 	        {
-	            current.entities.add( pEntity );
+	            entities.add( pEntity );
 			   		
 			    // Push down entities from this zone
-			    for(en in current.entities)
+			    for(en in entities)
 			       	current.pushEntityDown(en);
 	            
 	            break;

@@ -2,8 +2,14 @@ package com.revolugame.age.display;
 
 import com.revolugame.age.managers.AssetsManager;
 import com.revolugame.age.display.ICollideEntity;
+import com.revolugame.age.display.DrawingContext;
+import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.system.quadtree.QuadTree;
 import com.revolugame.age.system.quadtree.QuadTreeEntity;
+
+#if cpp
+import com.revolugame.age.managers.TileSheetManager;
+#end
 
 import nme.display.BitmapData;
 import nme.geom.Rectangle;
@@ -33,6 +39,15 @@ class TileMap extends Group, implements IDrawable
 	
 //	public var parent : Group;
 
+    /** Scale  */
+    public var scale : AgePoint;
+    
+    /** Angle */
+	public var rotation : Float;
+	
+	/** Alpha */
+	public var alpha : Float; // TODO flash
+
 	private var _spriteMap : SpriteMap;
 	private var _drawingContext : DrawingContext;
 
@@ -43,6 +58,10 @@ class TileMap extends Group, implements IDrawable
 		x = y = 0;
 		visible = true;
 		dead = false;
+		
+		scale = new AgePoint(1, 1);
+        rotation = 0;
+		alpha = 1.0;
 	
 		_tileWidth = pTileWidth;
 		_tileHeight = pTileHeight;
@@ -54,6 +73,10 @@ class TileMap extends Group, implements IDrawable
 		
 		_spriteMap = new SpriteMapExt();
 		_drawingContext = new DrawingContext();
+		
+		#if cpp
+		_spriteMap.loadGraphic(pTileset, pTileWidth, pTileHeight);
+		#end
 	}
 	
 	/** Just to be sure that nothing is really added on this fake group */
@@ -104,24 +127,40 @@ class TileMap extends Group, implements IDrawable
 	#end
 	private function drawFrame()
 	{
+	    // Destination point
+	    var destPoint : Point = new Point();
+		var bounds : Rectangle;
+	
 		#if flash
 		_buffer.lock();
-		
+				
 		var bmpRect: Rectangle = new Rectangle(0, 0, _tileWidth, _tileHeight);
-		var destPoint : Point = new Point();
-		var bounds : Rectangle;
+		#end
+	
+	    #if cpp
+	    _drawingContext.data = new Array();
+	    #end
 		
 		for(t in _tiles)
 		{
+		    #if flash
 			bmpRect.x = t.id % _tilesetWidth * _tileWidth;
 			bmpRect.y = Std.int(t.id / _tilesetWidth) * _tileHeight;
+			#end
+			
 			bounds = t.getBounds();
 			destPoint.x = bounds.x;
 			destPoint.y = bounds.y;
 			
+			#if flash
 			_buffer.copyPixels( _source, bmpRect, destPoint );
+			#elseif cpp
+			// Plutot que stocker dans un tableau et tout faire au moment du render, on s'en occupe ici ... FIXME
+			_drawingContext.pushSingleContextData( x + destPoint.x, y + destPoint.y, t.id );
+			#end
 		}
 		
+		#if flash
 		_buffer.unlock();
 		
 		_spriteMap.pixels = _buffer;
@@ -135,13 +174,16 @@ class TileMap extends Group, implements IDrawable
 			drawFrame();
 			
 			AgeData.renderer.prepareRendering();
+            #if !cpp
+			_drawingContext.addSingleContextData( x, y, scale.x, scale.y, rotation, alpha, false, false );
+			#end
 			AgeData.renderer.render( _spriteMap, _drawingContext);
 		}
 	}
 	
 	public override function destroy(): Void
 	{
-	
+	    // TODO
 	}
 	
 	/**
@@ -245,6 +287,32 @@ class SpriteMapExt extends SpriteMap
 	{
 		super();
 	}
+	
+	#if cpp
+	/**
+	 * Override the loadGraphic function to load the tileset
+	 */
+	public override function loadGraphic(pSrc: String, pWidth: Int = 0, pHeight: Int = 0):Void
+	{
+	    pixels = AssetsManager.getBitmap(pSrc);
+		tilesheetdata = TileSheetManager.addTileSheet(pixels);
+			
+	    rects = new Array();
+	    var i : Int = 0;
+	    var x : Int;
+	    var y : Int;
+	    for(row in 0...1)
+	    {
+	        for(col in 0...5)
+	        {
+	            x = col * pWidth;
+	            y = row * pHeight;
+	            rects[i] = new Rectangle(x, y, pWidth, pHeight);
+	            tilesheetdata.tilesheet.addTileRect( rects[i++] );
+	        }
+	    }
+	}
+	#end
 	
 	public override function getRect():Rectangle
 	{

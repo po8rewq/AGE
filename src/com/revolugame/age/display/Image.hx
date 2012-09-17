@@ -208,7 +208,7 @@ class Image implements IEntity, implements IDrawable
 			
 			AgeData.renderer.prepareRendering();
 			
-			_drawingContext.updateValue( px, py, scale.x, scale.y, rotation, alpha, mirrorX, mirrorY );
+			_drawingContext.addSingleContextData( px, py, scale.x, scale.y, rotation, alpha, mirrorX, mirrorY );
 
 			AgeData.renderer.render( _spriteMap, _drawingContext);
 		}

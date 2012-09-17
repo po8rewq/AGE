@@ -37,21 +37,25 @@ class TileSheetRenderer implements IRenderer
 			
 		/** Reset drawing data */
 		ts.resetData();
-			
-        /** Position */
-        ts.setPosition( context.position.x, context.position.y );
-            
-        /** Set current frame id */
-        ts.setFrameId( spritemap.getFrameId() );
-            
-        /** Scale && rotation */
-		ts.setTransform(context.scaleX, context.scaleY, context.rotation, context.mirrorX, context.mirrorY);
-            
-        /** rgb */
-//		ts.setRGB( _red, _green, _blue );
-            
-        /** alpha */
-        ts.setAlpha(context.alpha);
+		
+		for(data in context.data) 
+		{			
+	        /** Position */
+	        ts.setPosition( data.position.x, data.position.y );
+	            
+	        /** Set current frame id */
+	        //ts.setFrameId( spritemap.getFrameId() );
+	        ts.setFrameId( data.frameId );
+	            
+	        /** Scale && rotation */
+	//		ts.setTransform(data.scaleX, data.scaleY, data.rotation, data.mirrorX, data.mirrorY);
+	            
+	        /** rgb */
+	//		ts.setRGB( data.red, data.green, data.blue );
+	            
+	        /** alpha */
+	//        ts.setAlpha(data.alpha);            
+        }
             
         ts.render();
 	}

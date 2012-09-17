@@ -17,14 +17,21 @@ class QuadTreeEntity
     public function new(pParent:ICollideEntity)
     {
         parent = pParent;
-        rect = pParent.getBounds();
+        rect = pParent.getBounds().clone(); // on ne prend pas les données direct, juste un clone
         previousRect = rect.clone();
+    }
+    
+    public function updatePosition():Void
+    {
+    	previousRect = rect.clone();
+    	rect = parent.getBounds().clone();
     }
     
     public function destroy()
     {
     	parent = null;
     	rect = null;
+    	previousRect = null;
     }
 
 }

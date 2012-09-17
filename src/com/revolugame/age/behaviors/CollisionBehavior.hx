@@ -19,24 +19,27 @@ class CollisionBehavior implements IBehavior
     public var enabled(default, null) : Bool;
     
     /** Collisions type */
-    public var collisions : CollisionsType; // TODO
+    public var type : Int; // use CollisionsEnum.getIntValue()
+    
+    /** Helper to store colliders during a check */
+    private var _colliders : List<ICollideEntity>;
     
     public function new(pEntity: Entity)
     {
         _entity = pEntity;
-        collisions = CollisionsType.ANY;
+        type = CollisionsEnum.ANY;
     }
     
     public function update() {}
-     
-    //private var _colliders : AgeList;
-    private var _colliders : List<ICollideEntity>;   
-    public function collideWith(pX: Float, pY: Float):ICollideEntity
-    {
-    	if( AgeData.state == null ) return null;
-    	
-    	var tmpX : Float = _entity.x;
-    	var tmpY : Float = _entity.y;
+    
+    /**
+     * @param pX, pY : where to check
+     * @param pDirection : from where the entity is colliding
+     */
+    public function collideWith(pX: Float, pY: Float, pDirection : Int):ICollideEntity
+    {    	
+    	var tmpX : Float = _entity.x,
+    		tmpY : Float = _entity.y;
     	
     	// change the position just for collisions detection
     	_entity.x = pX;
@@ -48,26 +51,27 @@ class CollisionBehavior implements IBehavior
   		if(_colliders == null) _colliders = new List();
   		else _colliders.clear();
 
+		// get potential colliders
     	AgeData.quadtree.getEntityInRect( _entity.getBounds(), cast _colliders );
   		
-    	// Check if the entity is colliding with one of te entity in the list
+    	// Check if the entity is colliding with one of the entity in the list
     	for(entity in _colliders)
-    	{
     		if(_entity != entity && collide(_entity, entity))
     			en = entity;
-    	}
+    	
     	_entity.x = tmpX; _entity.y = tmpY;
     	return en;
     }
     
     /**
-     * @return true if pEntity1 collide pEntity2
+     * @return true if pEntity1 collide with pEntity2
      */
     public function collide(pEntity1: ICollideEntity, pEntity2: ICollideEntity):Bool
     {
-        var p1 : Rectangle = pEntity1.getBounds();
-        var p2 : Rectangle = pEntity2.getBounds();
+        var p1 : Rectangle = pEntity1.getBounds(),
+        	p2 : Rectangle = pEntity2.getBounds();
         
+        // cas any
         return (pEntity1.solid && pEntity2.solid 
                 && p1.x + p1.width > p2.x
                 && p1.y + p1.height > p2.y

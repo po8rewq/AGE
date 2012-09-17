@@ -72,12 +72,11 @@ class QuadTreeNode
      */
     public function pushEntityDown(pEntity : QuadTreeEntity):Bool
     {    
-    	var rect = pEntity.rect;
-    	
-    	var onLeft 		: Bool = ( x + width ) - rect.right >= halfWidth;
-    	var onTop 		: Bool = ( y + height ) - rect.bottom >= halfHeight;
-    	var onRight 	: Bool = rect.left - x >= halfWidth;
-    	var onBottom 	: Bool = rect.top - y >= halfHeight;
+    	var rect        : Rectangle = pEntity.rect,
+    	    onLeft 		: Bool = ( x + width ) - rect.right >= halfWidth,
+    	    onTop 		: Bool = ( y + height ) - rect.bottom >= halfHeight,
+    	    onRight 	: Bool = rect.left - x >= halfWidth,
+    	    onBottom 	: Bool = rect.top - y >= halfHeight;
     	
     	// The entity is not completely in the node, so we do nothing
     	if( depth >= MAX_DEPTH || ( !onTop && !onBottom ) || ( !onLeft && !onRight ) )
@@ -133,83 +132,84 @@ class QuadTreeNode
     }
     
     /**
-     * Removes an item from the node (cleans up references to items).
+     * Removes an item from the node
      * @return true if the entity has been removed
      */
     public function remove(pEntity:QuadTreeEntity):Bool
     {
     	if( !entities.remove(pEntity) )
     	{
-    		var returnValue : Bool = true;
-    		if( tl != null && !tl.remove(pEntity) )
+    		var returnValue : Bool = false;
+    		if( tl != null && tl.remove(pEntity) )
     		{
-    			returnValue = false;
+    			returnValue = true;
     		}
-    		else if(tr != null && !tr.remove(pEntity) )
+    		else if(tr != null && tr.remove(pEntity) )
     		{
-    			returnValue = false;
+    			returnValue = true;
     		}
-    		else if( bl != null && !bl.remove(pEntity) )
+    		else if( bl != null && bl.remove(pEntity) )
     		{
-    			returnValue = false;
+    			returnValue = true;
     		}
-    		else if( br!= null && !br.remove(pEntity) )
+    		else if( br!= null && br.remove(pEntity) )
     		{
-    			returnValue = false;
+    			returnValue = true;
     		}
     		return returnValue;
     	}
-    	else 
-    	{ 
-    		fix(); 
-    		return true; 
-    	}
+    	
+    	fix(); 
+    	return true;
     }
     
     /**
      * Fix the tree by removing empty nodes
      */
     public function fix()
-    {
-    	// si un noeud n'a qu'une seule entité sur les 4 zones, on degage et on remet ici
-    	if( (tl == null ? 0 : tl.getEntitiesInNode()) +
-    		(tr == null ? 0 : tr.getEntitiesInNode()) + 
-    		(bl == null ? 0 : bl.getEntitiesInNode()) + 
-    		(br == null ? 0 : br.getEntitiesInNode()) <= 1 )
+    {    
+    	var numChildren : Int = getEntitiesInNode();
+    
+    	// Cas 1 : on a supprimé une entité qui etait seule
+    	if( numChildren == 0 ) // rien en dessous
     	{
-    		// on recupere l'entité
-    		var en : QuadTreeEntity = null;
-    		if(tl != null && tl.getEntitiesInNode() > 0)
+    		if(tl != null && tl.getEntitiesInNode() == 0) CachedQuadTreeNode.recycle(tl);
+    		if(tr != null && tr.getEntitiesInNode() == 0) CachedQuadTreeNode.recycle(tr);
+    		if(bl != null && bl.getEntitiesInNode() == 0) CachedQuadTreeNode.recycle(bl);
+    		if(br != null && br.getEntitiesInNode() == 0) CachedQuadTreeNode.recycle(br);
+    		
+    		CachedQuadTreeNode.recycle(this);
+    	}
+    	else
+    	{
+    		var tlen : Int = (tl == null ? 0 : tl.entities.length ),
+    			tren : Int = (tr == null ? 0 : tr.entities.length ),
+    			blen : Int = (bl == null ? 0 : bl.entities.length ),
+    			bren : Int = (br == null ? 0 : br.entities.length ),
+    			nodeDirectChildren : Int = tlen + tren + blen + bren;
+    	
+    		// si dans ce noeud on a 0 entité, mais en dessous on en a 1, on la remonte d'un cran, puis on fix()
+    		if(nodeDirectChildren == 1 && entities.length == 0)
     		{
-    			en = tl.entities.first();
-    			tl.remove( en );
-    			tl.fix();
-    			CachedQuadTreeNode.recycle(tl);
-    		}
-    		else if(tr != null && tr.getEntitiesInNode() > 0)
-    		{
-    			en = tr.entities.first();
-    			tr.remove( en );
-    			tr.fix();
-    			CachedQuadTreeNode.recycle(tr);
-    		}
-    		else if(bl != null && bl.getEntitiesInNode() > 0)
-    		{
-    			en = bl.entities.first();
-    			bl.remove( en );
-    			bl.fix();
-    			CachedQuadTreeNode.recycle(bl);
-    		}
-    		else if(br != null && br.getEntitiesInNode() > 0)
-    		{
-    			en = br.entities.first();
-    			br.remove( en );
-    			br.fix();
-    			CachedQuadTreeNode.recycle(br);
+    			var node : QuadTreeNode = null;
+    			if(tlen == 1) node = tl;
+    			else if(tren == 1) node = tr;
+    			else if(blen == 1) node = bl;
+    			else if(bren == 1) node = br;
+    			
+    			if(node != null && node.getEntitiesInNode() - node.entities.length == 0)
+    			{
+    				var en : QuadTreeEntity = node.entities.first();
+    				node.remove(en); // va s'occuper de fixer
+    				AgeData.quadtree.insert(en);
+    			}
     		}
     		
-    		if(en != null)
-    			AgeData.quadtree.insert(en);
+    		if( tl != null && tl.getEntitiesInNode() > 0 ) tl.fix();
+    		if( tr != null && tr.getEntitiesInNode() > 0 ) tr.fix();
+    		if( bl != null && bl.getEntitiesInNode() > 0 ) bl.fix();
+    		if( br != null && br.getEntitiesInNode() > 0 ) br.fix();
+    		
     	}
     }
     
@@ -219,27 +219,28 @@ class QuadTreeNode
      * @param pColliders : List of potential colliders
      */
     public function getEntityInRect(pRect:Rectangle, pColliders:List<ICollideEntity>):List<ICollideEntity>
-    //public function getEntityInRect(pRect:Rectangle, pColliders:AgeList): AgeList
-    {
+    {    	
+    	if(!exists) return pColliders;
+    
 	    for(i in entities)
-	    	pColliders.add(i.parent);
+    	    pColliders.add(i.parent);
   
-    	var onLeft : Bool = pRect.left < x + halfWidth;
-    	var onRight: Bool = pRect.right > x + halfWidth;
-    	var onTop : Bool = pRect.top < y + halfHeight;
-    	var onBottom : Bool = pRect.bottom > y + halfHeight;
+    	var onLeft : Bool = pRect.left < x + halfWidth,
+    	    onRight: Bool = pRect.right > x + halfWidth,
+    	    onTop : Bool = pRect.top < y + halfHeight,
+    	    onBottom : Bool = pRect.bottom > y + halfHeight;
     
     	// check to know the position of the rect 
-    	if( onTop && onLeft && tl != null )
+    	if( onTop && onLeft && tl != null && tl.exists )
     		tl.getEntityInRect(pRect, pColliders);
     	
-    	if( onTop && onRight && tr != null )
+    	if( onTop && onRight && tr != null && tr.exists )
     		tr.getEntityInRect(pRect, pColliders);
     	
-    	if( onBottom && onLeft && bl != null )
+    	if( onBottom && onLeft && bl != null && bl.exists )
     		bl.getEntityInRect(pRect, pColliders);
     	
-    	if( onBottom && onRight && br != null )
+    	if( onBottom && onRight && br != null && br.exists )
     		br.getEntityInRect(pRect, pColliders);
     	
     	return pColliders;
@@ -250,11 +251,13 @@ class QuadTreeNode
      */
     public function getEntitiesInNode():Int
     {
+    	if(!exists) return 0;
+    	
     	return ( entities.length + 
-    		(tl != null && tl != this ? tl.getEntitiesInNode() : 0) + 
-    		(tr != null && tr != this ? tr.getEntitiesInNode() : 0) + 
-    		(bl != null && bl != this ? bl.getEntitiesInNode() : 0) + 
-    		(br != null && br != this ? br.getEntitiesInNode() : 0)
+    		(tl != null && tl.exists && tl != this ? tl.getEntitiesInNode() : 0) + 
+    		(tr != null && tr.exists && tr != this ? tr.getEntitiesInNode() : 0) + 
+    		(bl != null && bl.exists && bl != this ? bl.getEntitiesInNode() : 0) + 
+    		(br != null && br.exists && br != this ? br.getEntitiesInNode() : 0)
     	);
     }    
     
@@ -264,26 +267,27 @@ class QuadTreeNode
      * @return all entities to insert again in the quad tree
      */
     public function reset( ?pCurrentList: List<QuadTreeEntity> = null):List<QuadTreeEntity>
-    {
+    {    
     	if(pCurrentList == null) pCurrentList = new List();
     	
-    	var rect : Rectangle;
-    	var prev : Rectangle;
+    	var rect : Rectangle,
+    	    prev : Rectangle;
     	
+    	var en : QuadTreeEntity;
     	for(en in entities)
     	{
     		rect = en.rect;
     		prev = en.previousRect;
     	
     		// if the position is different than in the previous frame
-    		//if(rect.left < x || rect.right > x + width || rect.top < y || rect.bottom > y + height)
     		if(rect.left != prev.left || rect.top != prev.top || rect.right != prev.right || rect.bottom != prev.bottom)
     		{
     			pCurrentList.add(en);
     			remove(en);
-    			
-    			prev = rect.clone();
     		}
+    		
+    		// Update the entity position for the next frame
+    		en.updatePosition();
     	}
     	
     	if(tl != null) tl.reset(pCurrentList);
@@ -394,9 +398,12 @@ class CachedQuadTreeNode
 		{
 			node = _list.pop();
 			node.init(pX, pY, pWidth, pHeight, pDepth);
+			node.exists = true;
 		}
 		else
+		{
 			node = new QuadTreeNode(pX, pY, pWidth, pHeight, pDepth);
+		}
 	
 		return node;
 	}

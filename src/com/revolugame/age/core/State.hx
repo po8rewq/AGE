@@ -73,14 +73,17 @@ class State extends Group
 	{
 		// clear the quad tree, and add all children to it for new positions
 		if(AgeData.quadtree != null)
-		{			
+		{ 
+		
+//trace('Quadtree: '+AgeData.quadtree.getEntitiesInNode());
+		
 			var list : List<QuadTreeEntity> = AgeData.quadtree.reset();
 			if(list.length > 0)
 			{
-				AgeData.quadtree.fix();
 				for(l in list)
 					AgeData.quadtree.insert(l);
 			}
+			
 		}
 						
 		super.update();
@@ -90,8 +93,8 @@ class State extends Group
 	{
 		super.render();
 		#if debug
-		if(AgeData.quadtree != null)
-			AgeData.quadtree.renderDebug();
+//		if(AgeData.quadtree != null)
+//			AgeData.quadtree.renderDebug();
 		#end
 	}
 		

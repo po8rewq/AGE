@@ -1,12 +1,13 @@
 package com.revolugame.age.display;
 
-import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.behaviors.BasicMovementBehavior;
 import com.revolugame.age.behaviors.CollisionBehavior;
+import com.revolugame.age.core.IBehavior;
+import com.revolugame.age.display.ICollideEntity;
+import com.revolugame.age.enums.CollisionsEnum;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.system.quadtree.QuadTree;
 import com.revolugame.age.system.quadtree.QuadTreeEntity;
-import com.revolugame.age.display.ICollideEntity;
 
 import flash.geom.Rectangle;
 
@@ -113,20 +114,21 @@ class Entity extends Image, implements ICollideEntity
     	if(!movable) return;
     
     	// destination point
-	    var moveX : Int = Math.round(pX); 
-	    var moveY : Int = Math.round(pY);
-    	
-    	var sign : Int;
-    	var e : ICollideEntity;
+	    var moveX : Int = Math.round(pX),
+	        moveY : Int = Math.round(pY),
+    	    sign : Int,
+    	    e : ICollideEntity,
+    	    from : Int; // from where the entity is coming
     		
     	if( moveX != 0 )
     	{
-    		if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(x + moveX, y) != null) )
+    	    sign = AgeUtils.sign(pX);
+    	    from = (sign > 0 ? CollisionsEnum.LEFT : CollisionsEnum.RIGHT);
+    		if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(x + moveX, y, from) != null) )
     		{
-    			sign = AgeUtils.sign(pX);
     			while(moveX != 0)
     			{
-    				if( (e = _collisions.collideWith(x + sign, y)) != null )
+    				if( (e = _collisions.collideWith(x + sign, y, from )) != null )
     				{
     					_movement.stopMovementX();
     					break;
@@ -146,12 +148,13 @@ class Entity extends Image, implements ICollideEntity
     		
     	if( moveY != 0 )
     	{ 
-    		if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(x, y + moveY) != null) )
+    	    sign = AgeUtils.sign(moveY);
+    	    from = (sign > 0 ? CollisionsEnum.UP : CollisionsEnum.DOWN);
+    		if( _collisions != null && _collisions.enabled && (pSweep || _collisions.collideWith(x, y + moveY, from) != null) )
     		{
-    			sign = AgeUtils.sign(moveY);
     			while(moveY != 0)
     			{
-    				if( (e = _collisions.collideWith(x, y + sign)) != null )
+    				if( (e = _collisions.collideWith(x, y + sign, from )) != null )
     				{
     					_movement.stopMovementY();
     					break;
@@ -168,14 +171,6 @@ class Entity extends Image, implements ICollideEntity
     			y += pY;
     		}
     	}
-    	/*
-    	if(quadTreeEntity != null) 
-    	{
-    		if(AgeData.quadtree.remove(quadTreeEntity))
-    		{	// just in case ...
-	   			AgeData.quadtree.insert(quadTreeEntity);
-	   		}
-    	}*/
     }
 	
 	public override function destroy():Void

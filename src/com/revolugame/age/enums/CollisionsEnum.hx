@@ -1,29 +1,13 @@
 package com.revolugame.age.enums;
 
-enum CollisionsType
-{
-    LEFT;
-    RIGHT;
-    UP;
-    DOWN;
-    NONE;
-    ANY;
-}
-
 class CollisionsEnum
 {
-	
-	public static function getIntValue(val: CollisionsType):Int
-	{
-		return switch(val)
-		{
-			case CollisionsType.LEFT    : 0x0001;
-			case CollisionsType.RIGHT   : 0x0010;
-			case CollisionsType.UP      : 0x0100;
-			case CollisionsType.DOWN    : 0x1000;
-			case CollisionsType.NONE    : 0;
-			case CollisionsType.ANY     : 1;
-		}
-	}
+
+	public static inline var LEFT	: Int = 0x0001;
+	public static inline var RIGHT	: Int = 0x0010;
+	public static inline var UP		: Int = 0x0100;
+	public static inline var DOWN 	: Int = 0x1000;
+	public static inline var NONE 	: Int = 0;
+	public static inline var ANY 	: Int = LEFT | RIGHT | UP | DOWN;
 	
 }

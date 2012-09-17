@@ -30,28 +30,30 @@ class BitmapRenderer implements IRenderer
 	
 	public function render(spritemap: SpriteMap, context: DrawingContext):Void
 	{		
-		if(context.scaleX != 1 || context.scaleY != 1 || context.rotation != 0 || context.mirrorX || context.mirrorY)
+	    var data : Data = context.data;
+	
+		if(data.scaleX != 1 || data.scaleY != 1 || data.rotation != 0 || data.mirrorX || data.mirrorY)
 		{
 			_matrix.identity();
 			
-			if(context.rotation != 0)
-				_matrix.rotate(context.rotation * 0.017453293);
+			if(data.rotation != 0)
+				_matrix.rotate(data.rotation * 0.017453293);
 				
 			// mirror
-			var sclX : Float = context.scaleX * (context.mirrorX ? -1 : 1);
-			var sclY : Float = context.scaleY * (context.mirrorY ? -1 : 1);
+			var sclX : Float = data.scaleX * (data.mirrorX ? -1 : 1);
+			var sclY : Float = data.scaleY * (data.mirrorY ? -1 : 1);
 			if(sclX != 1 || sclY != 1)
 			{
 				_matrix.scale(sclX, sclY);
 			}
 				
-			_matrix.translate(context.position.x, context.position.y);
+			_matrix.translate(data.position.x, data.position.y);
 				
 			AgeData.camera.draw( context.buffer, _matrix, null, null, null, AgeData.camera.antialiasing );
 		}
 		else
 		{
-			AgeData.camera.copyPixels( spritemap.pixels, spritemap.getRect(), context.position, null, null, true );
+			AgeData.camera.copyPixels( spritemap.pixels, spritemap.getRect(), data.position, null, null, true );
 	    }
 	}
 	
