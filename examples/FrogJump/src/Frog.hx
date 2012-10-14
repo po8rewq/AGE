@@ -1,6 +1,6 @@
 package ;
 
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.QuadTreeEntity;
 import com.revolugame.age.display.SpriteMap;
 import com.revolugame.age.ui.Input;
 import com.revolugame.age.ui.Key;
@@ -13,7 +13,7 @@ import flash.geom.Rectangle;
  * ...
  * @author Adrien Fischer
  */
-class Frog extends Entity
+class Frog extends QuadTreeEntity
 {	
 	public function new (pX: Int, pY: Int) 
 	{

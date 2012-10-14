@@ -2,10 +2,8 @@ package com.revolugame.age.core;
 
 import com.revolugame.age.display.Group;
 import com.revolugame.age.AgeUtils;
-import com.revolugame.age.display.IEntity;
-import com.revolugame.age.display.Entity;
 import com.revolugame.age.display.Image;
-import com.revolugame.age.system.quadtree.QuadTreeEntity;
+import com.revolugame.age.system.quadtree.QuadTreeObject;
 
 import flash.geom.Rectangle;
 
@@ -69,6 +67,9 @@ class State extends Group
 		}
 	}
 	
+	/**
+	 * TODO CLEAN THIS
+	 */
 	public override function update()
 	{
 		// clear the quad tree, and add all children to it for new positions
@@ -77,7 +78,7 @@ class State extends Group
 		
 //trace('Quadtree: '+AgeData.quadtree.getEntitiesInNode());
 		
-			var list : List<QuadTreeEntity> = AgeData.quadtree.reset();
+			var list : List<QuadTreeObject> = AgeData.quadtree.reset();
 			if(list.length > 0)
 			{
 				for(l in list)
@@ -85,6 +86,16 @@ class State extends Group
 			}
 			
 		}
+		#if box2d
+		else if(AgeData.b2world != null)
+		{
+		    AgeData.b2world.step (1 / 60, 6, 2);
+	    	AgeData.b2world.clearForces ();
+	    	#if debug
+    		AgeData.b2world.drawDebugData ();
+    		#end
+		}
+		#end
 						
 		super.update();
 	}

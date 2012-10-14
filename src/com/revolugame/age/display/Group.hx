@@ -93,8 +93,8 @@ class Group implements IEntity
 	    if(pDestroy)
     	    pEntity.destroy();
 
-   	    if(AgeData.quadtree != null && Std.is(pEntity, Entity) && cast(pEntity, Entity).solid)
-	    	AgeData.quadtree.remove( cast(pEntity, Entity).quadTreeEntity );
+   	    if(AgeData.quadtree != null && Std.is(pEntity, QuadTreeEntity) && cast(pEntity, QuadTreeEntity).solid)
+	    	AgeData.quadtree.remove( cast(pEntity, QuadTreeEntity).quadTreeObject );
 	}
 	
 	public function getBounds():Rectangle { return null; }

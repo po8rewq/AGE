@@ -2,23 +2,19 @@ package com.revolugame.age.display;
 
 import com.revolugame.age.behaviors.BasicMovementBehavior;
 import com.revolugame.age.behaviors.CollisionBehavior;
-import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.display.ICollideEntity;
 import com.revolugame.age.enums.CollisionsEnum;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.system.quadtree.QuadTree;
-import com.revolugame.age.system.quadtree.QuadTreeEntity;
+import com.revolugame.age.system.quadtree.QuadTreeObject;
 
 import flash.geom.Rectangle;
 
 /**
  * Graphical element with collisions detection and behaviors
  */
-class Entity extends Image, implements ICollideEntity
-{	
-	/** All the behaviors of the actor */
-    private var _behaviors : List<IBehavior>;
-    
+class QuadTreeEntity extends BasicEntity, implements ICollideEntity
+{	    
     /** Default behaviors */
     var _movement : BasicMovementBehavior;
 	var _collisions : CollisionBehavior;
@@ -33,49 +29,12 @@ class Entity extends Image, implements ICollideEntity
 	public var hitbox : Rectangle;
 	
 	/** Necessaire pour la gestion des collisions */
-	public var quadTreeEntity : QuadTreeEntity;
+	public var quadTreeObject : QuadTreeObject;
     
     public function new(pX: Float = 0, pY: Float = 0):Void
 	{
 		super(pX, pY);
-		
-		_behaviors = new List();
 	}
-	
-	public override function update():Void
-	{
-		for(b in _behaviors)
-			if(b.enabled)
-				b.update();
-		super.update();
-	}
-	
-	/**
-     * Add a specific behavior
-     */
-	public function addBehavior(b: IBehavior, ?pEnable: Bool = true):Void
-	{
-		_behaviors.push(b);
-		if(pEnable)
-			b.enable();
-	}
-	
-	public function hasBehavior(pBehavior : IBehavior):Bool
-	{
-	    for(b in _behaviors)
-	        if(b == pBehavior)
-	            return true;
-	    return false;
-	}
-	
-	/**
-    * Delete a behavior
-     */
-    public function removeBehavior(b: IBehavior):Void
-    {
-        b.disable();
-        _behaviors.remove( b );
-    }
     
     public override function getBounds():Rectangle
     {
@@ -109,7 +68,7 @@ class Entity extends Image, implements ICollideEntity
 	 * @param	pType	An optional collision type to stop flush against upon collision.
 	 * @param	pSweep	If sweeping should be used (prevents fast-moving objects from going through solidType).
 	 */
-    public function moveBy(pX:Float, pY:Float, ?pSweep:Bool = false)
+    public override function moveBy(pX:Float, pY:Float, ?pSweep:Bool = false)
     {
     	if(!movable) return;
     
@@ -174,14 +133,11 @@ class Entity extends Image, implements ICollideEntity
     }
 	
 	public override function destroy():Void
-	{
-		for(b in _behaviors)
-			b.destroy();
-			
-		if(quadTreeEntity != null)
+	{			
+		if(quadTreeObject != null)
 		{
-		    quadTreeEntity.destroy();
-		    quadTreeEntity = null;
+		    quadTreeObject.destroy();
+		    quadTreeObject = null;
 		}
 		
 		super.destroy();
@@ -213,14 +169,14 @@ class Entity extends Image, implements ICollideEntity
 		else if(!val && _collisions.enabled)
 		{
 			_collisions.disable();
-			if(quadTreeEntity != null)
-				AgeData.quadtree.remove(quadTreeEntity);
+			if(quadTreeObject != null)
+				AgeData.quadtree.remove(quadTreeObject);
 		}
-		else if(val && quadTreeEntity != null)
+		else if(val && quadTreeObject != null)
 		{
-			if(AgeData.quadtree.remove(quadTreeEntity))
+			if(AgeData.quadtree.remove(quadTreeObject))
     		{	// just in case ...
-	   			AgeData.quadtree.insert(quadTreeEntity);
+	   			AgeData.quadtree.insert(quadTreeObject);
 	   		}
 		}
 		
@@ -236,10 +192,10 @@ class Entity extends Image, implements ICollideEntity
 		if(AgeData.quadtree == null)
 			AgeData.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
 		
-		if(quadTreeEntity == null)
+		if(quadTreeObject == null)
 		{
-			quadTreeEntity = new QuadTreeEntity(this);
-			AgeData.quadtree.insert(quadTreeEntity);
+			quadTreeObject = new QuadTreeObject(this);
+			AgeData.quadtree.insert(quadTreeObject);
 		}
 	}
 	

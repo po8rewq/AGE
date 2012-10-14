@@ -1,6 +1,6 @@
 package com.revolugame.age.display;
 
-import com.revolugame.age.system.quadtree.QuadTreeEntity;
+import com.revolugame.age.system.quadtree.QuadTreeObject;
 import nme.geom.Rectangle;
 
 /**
@@ -8,7 +8,7 @@ import nme.geom.Rectangle;
  */
 interface ICollideEntity
 {
-    var quadTreeEntity : QuadTreeEntity;
+    var quadTreeObject : QuadTreeObject;
     var solid(getIsSolid, setIsSolid) : Bool;
     
     function getBounds():Rectangle;

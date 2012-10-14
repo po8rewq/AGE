@@ -34,7 +34,7 @@ class QuadTreeNode
     public var halfHeight : Float;
     
     /** Potentials colliders */
-    public var entities : List<QuadTreeEntity>;
+    public var entities : List<QuadTreeObject>;
     
     /** The four nodes */
     public var tl : QuadTreeNode;
@@ -70,7 +70,7 @@ class QuadTreeNode
      * Pushes an item in the tree down to the proper child node, 
      * returning success of the push. Used when item moves.
      */
-    public function pushEntityDown(pEntity : QuadTreeEntity):Bool
+    public function pushEntityDown(pEntity : QuadTreeObject):Bool
     {    
     	var rect        : Rectangle = pEntity.rect,
     	    onLeft 		: Bool = ( x + width ) - rect.right >= halfWidth,
@@ -135,7 +135,7 @@ class QuadTreeNode
      * Removes an item from the node
      * @return true if the entity has been removed
      */
-    public function remove(pEntity:QuadTreeEntity):Bool
+    public function remove(pEntity:QuadTreeObject):Bool
     {
     	if( !entities.remove(pEntity) )
     	{
@@ -199,7 +199,7 @@ class QuadTreeNode
     			
     			if(node != null && node.getEntitiesInNode() - node.entities.length == 0)
     			{
-    				var en : QuadTreeEntity = node.entities.first();
+    				var en : QuadTreeObject = node.entities.first();
     				node.remove(en); // va s'occuper de fixer
     				AgeData.quadtree.insert(en);
     			}
@@ -266,14 +266,14 @@ class QuadTreeNode
      *
      * @return all entities to insert again in the quad tree
      */
-    public function reset( ?pCurrentList: List<QuadTreeEntity> = null):List<QuadTreeEntity>
+    public function reset( ?pCurrentList: List<QuadTreeObject> = null):List<QuadTreeObject>
     {    
     	if(pCurrentList == null) pCurrentList = new List();
     	
     	var rect : Rectangle,
     	    prev : Rectangle;
     	
-    	var en : QuadTreeEntity;
+    	var en : QuadTreeObject;
     	for(en in entities)
     	{
     		rect = en.rect;

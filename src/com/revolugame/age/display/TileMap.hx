@@ -5,7 +5,7 @@ import com.revolugame.age.display.ICollideEntity;
 import com.revolugame.age.display.DrawingContext;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.system.quadtree.QuadTree;
-import com.revolugame.age.system.quadtree.QuadTreeEntity;
+import com.revolugame.age.system.quadtree.QuadTreeObject;
 
 #if cpp
 import com.revolugame.age.managers.TileSheetManager;
@@ -199,7 +199,11 @@ class TileMap extends Group, implements IDrawable
 
 }
 
+//#if box2d
+
+//#else
 class Tile implements IEntity, implements ICollideEntity
+//#end
 {
 	public var id: Int;
 	
@@ -214,7 +218,7 @@ class Tile implements IEntity, implements ICollideEntity
 	
 	public var parent : Group;
 	
-    public var quadTreeEntity : QuadTreeEntity;
+    public var quadTreeObject : QuadTreeObject;
     
     public function new(pId:Int, pX:Int, pY:Int, pWidth:Int, pHeight:Int)
     {
@@ -254,10 +258,10 @@ class Tile implements IEntity, implements ICollideEntity
 		if(AgeData.quadtree == null)
 			AgeData.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
 		
-		if(quadTreeEntity == null)
+		if(quadTreeObject == null)
 		{
-			quadTreeEntity = new QuadTreeEntity(this);
-			AgeData.quadtree.insert(quadTreeEntity);
+			quadTreeObject = new QuadTreeObject(this);
+			AgeData.quadtree.insert(quadTreeObject);
 		}
 	}
     

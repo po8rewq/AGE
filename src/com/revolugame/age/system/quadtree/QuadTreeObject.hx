@@ -6,7 +6,7 @@ import com.revolugame.age.display.ICollideEntity;
 /**
  * Objects contains in the quad tree nodes
  */
-class QuadTreeEntity
+class QuadTreeObject
 {
 
     public var rect : Rectangle;

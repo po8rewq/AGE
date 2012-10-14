@@ -187,7 +187,7 @@ class Image implements IEntity, implements IDrawable
 	{
 		if(!dead)
 		{
-			if(_spriteMap.update())
+			if(_spriteMap != null && _spriteMap.update())
 				dirty = true;
 		}
 	}

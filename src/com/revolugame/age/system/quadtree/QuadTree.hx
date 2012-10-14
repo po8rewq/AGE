@@ -38,7 +38,7 @@ class QuadTree extends QuadTreeNode
      *
      * TODO : a déplacer vers la classe QuadTreeNode ??
      */
-    public function insert(pEntity:QuadTreeEntity)
+    public function insert(pEntity:QuadTreeObject)
     {
         var entityRect  : Rectangle = pEntity.rect,
             current     : QuadTreeNode = this,
@@ -48,7 +48,7 @@ class QuadTree extends QuadTreeNode
             onBottom    : Bool,
             currentX    : Float,
             currentY    : Float,
-            entities    : List<QuadTreeEntity>;
+            entities    : List<QuadTreeObject>;
         
     	while(true)
     	{

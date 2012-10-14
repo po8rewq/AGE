@@ -1,6 +1,6 @@
 package com.revolugame.age.system;
 
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.QuadTreeEntity;
 
 /**
  * A miniature linked list class
@@ -21,7 +21,7 @@ class AgeList
     /**
      * Add and return the node
      */
-    public function add(?pObj: Entity = null):AgeListNode
+    public function add(?pObj: QuadTreeEntity = null):AgeListNode
     {
         if(root == null)
 	    {
@@ -67,9 +67,9 @@ class AgeListNode
     public var next : AgeListNode;
     
     /** Stores a reference to the object */
-    public var object : Entity;
+    public var object : QuadTreeEntity;
 
-    public function new(?pObj: Entity = null)
+    public function new(?pObj: QuadTreeEntity = null)
     {
         object = pObj;
         next = null;
@@ -99,7 +99,7 @@ class CachedListNode
 		}
 	}
 
-    public static function get(?pObj: Entity = null):AgeListNode
+    public static function get(?pObj: QuadTreeEntity = null):AgeListNode
     {
         init();        
         

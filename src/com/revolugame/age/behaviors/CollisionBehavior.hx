@@ -1,6 +1,6 @@
 package com.revolugame.age.behaviors;
 
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.BasicEntity;
 import com.revolugame.age.display.ICollideEntity;
 import com.revolugame.age.display.Group;
 import com.revolugame.age.core.IBehavior;
@@ -8,14 +8,14 @@ import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.AgeData;
 import com.revolugame.age.system.AgeList;
 import com.revolugame.age.enums.CollisionsEnum;
-import com.revolugame.age.system.quadtree.QuadTreeEntity;
+import com.revolugame.age.system.quadtree.QuadTreeObject;
 
 import nme.geom.Rectangle;
 import com.revolugame.age.enums.CollisionsEnum;
 
 class CollisionBehavior implements IBehavior
 {
-    private var _entity : Entity;
+    private var _entity : BasicEntity;
     public var enabled(default, null) : Bool;
     
     /** Collisions type */
@@ -24,7 +24,7 @@ class CollisionBehavior implements IBehavior
     /** Helper to store colliders during a check */
     private var _colliders : List<ICollideEntity>;
     
-    public function new(pEntity: Entity)
+    public function new(pEntity: BasicEntity)
     {
         _entity = pEntity;
         type = CollisionsEnum.ANY;
@@ -54,10 +54,14 @@ class CollisionBehavior implements IBehavior
 		// get potential colliders
     	AgeData.quadtree.getEntityInRect( _entity.getBounds(), cast _colliders );
   		
+  		var tmp : ICollideEntity;
     	// Check if the entity is colliding with one of the entity in the list
     	for(entity in _colliders)
-    		if(_entity != entity && collide(_entity, entity))
+    	{
+    		tmp = cast _entity;
+    		if(tmp != entity && collide(tmp, entity))
     			en = entity;
+    	}
     	
     	_entity.x = tmpX; _entity.y = tmpY;
     	return en;

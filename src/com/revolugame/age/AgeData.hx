@@ -6,6 +6,10 @@ import com.revolugame.age.core.Camera;
 import com.revolugame.age.core.Renderer;
 import com.revolugame.age.system.quadtree.QuadTree;
 
+#if box2d
+import box2D.dynamics.B2World;
+#end
+
 class AgeData implements haxe.Public
 {
 	/**
@@ -30,5 +34,9 @@ class AgeData implements haxe.Public
 	
 	// Pour le quadtree .... remove from here ??
 	static var quadtree : QuadTree;
+	
+	#if box2d
+	static var b2world : B2World;
+	#end
 
 }

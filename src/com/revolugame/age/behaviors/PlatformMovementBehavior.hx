@@ -1,6 +1,6 @@
 package com.revolugame.age.behaviors;
 
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.BasicEntity;
 import com.revolugame.age.system.AgePoint;
 
 class PlatformMovementBehavior extends BasicMovementBehavior
@@ -13,7 +13,7 @@ class PlatformMovementBehavior extends BasicMovementBehavior
 
 	public var onGround(default, null): Bool;
 	
-	public function new(pEntity: Entity, ?pGravityX:Float = 0.0, ?pGravityY:Float = 1.0, ?pMaxJump: Int = 1)
+	public function new(pEntity: BasicEntity, ?pGravityX:Float = 0.0, ?pGravityY:Float = 1.0, ?pMaxJump: Int = 1)
 	{
 		super(pEntity);
 		_maxJump = pMaxJump;

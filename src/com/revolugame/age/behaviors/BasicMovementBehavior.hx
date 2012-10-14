@@ -1,14 +1,14 @@
 package com.revolugame.age.behaviors;
 
 import com.revolugame.age.core.IBehavior;
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.BasicEntity;
 import com.revolugame.age.enums.DirectionsEnum;
 import com.revolugame.age.system.AgePoint;
 import com.revolugame.age.AgeUtils;
 
 class BasicMovementBehavior implements IBehavior
 {
-	private var _entity : Entity;
+	private var _entity : BasicEntity;
     public var enabled(default, null) : Bool;
 	
 	/** Movement varaibles */
@@ -18,7 +18,7 @@ class BasicMovementBehavior implements IBehavior
 	public var maxVelocity	: AgePoint;
 	public var friction		: AgePoint;
 	
-	public function new(pEntity: Entity)
+	public function new(pEntity: BasicEntity)
 	{
 		_entity = pEntity;
 		

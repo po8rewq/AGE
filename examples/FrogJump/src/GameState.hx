@@ -3,7 +3,6 @@ package ;
 import com.revolugame.age.core.State;
 import com.revolugame.age.AgeData;
 import com.revolugame.age.AgeUtils;
-import com.revolugame.age.display.Entity;
 import com.revolugame.age.display.TileMap;
 import com.revolugame.age.display.Group;
 

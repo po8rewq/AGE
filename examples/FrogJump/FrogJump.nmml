@@ -18,6 +18,7 @@
 	<source path="../../src/" /> <!-- AGE -->
 	
 	<haxelib name="nme" />
+	<haxelib name="box2d" />
 	
 	<assets path="assets/gfx" rename="gfx" type="image" include="*.png" />
 	<!--assets path="assets/sfx" rename="sfx" type="sound" include="*.wav" />
@@ -31,6 +32,6 @@
 	<ndll name="zlib" />
 	<ndll name="nme" haxelib="nme" />
 	
-	<haxeflag name="-xml" value="age.xml" />
+	<haxeflag name="-xml" value="uml/age.xml" />
 	
 </project>

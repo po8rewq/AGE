@@ -1,12 +1,12 @@
 package com.revolugame.age.behaviors;
 
-import com.revolugame.age.display.Entity;
+import com.revolugame.age.display.BasicEntity;
 import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.system.AgePoint;
 
 class MovementBehavior implements IBehavior
 {
-    private var _entity : Entity;
+    private var _entity : BasicEntity;
     public var enabled(default, null) : Bool;
     
     /** Maximal number of jump (for example for a double jump) */
@@ -24,7 +24,7 @@ class MovementBehavior implements IBehavior
 	
 	public var onGround(default, null): Bool;
 	
-    public function new(pEntity: Entity, ?pMaxJump: Int = 1):Void
+    public function new(pEntity: BasicEntity, ?pMaxJump: Int = 1):Void
     {
         _entity = pEntity;
         
