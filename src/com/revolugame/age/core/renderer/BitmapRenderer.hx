@@ -37,7 +37,11 @@ class BitmapRenderer implements IRenderer
 			_matrix.identity();
 			
 			if(data.rotation != 0)
+			{
+			    _matrix.translate( -spritemap.width*.5, -spritemap.height*.5);
 				_matrix.rotate(data.rotation * 0.017453293);
+				_matrix.translate( spritemap.width*.5, spritemap.height*.5);
+			}
 				
 			// mirror
 			var sclX : Float = data.scaleX * (data.mirrorX ? -1 : 1);
@@ -49,7 +53,7 @@ class BitmapRenderer implements IRenderer
 				
 			_matrix.translate(data.position.x, data.position.y);
 				
-			AgeData.camera.draw( context.buffer, _matrix, null, null, null, AgeData.camera.antialiasing );
+			AgeData.camera.draw( spritemap.pixels, _matrix, null, null, null, AgeData.camera.antialiasing );
 		}
 		else
 		{

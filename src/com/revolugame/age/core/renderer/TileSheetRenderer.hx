@@ -48,7 +48,9 @@ class TileSheetRenderer implements IRenderer
 	        ts.setFrameId( data.frameId );
 	            
 	        /** Scale && rotation */
-	//		ts.setTransform(data.scaleX, data.scaleY, data.rotation, data.mirrorX, data.mirrorY);
+		//	ts.setTransform(data.scaleX, data.scaleY, data.rotation, data.mirrorX, data.mirrorY);
+	            
+	        ts.setRotation( data.rotation );
 	            
 	        /** rgb */
 	//		ts.setRGB( data.red, data.green, data.blue );

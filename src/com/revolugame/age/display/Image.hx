@@ -102,6 +102,9 @@ class Image implements IEntity, implements IDrawable
 		rotation = 0;
 		alpha = 1.0;
 		
+		halfWidth = 0;
+		halfHeight = 0;
+		
 		origin = new AgePoint();
 		
 		#if flash
@@ -269,6 +272,14 @@ class Image implements IEntity, implements IDrawable
 	    return val;
 	}
 
+    public var halfWidth(getHalfWidth, null):Float;
+    private function getHalfWidth():Float
+    {
+        if(_spriteMap == null) return 0;
+        if(halfWidth == 0) halfWidth = _spriteMap.width * 0.5;
+        return halfWidth;
+    }
+    
 	public var width(getWidth, null): Int;
     private function getWidth():Int 
     { 
@@ -277,11 +288,19 @@ class Image implements IEntity, implements IDrawable
     	return 0;
     }
     
+    public var halfHeight(getHalfHeight, null):Float;
+    private function getHalfHeight():Float
+    {
+        if(_spriteMap == null) return 0;
+        if(halfHeight == 0) halfHeight = _spriteMap.height * 0.5;
+        return halfHeight;
+    }
+    
     public var height(getHeight, null): Int;
     private function getHeight():Int 
     { 
     	if(_spriteMap != null)
-    		return _spriteMap.height; 
+    		return _spriteMap.height;
     	return 0;
     }
 }

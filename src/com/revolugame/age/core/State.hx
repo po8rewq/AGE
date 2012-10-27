@@ -74,8 +74,7 @@ class State extends Group
 	{
 		// clear the quad tree, and add all children to it for new positions
 		if(AgeData.quadtree != null)
-		{ 
-		
+		{ 		
 //trace('Quadtree: '+AgeData.quadtree.getEntitiesInNode());
 		
 			var list : List<QuadTreeObject> = AgeData.quadtree.reset();
@@ -89,11 +88,8 @@ class State extends Group
 		#if box2d
 		else if(AgeData.b2world != null)
 		{
-		    AgeData.b2world.step (1 / 60, 6, 2);
+		    AgeData.b2world.step (1 / 30, 6, 2);
 	    	AgeData.b2world.clearForces ();
-	    	#if debug
-    		AgeData.b2world.drawDebugData ();
-    		#end
 		}
 		#end
 						

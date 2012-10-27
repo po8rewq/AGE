@@ -25,6 +25,9 @@ class Engine extends Sprite
 		AgeData.state = pState;
 		AgeData.engine = this;
 		
+		AgeData.stageWidth = pWidth;
+		AgeData.stageHeight = pHeight;
+		
 		Lib.current.addChild(this);
 		
 		if (stage != null) 

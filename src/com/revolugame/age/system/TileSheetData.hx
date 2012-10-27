@@ -97,6 +97,12 @@ class TileSheetData
 		}
 	}
 	
+	public function setRotation(pRotation: Float):Void
+	{
+	    flags |= Graphics.TILE_ROTATION;
+	    data[_currentIndex++] = pRotation * 0.017453293 ;
+	}
+	
 	public function render()
 	{
 	    if(useAdditive)

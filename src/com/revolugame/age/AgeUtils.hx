@@ -32,7 +32,7 @@ class AgeUtils
      * Return an integer between the 2 values
      * @param
 	 */
-	public static inline function rand(pLow: Int = 0,  pHight: Int = 1):Int
+	public static inline function rand(pLow: Int = 0, pHight: Int = 1):Int
 	{
 		return Math.floor( Math.random() * ( 1 + pHight - pLow ) ) + pLow;
 	}

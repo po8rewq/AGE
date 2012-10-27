@@ -1,5 +1,6 @@
 package com.revolugame.age.display;
 
+import nme.geom.Point;
 import nme.geom.Rectangle;
 import nme.display.BitmapData;
 
@@ -105,7 +106,7 @@ class SpriteMap
 	            y = row * height;
 	            rects[i] = new Rectangle(x, y, width, height);
 	            #if (cpp || neko)
-	            tilesheetdata.tilesheet.addTileRect( rects[i] );
+	            tilesheetdata.tilesheet.addTileRect( rects[i], new Point(x + width/2, y + height/2) );
 	            #end
 	            ++i;
 	        }
