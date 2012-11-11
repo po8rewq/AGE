@@ -6,9 +6,9 @@ import com.revolugame.age.display.Image;
 import com.revolugame.age.system.quadtree.QuadTreeObject;
 import com.revolugame.age.managers.BehaviorsManager;
 
-//#if box2d
-//import com.revolugame.age.display.Box2dEntity;
-//#end
+#if (cpp && box2d)
+import com.revolugame.age.display.Box2dEntity;
+#end
 
 import flash.geom.Rectangle;
 
