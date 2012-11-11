@@ -256,6 +256,10 @@ class Image implements IEntity, implements IDrawable
 		#if flash
 		_bmpBuffer.dispose();
 		#end
+		
+		// Remove this entity from its parent
+		if(parent != null) 
+		    parent.remove(this, false); // false to avoid a stack overflow ;)
 	}
 	
 	private function getJustPressed():Bool

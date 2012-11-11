@@ -2,8 +2,10 @@ package com.revolugame.age.display;
 
 import flash.geom.Point;
 
-#if flash
-import flash.display.BitmapData;
+#if cpp
+
+#else
+import nme.display.BitmapData;
 #end
 
 /**

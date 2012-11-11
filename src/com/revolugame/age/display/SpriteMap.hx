@@ -113,10 +113,10 @@ class SpriteMap
 	    }
 	}
 	
-	#if flash
-	public function makeGraphic(pWidth: UInt, pHeight: UInt, ?pColor: UInt = 0xFF0000):Void
-	#else
+	#if cpp
 	public function makeGraphic(pWidth: Int, pHeight: Int, ?pColor:BitmapInt32):Void
+	#else
+	public function makeGraphic(pWidth: UInt, pHeight: UInt, ?pColor: UInt = 0xFF0000):Void
 	#end
 	{
 		#if (cpp || neko)
