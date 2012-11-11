@@ -3,7 +3,7 @@ AGE
 
 Another Game Engine for Haxe and NME
 
-Version 0.2
+Version 0.4
 
 Development build
 -----------------

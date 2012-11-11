@@ -1,6 +1,13 @@
+v0.4
+------------------------------
+* Box2d
+* Behaviors manager (if something needs to be updated on each frame)
+* some optimisations
+
 v0.3
 ------------------------------
 * Quadtree implementation for collisions detection
+* some optimisations
 
 v0.2
 ------------------------------

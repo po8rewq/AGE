@@ -11,10 +11,15 @@ import com.revolugame.age.system.quadtree.QuadTreeObject;
 import com.revolugame.age.managers.TileSheetManager;
 #end
 
+import com.revolugame.age.behaviors.CollisionBehavior;
+
 import nme.display.BitmapData;
 import nme.geom.Rectangle;
 import nme.geom.Point;
 
+/**
+ * WIP
+ */
 class TileMap extends Group, implements IDrawable
 {
 	private var _source : BitmapData;
@@ -255,13 +260,13 @@ class Tile implements IEntity, implements ICollideEntity
 	private function initQuadTree()
 	{			
 		// If this is the first time we are accessing the quad tree
-		if(AgeData.quadtree == null)
-			AgeData.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
+		if(CollisionBehavior.quadtree == null)
+			CollisionBehavior.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
 		
 		if(quadTreeObject == null)
 		{
 			quadTreeObject = new QuadTreeObject(this);
-			AgeData.quadtree.insert(quadTreeObject);
+			CollisionBehavior.quadtree.insert(quadTreeObject);
 		}
 	}
     

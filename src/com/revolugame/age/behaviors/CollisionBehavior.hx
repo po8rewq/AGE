@@ -9,12 +9,34 @@ import com.revolugame.age.AgeData;
 import com.revolugame.age.system.AgeList;
 import com.revolugame.age.enums.CollisionsEnum;
 import com.revolugame.age.system.quadtree.QuadTreeObject;
+import com.revolugame.age.system.quadtree.QuadTree;
+import com.revolugame.age.managers.BehaviorsManager;
 
 import nme.geom.Rectangle;
 import com.revolugame.age.enums.CollisionsEnum;
 
 class CollisionBehavior implements IBehavior
 {
+    
+    //:://////////////////////////
+    //::// For the main update
+    //:://////////////////////////
+    public static var quadtree : QuadTree;
+    public function globalUpdate():Void
+	{
+	    //trace('Quadtree: '+quadtree.getEntitiesInNode());
+		var list : List<QuadTreeObject> = quadtree.reset();
+		if(list.length > 0)
+			for(l in list)
+				quadtree.insert(l);
+				
+		#if debug
+//		if(AgeData.quadtree != null)
+//			AgeData.quadtree.renderDebug();
+		#end
+	}
+    //:://////////////////////////    
+
     private var _entity : BasicEntity;
     public var enabled(default, null) : Bool;
     
@@ -26,6 +48,11 @@ class CollisionBehavior implements IBehavior
     
     public function new(pEntity: BasicEntity)
     {
+        if(quadtree == null)
+        {
+            BehaviorsManager.getInstance().registerUpdater(globalUpdate);
+        }
+    
         _entity = pEntity;
         type = CollisionsEnum.ANY;
     }
@@ -52,7 +79,7 @@ class CollisionBehavior implements IBehavior
   		else _colliders.clear();
 
 		// get potential colliders
-    	AgeData.quadtree.getEntityInRect( _entity.getBounds(), cast _colliders );
+    	quadtree.getEntityInRect( _entity.getBounds(), cast _colliders );
   		
   		var tmp : ICollideEntity;
     	// Check if the entity is colliding with one of the entity in the list

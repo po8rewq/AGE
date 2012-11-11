@@ -1,5 +1,6 @@
 package com.revolugame.age.system.quadtree;
 
+import com.revolugame.age.behaviors.CollisionBehavior;
 import com.revolugame.age.display.ICollideEntity;
 import com.revolugame.age.system.AgeList;
 
@@ -201,7 +202,7 @@ class QuadTreeNode
     			{
     				var en : QuadTreeObject = node.entities.first();
     				node.remove(en); // va s'occuper de fixer
-    				AgeData.quadtree.insert(en);
+    				CollisionBehavior.quadtree.insert(en);
     			}
     		}
     		

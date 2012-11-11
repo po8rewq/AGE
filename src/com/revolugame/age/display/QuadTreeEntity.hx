@@ -133,7 +133,10 @@ class QuadTreeEntity extends BasicEntity, implements ICollideEntity
     }
 	
 	public override function destroy():Void
-	{			
+	{	
+	    if(solid)
+	    	CollisionBehavior.quadtree.remove( quadTreeObject );
+			
 		if(quadTreeObject != null)
 		{
 		    quadTreeObject.destroy();
@@ -170,13 +173,13 @@ class QuadTreeEntity extends BasicEntity, implements ICollideEntity
 		{
 			_collisions.disable();
 			if(quadTreeObject != null)
-				AgeData.quadtree.remove(quadTreeObject);
+				CollisionBehavior.quadtree.remove(quadTreeObject);
 		}
 		else if(val && quadTreeObject != null)
 		{
-			if(AgeData.quadtree.remove(quadTreeObject))
+			if(CollisionBehavior.quadtree.remove(quadTreeObject))
     		{	// just in case ...
-	   			AgeData.quadtree.insert(quadTreeObject);
+	   			CollisionBehavior.quadtree.insert(quadTreeObject);
 	   		}
 		}
 		
@@ -189,13 +192,13 @@ class QuadTreeEntity extends BasicEntity, implements ICollideEntity
 	private function initQuadTree()
 	{			
 		// If this is the first time we are accessing the quad tree
-		if(AgeData.quadtree == null)
-			AgeData.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
+		if(CollisionBehavior.quadtree == null)
+			CollisionBehavior.quadtree = new QuadTree(AgeData.stageWidth, AgeData.stageHeight, 0);
 		
 		if(quadTreeObject == null)
 		{
 			quadTreeObject = new QuadTreeObject(this);
-			AgeData.quadtree.insert(quadTreeObject);
+			CollisionBehavior.quadtree.insert(quadTreeObject);
 		}
 	}
 	

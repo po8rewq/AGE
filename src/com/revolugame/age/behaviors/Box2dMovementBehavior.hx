@@ -3,6 +3,7 @@ package com.revolugame.age.behaviors;
 import com.revolugame.age.AgeData;
 import com.revolugame.age.core.IBehavior;
 import com.revolugame.age.display.BasicEntity;
+import com.revolugame.age.managers.BehaviorsManager;
 
 import box2D.collision.shapes.B2CircleShape;
 import box2D.collision.shapes.B2PolygonShape;
@@ -10,12 +11,24 @@ import box2D.dynamics.B2Body;
 import box2D.dynamics.B2BodyDef;
 import box2D.dynamics.B2FixtureDef;
 import box2D.common.math.B2Vec2;
+import box2D.dynamics.B2World;
 
 class Box2dMovementBehavior extends BasicMovementBehavior
 {
     private var _body : B2Body;
     private var _mToPx : Float; // Meters To Pixels
     private var _pxToM : Float; // Pixels To Meters
+    
+    //:://////////////////////////
+    //::// For the main update
+    //:://////////////////////////
+    public static var b2world : B2World;
+	public function globalUpdate():Void
+	{
+	    b2world.step (1 / 30, 6, 2);
+	    b2world.clearForces ();
+	}
+    //:://////////////////////////
     
     /**
      *
@@ -27,7 +40,14 @@ class Box2dMovementBehavior extends BasicMovementBehavior
      * @param pFriction :  The friction coefficient, usually in the range [0,1]
      */
     public function new(pEntity: BasicEntity, pMToPx: Int = 20, pDynamicEntity: Bool = false, ?pDensity: Float, ?pRestitution: Float, ?pFriction: Float)
-	{
+	{        
+        if(b2world == null)
+		{
+    		var gravity : B2Vec2 = new B2Vec2(0, 10.0); 
+    	    b2world = new B2World (gravity, true);
+    		BehaviorsManager.getInstance().registerUpdater(globalUpdate);
+    	}
+    
         super(pEntity);
         
         _mToPx = pMToPx;
@@ -48,7 +68,7 @@ class Box2dMovementBehavior extends BasicMovementBehavior
 		fixtureDefinition.friction = pFriction;
 		fixtureDefinition.shape = polygon;
 		
-		_body = AgeData.b2world.createBody (bodyDefinition);
+		_body = b2world.createBody (bodyDefinition);
 		_body.createFixture (fixtureDefinition);
 	}
 	
@@ -107,7 +127,7 @@ class Box2dMovementBehavior extends BasicMovementBehavior
     
     public override function destroy()
     {
-		AgeData.b2world.destroyBody(_body);
+		b2world.destroyBody(_body);
 		super.destroy();
     }
 

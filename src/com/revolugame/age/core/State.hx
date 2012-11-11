@@ -4,9 +4,11 @@ import com.revolugame.age.display.Group;
 import com.revolugame.age.AgeUtils;
 import com.revolugame.age.display.Image;
 import com.revolugame.age.system.quadtree.QuadTreeObject;
-#if box2d
-import com.revolugame.age.display.Box2dEntity;
-#end
+import com.revolugame.age.managers.BehaviorsManager;
+
+//#if box2d
+//import com.revolugame.age.display.Box2dEntity;
+//#end
 
 import flash.geom.Rectangle;
 
@@ -82,42 +84,15 @@ class State extends Group
 		}
 	}
 	
-	/**
-	 * TODO CLEAN THIS
-	 */
 	public override function update()
 	{
-		// clear the quad tree, and add all children to it for new positions
-		if(AgeData.quadtree != null)
-		{ 		
-//trace('Quadtree: '+AgeData.quadtree.getEntitiesInNode());
-		
-			var list : List<QuadTreeObject> = AgeData.quadtree.reset();
-			if(list.length > 0)
-			{
-				for(l in list)
-					AgeData.quadtree.insert(l);
-			}
-			
-		}
-		#if box2d
-		else if(AgeData.b2world != null)
-		{
-		    AgeData.b2world.step (1 / 30, 6, 2);
-	    	AgeData.b2world.clearForces ();
-		}
-		#end
-						
+	    BehaviorsManager.getInstance().update();
 		super.update();
 	}
 	
 	public override function render()
 	{
 		super.render();
-		#if debug
-//		if(AgeData.quadtree != null)
-//			AgeData.quadtree.renderDebug();
-		#end
 	}
 		
 	#if android
