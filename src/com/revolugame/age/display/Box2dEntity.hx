@@ -3,11 +3,7 @@ package com.revolugame.age.display;
 #if box2d
 import com.revolugame.age.behaviors.Box2dMovementBehavior;
 
-import box2D.dynamics.B2World;
 import box2D.common.math.B2Vec2;
-
-//import flash.display.Sprite;
-//import box2D.dynamics.B2DebugDraw;
 
 class Box2dEntity extends BasicEntity
 {
@@ -24,13 +20,6 @@ class Box2dEntity extends BasicEntity
 	{
 		super(pX, pY);
 		moveBy(pX, pY);
-		/*
-		// Init box2d stuff if needed
-		if(AgeData.b2world == null)
-		{
-		    var gravity : B2Vec2 = new B2Vec2(0, 10.0);
-    	    AgeData.b2world = new B2World (gravity, true);
-		}*/
 	}
 	
 	public function initBox2dStuff(pMToPx:Int = 20, pDynamicEntity: Bool = false, ?pDensity: Float, ?pRestitution: Float, ?pFriction: Float)
@@ -41,8 +30,8 @@ class Box2dEntity extends BasicEntity
 	
 	public override function moveBy(pX:Float, pY:Float, ?pSweep:Bool = false)
 	{
-	    if(_b2dBehavior != null)
-	        _b2dBehavior.setPos(pX, pY);
+	 //   if(_b2dBehavior != null)
+	 //       _b2dBehavior.setPos(pX, pY);
 	    super.moveBy(pX, pY, pSweep);
 	}
 	

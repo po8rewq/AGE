@@ -4,12 +4,11 @@ import com.revolugame.age.AgeData;
 import com.revolugame.age.display.SpriteMap;
 import com.revolugame.age.display.DrawingContext;
 
-import flash.geom.Matrix;
-
-
 import flash.display.Sprite;
 import flash.display.BitmapData;
 import flash.geom.Point;
+import flash.geom.Matrix;
+import flash.geom.Rectangle;
 
 /**
  * Renderer used by flash
@@ -28,9 +27,12 @@ class BitmapRenderer implements IRenderer
         
 	}
 	
+	private var zeroPoint : Point;
 	public function render(spritemap: SpriteMap, context: DrawingContext):Void
 	{		
 	    var data : Data = context.data;
+	
+	    var rect : Rectangle = spritemap.getRect();
 	
 		if(data.scaleX != 1 || data.scaleY != 1 || data.rotation != 0 || data.mirrorX || data.mirrorY)
 		{
@@ -51,13 +53,23 @@ class BitmapRenderer implements IRenderer
 				_matrix.scale(sclX, sclY);
 			}
 				
+/*			
+			var buffer : BitmapData = new BitmapData( cast rect.width, cast rect.height, true, 0xffffffff);
+			buffer.draw(spritemap.pixels, _matrix, null, null, null, AgeData.camera.antialiasing);
+			
+			if(zeroPoint == null) zeroPoint = new Point();
+			AgeData.camera.copyPixels( buffer, buffer.rect, data.position, null, null, true );
+			
+		    buffer.dispose();
+*/
+
 			_matrix.translate(data.position.x, data.position.y);
-				
-			AgeData.camera.draw( spritemap.pixels, _matrix, null, null, null, AgeData.camera.antialiasing );
+			AgeData.camera.draw(spritemap.pixels, _matrix, null, null, null, AgeData.camera.antialiasing);			
+
 		}
 		else
 		{
-			AgeData.camera.copyPixels( spritemap.pixels, spritemap.getRect(), data.position, null, null, true );
+			AgeData.camera.copyPixels( spritemap.pixels, rect, data.position, null, null, true );
 	    }
 	}
 	

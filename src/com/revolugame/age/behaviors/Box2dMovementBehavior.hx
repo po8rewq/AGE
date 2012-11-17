@@ -13,8 +13,11 @@ import box2D.dynamics.B2FixtureDef;
 import box2D.common.math.B2Vec2;
 import box2D.dynamics.B2World;
 
-class Box2dMovementBehavior extends BasicMovementBehavior
+class Box2dMovementBehavior implements IBehavior
 {
+    private var _entity : BasicEntity;
+    public var enabled(default, null) : Bool;
+
     private var _body : B2Body;
     private var _mToPx : Float; // Meters To Pixels
     private var _pxToM : Float; // Pixels To Meters
@@ -48,7 +51,7 @@ class Box2dMovementBehavior extends BasicMovementBehavior
     		BehaviorsManager.getInstance().registerUpdater(globalUpdate);
     	}
     
-        super(pEntity);
+        _entity = pEntity;
         
         _mToPx = pMToPx;
         _pxToM = 1/pMToPx;
@@ -71,23 +74,7 @@ class Box2dMovementBehavior extends BasicMovementBehavior
 		_body = b2world.createBody (bodyDefinition);
 		_body.createFixture (fixtureDefinition);
 	}
-	
-	private var v : B2Vec2;
-	public function setPos(pX: Float, pY : Float):Void
-	{/*
-	    if(v == null) 
-	    {
-	        v = new B2Vec2(pX * _pxToM, pY * _pxToM);
-	    }
-	    else
-	    {
-	        v.x = pX * _pxToM;
-	        v.y = pY * _pxToM;
-	    }
-	    
-	    _body.setPosition( v );*/
-	}
-	
+	var v : B2Vec2;
 	public function applyForce(pX: Float, pY: Float):Void
 	{
 	    if(v == null) v = new B2Vec2(pX * _mToPx, pY * _mToPx);
@@ -106,15 +93,15 @@ class Box2dMovementBehavior extends BasicMovementBehavior
 	    {
 	        v.x = pX * _mToPx;
 	        v.y = pY * _mToPx;
-	    }//trace('impulse '+v.x+'/'+v.y);
+	    }
 	    _body.applyImpulse(v, _body.getWorldCenter());
 	}
 	
 	/**
 	 * Update the position from those which are calculated by box2d
 	 */
-	public override function update():Void
-	{  // TODO uniformiser tout ca
+	public function update():Void
+	{
 	    #if cpp
         _entity.x = _body.getPosition().x * _mToPx;
         _entity.y = _body.getPosition().y * _mToPx;
@@ -124,11 +111,20 @@ class Box2dMovementBehavior extends BasicMovementBehavior
         #end
         _entity.rotation = _body.getAngle() * 57.2957795;
 	}
+
+    public function enable()
+    {
+        enabled = true;
+    }
+
+    public function disable()
+    {
+        enabled = false;
+    }
     
-    public override function destroy()
+    public function destroy()
     {
 		b2world.destroyBody(_body);
-		super.destroy();
     }
 
 }

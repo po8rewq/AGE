@@ -81,6 +81,7 @@ class Image implements IEntity, implements IDrawable
     /** If the mouse is currently down */
     public var mouseDown : Bool;
     public var justPressed(getJustPressed, setJustPressed) : Bool;
+    public var justReleased(getJustReleased, setJustReleased) : Bool;
     
     /** If we have to check for mouse entry (default false) */
 	public var handleMouseEvents : Bool;
@@ -273,6 +274,20 @@ class Image implements IEntity, implements IDrawable
 	private function setJustPressed(val: Bool):Bool
 	{
 	    justPressed = val;
+	    return val;
+	}
+	
+	private function getJustReleased():Bool
+	{
+	    var val : Bool = justReleased;
+	    if(val)
+    	    justReleased = false;
+	    return val;
+	}
+	
+	private function setJustReleased(val: Bool):Bool
+	{
+	    justReleased = val;
 	    return val;
 	}
 

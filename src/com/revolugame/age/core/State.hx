@@ -3,11 +3,14 @@ package com.revolugame.age.core;
 import com.revolugame.age.display.Group;
 import com.revolugame.age.AgeUtils;
 import com.revolugame.age.display.Image;
-import com.revolugame.age.system.quadtree.QuadTreeObject;
 import com.revolugame.age.managers.BehaviorsManager;
 
-#if (cpp && box2d)
+#if cpp
+#if box2d
 import com.revolugame.age.display.Box2dEntity;
+#elseif nape
+import com.revolugame.age.display.NapeEntity;
+#end
 #end
 
 import flash.geom.Rectangle;
@@ -39,8 +42,12 @@ class State extends Group
 	        	    var bounds = img.getBounds();
 	        	    
 	        	    // Hack car le positionnement est pas tout a fait pareil entre cpp et flash et en passant par box2d
-	        	    #if (cpp && box2d)
+	        	    #if cpp
+	        	    #if box2d
 	        	    if(Std.is(entity, Box2dEntity))
+	        	    #elseif nape
+	        	    if(Std.is(entity, NapeEntity))
+	        	    #end
 	        	    {
 	        	        bounds.x -= img.halfWidth;
 	        	        bounds.y -= img.halfHeight;
@@ -51,6 +58,7 @@ class State extends Group
 	        	{
 	        		img.mouseDown = true;
 	        		img.justPressed = true;
+	        		img.justReleased = false;
 	        		img.touchID = pTouchId;
 	        		return;
 	        	} }
@@ -74,6 +82,7 @@ class State extends Group
 	    		{
 	        		img.mouseDown = false;
 	        		img.justPressed = false;
+	        		img.justReleased = true;
 	        		return;
 	        	}
 	        }
