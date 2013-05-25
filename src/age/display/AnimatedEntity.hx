@@ -78,9 +78,28 @@ class AnimatedEntity extends Entity
 
     public override function render(pContext: CanvasRenderingContext2D)
     {
-        // TODO rotation
+        pContext.save();
+
+        if(rotation != 0)
+        {
+            var decX : Float = x + width * .5;
+            var decY : Float = y + height * .5;
+
+            pContext.translate(decX, decY);
+            pContext.rotate(rotation * Math.PI/180);
+            pContext.translate(-decX, -decY );
+        }
+
+        var globalAlpha = pContext.globalAlpha;
+
+        if(alpha < 1 && alpha >= 0)
+            pContext.globalAlpha = alpha;
 
         pContext.drawImage(_image, _currentFrame * width, 0, width, height, x, y, width, height);
+
+        pContext.globalAlpha = globalAlpha;
+
+        pContext.restore();
 
         #if debug
         drawDebug(pContext);

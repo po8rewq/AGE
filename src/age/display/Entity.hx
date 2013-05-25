@@ -16,6 +16,7 @@ class Entity implements IEntity
 	public var y : Float;
 
     public var depth : Int;
+    public var alpha : Float;
 
     public var hitbox : Rectangle;
 
@@ -36,6 +37,7 @@ class Entity implements IEntity
 		x = y = 0;
         rotation = 0;
         depth = 0;
+        alpha = 1;
 
 		width = pWidth;
 		height = pHeight;
@@ -106,16 +108,22 @@ class Entity implements IEntity
             pContext.translate(-decX, -decY );
         }
 
+        var globalAlpha = pContext.globalAlpha;
+        if(alpha < 1 && alpha >= 0)
+            pContext.globalAlpha = alpha;
+
         if(width != 0 && height != 0)
 		    pContext.drawImage(_image, x, y, width, height);
         else
             pContext.drawImage(_image, x, y);
 
+        pContext.globalAlpha = globalAlpha;
+
+        pContext.restore();
+
         #if debug
         drawDebug(pContext);
         #end
-
-        pContext.restore();
 	}
 
 	public function destroy()
