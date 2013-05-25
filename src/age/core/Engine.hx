@@ -6,12 +6,16 @@ import age.display.State;
 
 import haxe.Timer;
 
-#if js
+//#if js
 import js.Dom;
 import js.Lib;
-#elseif flash
-import flash.display.DisplayObjectContainer;
-import flash.events.Event;
+//#elseif flash
+//import flash.display.DisplayObjectContainer;
+//import flash.events.Event;
+//#end
+
+#if debug
+import age.debug.Stats;
 #end
 
 class Engine
@@ -21,17 +25,21 @@ class Engine
 	var _fps : Int;
 	
 	var _globalTimer : Timer;
-	#if js
+//	#if js
 	var _stage : Body;
-	#elseif flash
-	var _stage : DisplayObjectContainer;
-	#end
+//	#elseif flash
+//	var _stage : DisplayObjectContainer;
+//	#end
 
 	var _backgroundColor : String;
 
     var _last : Float;
     var _delta : Float;
     var _stepRate : Float;
+
+    #if debug
+    var _stats : Stats;
+    #end
 	
 	public function new(pWidth: Int, pHeight: Int, pFirstState: State, ?pFps: Int = 30, ?pBgColor: String = "")
 	{		
@@ -51,7 +59,7 @@ class Engine
 		var doc = Lib.document;
 		var body = doc.body;
 
-		#if js
+//		#if js
 		Global.dom = doc.createElement('Canvas');
 		var canvas: Canvas  = cast Global.dom;
 		// grab the CanvasRenderingContext2D for drawing on
@@ -63,19 +71,31 @@ class Engine
 		// setup dimensions.
 		canvas.width = pWidth;
 		canvas.height = pHeight;
-		#elseif flash
-		
-		#end
+//		#elseif flash
+//
+//		#end
 
 		switchState(pFirstState);
+
+        #if debug
+        _stats = new Stats();
+		_stats.setMode( 0 ); // 0 : fps, 1 : mem
+
+		// Align top-left
+		_stats.domElement.style.position = 'absolute';
+		_stats.domElement.style.left = '0px';
+		_stats.domElement.style.top = '0px';
+
+		body.appendChild( _stats.domElement );
+        #end
 		
-		#if js
+//		#if js
 		var frequency = Std.int( _stepRate );
 		_globalTimer = new Timer(frequency);
 		_globalTimer.run = mainLoop;
-		#elseif flash
-		addEventListener(Event.ENTER_FRAME, mainLoop);
-		#end
+//		#elseif flash
+//		addEventListener(Event.ENTER_FRAME, mainLoop);
+//		#end
 	}
 
 	public function switchState(pState: State)
@@ -104,8 +124,16 @@ class Engine
         {
             while(_delta >= _stepRate)
             {
+                #if debug
+                _stats.begin();
+                #end
+
                 _delta -= _stepRate;
                 state.update();
+
+                #if debug
+                _stats.end();
+                #end
             }
         }
 

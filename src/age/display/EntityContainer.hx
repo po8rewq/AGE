@@ -12,11 +12,13 @@ class EntityContainer implements IEntity
 	public var width : Int;
 	public var height : Int;
 
+    public var depth : Int;
+
 	public function new()
 	{
 		_entities = new Array();
 		visible = true;
-		x = y = width = height = 0;
+		x = y = width = height = depth = 0;
 	}
 
 	public function update()

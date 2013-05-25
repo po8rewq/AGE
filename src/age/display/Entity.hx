@@ -1,5 +1,6 @@
 package age.display;
 
+import age.geom.Rectangle;
 import age.core.IBehavior;
 import age.core.IEntity;
 import js.Dom;
@@ -14,23 +15,45 @@ class Entity implements IEntity
 	public var x : Float;
 	public var y : Float;
 
+    public var depth : Int;
+
+    public var hitbox : Rectangle;
+
 	public var visible : Bool;
 
     public var rotation : Float;
 
 	var _behaviors : Hash<IBehavior>;
 
+    #if debug
+    var _debugMode : Bool;
+    var _debugColor: String;
+    #end
+
 	public function new(?pWidth: Int = 0, ?pHeight: Int = 0)
 	{
 		visible = true;
 		x = y = 0;
         rotation = 0;
+        depth = 0;
 
 		width = pWidth;
 		height = pHeight;
 
+        hitbox = {
+            x: 0,
+            y: 0,
+            width: pWidth,
+            height: pHeight
+        };
+
         _images = new Hash();
 		_behaviors = new Hash();
+
+        #if debug
+        _debugMode = false;
+        _debugColor = "FF0000";
+        #end
 	}
 
     public function addImage(pName: String, pSrc: String, ?pDefault: Bool = false)
@@ -88,6 +111,10 @@ class Entity implements IEntity
         else
             pContext.drawImage(_image, x, y);
 
+        #if debug
+        drawDebug(pContext);
+        #end
+
         pContext.restore();
 	}
 
@@ -97,5 +124,25 @@ class Entity implements IEntity
 			b.destroy();
 		_behaviors = new Hash();
 	}
+
+    #if debug
+    private function setDebugMode(pActive: Bool, ?pColor: String = "")
+    {
+        _debugMode = pActive;
+        if(pColor != "") _debugColor = pColor;
+    }
+
+    private function drawDebug(pContext: CanvasRenderingContext2D)
+    {
+        if(_debugMode)
+        {
+            pContext.beginPath();
+            pContext.rect(x + hitbox.x, y + hitbox.y, hitbox.width, hitbox.height);
+            pContext.lineWidth = 2;
+            pContext.strokeStyle = _debugColor;
+            pContext.stroke();
+        }
+    }
+    #end
 
 }

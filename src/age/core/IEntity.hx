@@ -9,6 +9,8 @@ interface IEntity
 	var width : Int;
 	var height : Int;
 
+    var depth : Int;
+
 	function update():Void;
 	function render(pContext: CanvasRenderingContext2D):Void;
 	function destroy():Void;

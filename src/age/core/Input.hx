@@ -1,20 +1,24 @@
 package age.core;
 
-#if js
+//#if js
 import js.Dom;
-#elseif flash
-import flash.events.Event;
-import flash.events.KeyboardEvent;
-import flash.display.DisplayObjectContainer;
-#end
+//#elseif flash
+//import flash.events.Event;
+//import flash.events.KeyboardEvent;
+//import flash.display.DisplayObjectContainer;
+//#end
 
+/**
+ * Based on haxepunk
+ * https://github.com/HaxePunk/HaxePunk/blob/master/com/haxepunk/utils/Input.hx
+ **/
 class Input
 {
-	#if js
+//	#if js
 	static var _root : Body;
-	#elseif flash
-	static var _root : DisplayObjectContainer;
-	#end
+//	#elseif flash
+//	static var _root : DisplayObjectContainer;
+//	#end
 	
 	static var _key:Array<Bool> = new Array<Bool>();
 	static var _keyNum:Int = 0;
@@ -27,20 +31,20 @@ class Input
 
 	private static var _control:Hash<Array<Int>> = new Hash<Array<Int>>();
 
-	#if js
+//	#if js
 	public static function new(pRoot: Body)
-	#elseif flash
-	public static function new(pRoot: DisplayObjectContainer)
-	#end
+//	#elseif flash
+//	public static function new(pRoot: DisplayObjectContainer)
+//	#end
 	{
 		_root = pRoot;
-		#if js
+//		#if js
 		_root.onkeydown = onKeyDown;
 		_root.onkeyup = onKeyUp;
-		#elseif flash
-		_root.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		_root.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-		#end
+//		#elseif flash
+//		_root.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+//		_root.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+//		#end
 	}
 	
 	private static function onKeyDown(pEvt: Event)
@@ -90,6 +94,30 @@ class Input
 		while (_releaseNum-- > -1) _release[_releaseNum] = -1;
 		_releaseNum = 0;
 	}
+
+    /**
+	 * If the input or key is held down.
+	 * @param	input		An input name or key to check for.
+	 * @return	True or false.
+	 */
+    public static function check(input:Dynamic):Bool
+    {
+        if (Std.is(input, String))
+        {
+            var v:Array<Int> = _control.get(input), i:Int = v.length;
+            while (i-- > 0)
+            {
+                if (v[i] < 0)
+                {
+                    if (_keyNum > 0) return true;
+                    continue;
+                }
+                if (_key[v[i]] == true) return true;
+            }
+            return false;
+        }
+        return input < 0 ? _keyNum > 0 : _key[input];
+    }
 
 	/**
 	 * If the input or key was pressed this frame.
