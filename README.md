@@ -1,30 +1,29 @@
 AGE
 ===
 
-Another Game Engine for Haxe and NME
+Another Game Engine for Haxe js (Only supports Haxe 2.x for the moment)
 
-Version 0.4
+AGE is a minimal game engine for making HTML5 games
+
+Version 0.1
+
 
 Development build
 -----------------
 
-You need to have ant installed to build a development version of AGE.
+Just run this command line into your terminal
 
 ```bash
-git clone https://github.com/po8rewq/AGE.git
-ant
+haxelib git AGE https://github.com/po8rewq/AGE src
 ```
 
-This will remove AGE from haxelib (in case there is the same version already installed), build the ProjectCreator, and install AGE.
-
-
-Setup
------
-
-You can setup a new project by executing the haxelib run command.
-
-For more details :
+Add the lib to your project
 
 ```bash
-haxelib run AGE help
+-lib AGE
+
+# Or just clone the repo and add this :
+-cp /age/directory/src/
 ```
+
+Until the Haxe 3 release, you will need the HTML5 externals
