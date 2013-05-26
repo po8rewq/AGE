@@ -5,11 +5,7 @@ import js.Dom.HtmlDom;
 
 class Global
 {
-
-	public static var dom : HtmlDom;
-	public static var context : CanvasRenderingContext2D;
     public static var currentState : State;
-
     public static var elapsed : Float;
 
 	public static function collide(pEntity: IEntity, pX: Float, pY: Float):Bool

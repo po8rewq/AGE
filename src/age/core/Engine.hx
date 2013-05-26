@@ -37,6 +37,14 @@ class Engine
     var _delta : Float;
     var _stepRate : Float;
 
+    // --- Rendering ---
+    var _canvas : Canvas; //HtmlDom;
+    var _context : CanvasRenderingContext2D;
+
+    // --- For pre-rendering ---
+    var _offScreenCanvas : Canvas; //HtmlDom;
+    var _offScreenContext : CanvasRenderingContext2D;
+
     #if debug
     var _stats : Stats;
     #end
@@ -60,17 +68,16 @@ class Engine
 		var body = doc.body;
 
 //		#if js
-		Global.dom = doc.createElement('Canvas');
-		var canvas: Canvas  = cast Global.dom;
-		// grab the CanvasRenderingContext2D for drawing on
-		Global.context = untyped canvas.getContext('2d');
-		// style can be used for postioning/styling the div or canvas.
-		var style = Global.dom.style;
-		// add the canvas to the body of the document
-		body.appendChild( Global.dom );
+		_canvas = cast doc.createElement('Canvas');
+		_context = untyped _canvas.getContext('2d');
+		body.appendChild( _canvas );
+
+        _offScreenCanvas = cast doc.createElement('Canvas');
+        _offScreenContext = untyped _offScreenCanvas.getContext('2d');
+
 		// setup dimensions.
-		canvas.width = pWidth;
-		canvas.height = pHeight;
+		_canvas.width = _offScreenCanvas.width = pWidth;
+		_canvas.height = _offScreenCanvas.height = pHeight;
 //		#elseif flash
 //
 //		#end
@@ -128,6 +135,8 @@ class Engine
                 _stats.begin();
                 #end
 
+                Input.update();
+
                 _delta -= _stepRate;
                 state.update();
 
@@ -137,18 +146,19 @@ class Engine
             }
         }
 
-        Input.update(); // voir si besoin de le passer dans la boucle
-
         if(_backgroundColor != "")
         {
-            Global.context.fillStyle = _backgroundColor;
-            Global.context.fillRect(0, 0, _stageWidth, _stageHeight);
+            _offScreenContext.fillStyle = _backgroundColor;
+            _offScreenContext.fillRect(0, 0, _stageWidth, _stageHeight);
         }
         else
         {
-            Global.context.clearRect(0, 0, _stageWidth, _stageHeight);
+            _offScreenContext.clearRect(0, 0, _stageWidth, _stageHeight);
         }
-		state.render(Global.context);
+		state.render(_offScreenContext);
+
+        // rendering
+        _context.drawImage(_offScreenCanvas, 0, 0);
 	}
 	
 }
