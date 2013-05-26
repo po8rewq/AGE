@@ -7,8 +7,8 @@ class EntityContainer implements IEntity
 	var _entities : Array<IEntity>;
 
 	public var visible : Bool;
-	public var x : Float;      // TODO : heritage de la position !!
-	public var y : Float;
+	public var x : Int;      // TODO : heritage de la position !!
+	public var y : Int;
 	public var width : Int;
 	public var height : Int;
 

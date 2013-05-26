@@ -1,6 +1,7 @@
 package age.core;
 
 //#if js
+import js.Lib;
 import js.Dom;
 //#elseif flash
 //import flash.events.Event;
@@ -15,7 +16,7 @@ import js.Dom;
 class Input
 {
 //	#if js
-	static var _root : Body;
+	static var _root : Canvas;
 //	#elseif flash
 //	static var _root : DisplayObjectContainer;
 //	#end
@@ -32,20 +33,27 @@ class Input
 	private static var _control:Hash<Array<Int>> = new Hash<Array<Int>>();
 
 //	#if js
-	public static function new(pRoot: Body)
+	public static function new(pRoot: Canvas)
 //	#elseif flash
 //	public static function new(pRoot: DisplayObjectContainer)
 //	#end
 	{
 		_root = pRoot;
 //		#if js
-		_root.onkeydown = onKeyDown;
-		_root.onkeyup = onKeyUp;
+        Lib.document.body.onkeydown = onKeyDown;
+        Lib.document.body.onkeyup = onKeyUp;
 //		#elseif flash
 //		_root.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 //		_root.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 //		#end
+
+        _root.onclick = onClick;
 	}
+
+    private static function onClick(pEvt: Event)
+    {
+
+    }
 	
 	private static function onKeyDown(pEvt: Event)
 	{

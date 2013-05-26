@@ -9,12 +9,14 @@
 
 package age.debug;
 
-import js.Dom;
-
 @:native("Stats")
 extern class Stats
 {
-    public var domElement : HtmlDom; // if haxe3 => js.html.Element
+    #if haxe3
+    public var domElement : js.html.Element;
+    #else
+    public var domElement : js.Dom.HtmlDom;
+    #end
     public function new() : Void;
     public function setMode(m:Int) : Void;
     public function begin() : Void;

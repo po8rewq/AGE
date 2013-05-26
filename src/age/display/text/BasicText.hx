@@ -9,8 +9,8 @@ class BasicText implements IEntity
 {
     public var text : String;
 
-    public var x : Float;
-    public var y : Float;
+    public var x : Int;
+    public var y : Int;
     public var width : Int;
     public var height : Int;
 
@@ -25,7 +25,7 @@ class BasicText implements IEntity
 
     public var depth : Int;
 
-	public function new(pText: String, pX: Float, pY: Float)
+	public function new(pText: String, pX: Int, pY: Int)
 	{
         text = pText;
 

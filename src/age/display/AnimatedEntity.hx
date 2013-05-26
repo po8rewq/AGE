@@ -82,8 +82,8 @@ class AnimatedEntity extends Entity
 
         if(rotation != 0)
         {
-            var decX : Float = x + width * .5;
-            var decY : Float = y + height * .5;
+            var decX : Int = Std.int( x + width * .5 );
+            var decY : Int = Std.int( y + height * .5 );
 
             pContext.translate(decX, decY);
             pContext.rotate(rotation * Math.PI/180);

@@ -26,7 +26,7 @@ class Engine
 	
 	var _globalTimer : Timer;
 //	#if js
-	var _stage : Body;
+//	var _stage : Body;
 //	#elseif flash
 //	var _stage : DisplayObjectContainer;
 //	#end
@@ -50,8 +50,10 @@ class Engine
     #end
 	
 	public function new(pWidth: Int, pHeight: Int, pFirstState: State, ?pFps: Int = 30, ?pBgColor: String = "")
-	{		
-		_stage = Lib.document.body;
+	{
+        Global.engine = this;
+
+//		_stage = Lib.document.body;
 		_backgroundColor = pBgColor;
 	
 		_stageWidth = pWidth;
@@ -61,8 +63,6 @@ class Engine
         _last = Timer.stamp() * 1000;
         _delta = 0;
         _stepRate = 1000 / _fps;
-		
-		new Input(_stage);
 
 		var doc = Lib.document;
 		var body = doc.body;
@@ -81,6 +81,8 @@ class Engine
 //		#elseif flash
 //
 //		#end
+
+        new Input(_canvas);
 
 		switchState(pFirstState);
 
@@ -103,6 +105,9 @@ class Engine
 //		#elseif flash
 //		addEventListener(Event.ENTER_FRAME, mainLoop);
 //		#end
+
+        // force the 1st rendering, the browser will take the lead after that
+        render();
 	}
 
 	public function switchState(pState: State)
@@ -131,20 +136,34 @@ class Engine
         {
             while(_delta >= _stepRate)
             {
-                #if debug
-                _stats.begin();
-                #end
+//                #if debug
+//                _stats.begin();
+//                #end
 
                 Input.update();
 
                 _delta -= _stepRate;
                 state.update();
 
-                #if debug
-                _stats.end();
-                #end
+//                #if debug
+//                _stats.end();
+//                #end
             }
         }
+	}
+
+    private function render()
+    {
+        #if debug
+        _stats.begin();
+        #end
+
+        #if haxe3
+        var w = js.Browser.window;
+        #else
+        var w = untyped Lib.window;
+        #end
+        w.requestAnimationFrame( render );
 
         if(_backgroundColor != "")
         {
@@ -155,10 +174,15 @@ class Engine
         {
             _offScreenContext.clearRect(0, 0, _stageWidth, _stageHeight);
         }
-		state.render(_offScreenContext);
+
+        Global.currentState.render(_offScreenContext);
 
         // rendering
         _context.drawImage(_offScreenCanvas, 0, 0);
-	}
+
+        #if debug
+        _stats.end();
+        #end
+    }
 	
 }

@@ -12,8 +12,8 @@ class Entity implements IEntity
 
 	public var width : Int;
 	public var height : Int;
-	public var x : Float;
-	public var y : Float;
+	public var x : Int;
+	public var y : Int;
 
     public var depth : Int;
     public var alpha : Float;
@@ -100,8 +100,8 @@ class Entity implements IEntity
 
         if(rotation != 0)
         {
-            var decX : Float = x + width * .5;
-            var decY : Float = y + height * .5;
+            var decX : Int = Std.int( x + width * .5 );
+            var decY : Int = Std.int( y + height * .5 );
 
             pContext.translate(decX, decY);
             pContext.rotate(rotation * Math.PI/180);
