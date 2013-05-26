@@ -7,7 +7,7 @@ class EntityContainer implements IEntity
 	var _entities : Array<IEntity>;
 
 	public var visible : Bool;
-	public var x : Float;
+	public var x : Float;      // TODO : heritage de la position !!
 	public var y : Float;
 	public var width : Int;
 	public var height : Int;
@@ -48,6 +48,7 @@ class EntityContainer implements IEntity
 	{
 		for(en in _entities)
 			en.destroy();
+        _entities = new Array();
 	}
 
 }

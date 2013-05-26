@@ -23,6 +23,8 @@ class BasicText implements IEntity
     public var font : String;
     public var textAlign : TextAlign;
 
+    public var depth : Int;
+
 	public function new(pText: String, pX: Float, pY: Float)
 	{
         text = pText;
@@ -38,6 +40,7 @@ class BasicText implements IEntity
         y = pY;
         width = 0;
         height = 0;
+        depth = 0;
 	}
 
     public function setStyle(?pFont: String = "", ?pSize: Int = 0, ?pColor: String = "", ?pBold: Bool = false, ?pTextAlign: TextAlign)
