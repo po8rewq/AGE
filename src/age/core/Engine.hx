@@ -1,5 +1,7 @@
 package age.core;
 
+import js.html.CanvasElement;
+import js.html.CanvasRenderingContext2D;
 import age.core.Global;
 import age.core.Input;
 import age.display.State;
@@ -7,8 +9,7 @@ import age.display.State;
 import haxe.Timer;
 
 //#if js
-import js.Dom;
-import js.Lib;
+
 //#elseif flash
 //import flash.display.DisplayObjectContainer;
 //import flash.events.Event;
@@ -38,11 +39,11 @@ class Engine
     var _stepRate : Float;
 
     // --- Rendering ---
-    var _canvas : Canvas; //HtmlDom;
+    var _canvas : CanvasElement;
     var _context : CanvasRenderingContext2D;
 
     // --- For pre-rendering ---
-    var _offScreenCanvas : Canvas; //HtmlDom;
+    var _offScreenCanvas : CanvasElement;
     var _offScreenContext : CanvasRenderingContext2D;
 
     #if debug
@@ -64,7 +65,7 @@ class Engine
         _delta = 0;
         _stepRate = 1000 / _fps;
 
-		var doc = Lib.document;
+		var doc = js.Browser.document;
 		var body = doc.body;
 
 //		#if js
@@ -157,13 +158,8 @@ class Engine
         #if debug
         _stats.begin();
         #end
-
-        #if haxe3
-        var w = js.Browser.window;
-        #else
-        var w = untyped Lib.window;
-        #end
-        w.requestAnimationFrame( render );
+                                                            // function requestAnimationFrame( callback_ : RequestAnimationFrameCallback ) : Int ?
+        js.Browser.window.requestAnimationFrame( cast render );
 
         if(_backgroundColor != "")
         {

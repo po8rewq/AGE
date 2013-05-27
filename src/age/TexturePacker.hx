@@ -1,6 +1,6 @@
 package age;
 
-import js.Dom;
+import js.html.Image;
 
 import age.geom.Rectangle;
 
@@ -22,7 +22,7 @@ class TexturePacker
 	 */
 	public function new(pAtlasFile: String, pTextureSrc: String)
 	{
-		_atlas = new Hash();
+		_atlas = new Map();
 	
 		// if json
 		var json = JSON.parse(pAtlasFile);

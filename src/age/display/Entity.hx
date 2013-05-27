@@ -1,14 +1,15 @@
 package age.display;
 
+import js.html.Image;
+import js.html.CanvasRenderingContext2D;
 import age.geom.Rectangle;
 import age.core.IBehavior;
 import age.core.IEntity;
-import js.Dom;
 
 class Entity implements IEntity
 {
 	var _image : Image;
-    var _images : Hash<Image>;
+    var _images : Map<String,Image>;
 
 	public var width : Int;
 	public var height : Int;
@@ -24,7 +25,7 @@ class Entity implements IEntity
 
     public var rotation : Float;
 
-	var _behaviors : Hash<IBehavior>;
+	var _behaviors : Map<String,IBehavior>;
 
     #if debug
     var _debugMode : Bool;
@@ -49,8 +50,8 @@ class Entity implements IEntity
             height: pHeight
         };
 
-        _images = new Hash();
-		_behaviors = new Hash();
+        _images = new Map();
+		_behaviors = new Map();
 
         #if debug
         _debugMode = false;
@@ -130,8 +131,19 @@ class Entity implements IEntity
 	{
 		for(b in _behaviors)
 			b.destroy();
-		_behaviors = new Hash();
+		_behaviors = new Map();
 	}
+
+    public function collideRect(pX: Int, pY: Int, pWidth: Int, pHeight: Int): Bool
+    {
+        if(pX >= x + hitbox.x
+           && pX + pWidth <= x + hitbox.x + hitbox.width
+           && pY >= y + hitbox.y
+           && pY + pHeight <= y + hitbox.y + hitbox.height)
+            return true;
+
+        return false;
+    }
 
     #if debug
     private function setDebugMode(pActive: Bool, ?pColor: String = "")

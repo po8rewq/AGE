@@ -1,5 +1,6 @@
 package age.display.text;
 
+import js.html.CanvasRenderingContext2D;
 import age.display.text.TextAlignEnum.TextAlign;
 import age.core.IEntity;
 

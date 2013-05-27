@@ -1,8 +1,9 @@
 package age.core;
 
 //#if js
-import js.Lib;
-import js.Dom;
+import js.html.MouseEvent;
+import js.html.KeyboardEvent;
+import js.html.CanvasElement;
 //#elseif flash
 //import flash.events.Event;
 //import flash.events.KeyboardEvent;
@@ -16,7 +17,7 @@ import js.Dom;
 class Input
 {
 //	#if js
-	static var _root : Canvas;
+	static var _root : CanvasElement;
 //	#elseif flash
 //	static var _root : DisplayObjectContainer;
 //	#end
@@ -30,18 +31,18 @@ class Input
 	static var _release:Array<Int> = new Array<Int>();
 	static var _releaseNum:Int = 0;
 
-	private static var _control:Hash<Array<Int>> = new Hash<Array<Int>>();
+	private static var _control:Map<String,Array<Int>> = new Map();
 
 //	#if js
-	public static function new(pRoot: Canvas)
+	public static function new(pRoot: CanvasElement)
 //	#elseif flash
 //	public static function new(pRoot: DisplayObjectContainer)
 //	#end
 	{
 		_root = pRoot;
 //		#if js
-        Lib.document.body.onkeydown = onKeyDown;
-        Lib.document.body.onkeyup = onKeyUp;
+        js.Browser.document.body.onkeydown = onKeyDown;
+        js.Browser.document.body.onkeyup = onKeyUp;
 //		#elseif flash
 //		_root.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 //		_root.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
@@ -50,12 +51,12 @@ class Input
         _root.onclick = onClick;
 	}
 
-    private static function onClick(pEvt: Event)
+    private static function onClick(pEvt: MouseEvent)
     {
 
     }
 	
-	private static function onKeyDown(pEvt: Event)
+	private static function onKeyDown(pEvt: KeyboardEvent)
 	{
 		var code:Int = pEvt.keyCode;
 		if (!_key[code])
@@ -66,7 +67,7 @@ class Input
 		}
 	}
 	
-	private static function onKeyUp(pEvt: Event)
+	private static function onKeyUp(pEvt: KeyboardEvent)
 	{
 		var code:Int = pEvt.keyCode;
 		if (_key[code])

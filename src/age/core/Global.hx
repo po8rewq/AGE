@@ -1,7 +1,6 @@
 package age.core;
 
 import age.display.State;
-import js.Dom.HtmlDom;
 
 class Global
 {

@@ -1,5 +1,7 @@
 package age.core;
 
+import js.html.CanvasRenderingContext2D;
+
 interface IEntity
 {
 	var visible : Bool;

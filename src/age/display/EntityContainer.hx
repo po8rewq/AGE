@@ -1,5 +1,6 @@
 package age.display;
 
+import js.html.CanvasRenderingContext2D;
 import age.core.IEntity;
 
 class EntityContainer implements IEntity

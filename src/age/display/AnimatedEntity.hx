@@ -7,6 +7,7 @@
 
 package age.display;
 
+import js.html.CanvasRenderingContext2D;
 import age.core.Global;
 import age.geom.Rectangle;
 

@@ -8,7 +8,7 @@
 package age;
 
 #if js
-import js.Dom;
+import js.html.Image;
 #elseif flash
 import flash.display.BitmapData;
 #end
@@ -16,9 +16,9 @@ import flash.display.BitmapData;
 class Assets
 {
 	#if js
-    private static var _cache : Hash<Image> = new Hash();
+    private static var _cache : Map<String,Image> = new Map();
     #elseif flash
-    private static var _cache : Hash<BitmapData> = new Hash();    
+    private static var _cache : Map<String,BitmapData> = new Map();
     #end
 
 	#if js
