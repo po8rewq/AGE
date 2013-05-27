@@ -1,7 +1,7 @@
 AGE
 ===
 
-Another Game Engine for Haxe js (Only supports Haxe 2.x for the moment)
+Another Game Engine for Haxe js (Haxe 3 only)
 
 AGE is a minimal game engine for making HTML5 games
 
@@ -25,5 +25,3 @@ Add the lib to your project
 # Or just clone the repo and add this :
 -cp /age/directory/src/
 ```
-
-Until the Haxe 3 release, you will need the HTML5 externals
