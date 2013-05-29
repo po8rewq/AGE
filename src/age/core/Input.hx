@@ -41,20 +41,26 @@ class Input
 	{
 		_root = pRoot;
 //		#if js
-        js.Browser.document.body.onkeydown = onKeyDown;
-        js.Browser.document.body.onkeyup = onKeyUp;
+
+        var b = js.Browser.document;
+        b.addEventListener("keydown", onKeyDown);
+        b.addEventListener("keyup", onKeyUp);
+
 //		#elseif flash
 //		_root.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 //		_root.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 //		#end
-
-        _root.onclick = onClick;
 	}
 
-    private static function onClick(pEvt: MouseEvent)
+    public static function registerGlobalClickHandler(pCallback: MouseEvent->Void)
     {
-
+        _root.addEventListener("click", pCallback);
     }
+
+//    private static function onClick(pEvt: MouseEvent)
+//    {
+//
+//    }
 	
 	private static function onKeyDown(pEvt: KeyboardEvent)
 	{

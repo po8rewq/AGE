@@ -11,7 +11,7 @@ package age.geom;
 typedef Point2D = flash.geom.Point;
 #else
 typedef Point2D = {
-    var x : Float;
-    var y : Float;
+    var x : Int;
+    var y : Int;
 }
 #end

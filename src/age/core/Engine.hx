@@ -50,7 +50,7 @@ class Engine
     var _stats : Stats;
     #end
 	
-	public function new(pWidth: Int, pHeight: Int, pFirstState: State, ?pFps: Int = 30, ?pBgColor: String = "")
+	public function new(pWidth: Int, pHeight: Int, pFirstState: State, ?pFps: Int = 30, ?pBgColor: String = "", ?pDivContainer: String = "")
 	{
         Global.engine = this;
 
@@ -66,12 +66,17 @@ class Engine
         _stepRate = 1000 / _fps;
 
 		var doc = js.Browser.document;
-		var body = doc.body;
+		var container = null;
 
 //		#if js
 		_canvas = cast doc.createElement('Canvas');
 		_context = untyped _canvas.getContext('2d');
-		body.appendChild( _canvas );
+
+        if(pDivContainer != "")
+		    container = doc.getElementById(pDivContainer);
+        else
+            container = doc.body;
+        container.appendChild( _canvas );
 
         _offScreenCanvas = cast doc.createElement('Canvas');
         _offScreenContext = untyped _offScreenCanvas.getContext('2d');
@@ -100,15 +105,15 @@ class Engine
         #end
 		
 //		#if js
-		var frequency = Std.int( _stepRate );
-		_globalTimer = new Timer(frequency);
-		_globalTimer.run = mainLoop;
+//		var frequency = Std.int( _stepRate );
+//		_globalTimer = new Timer(frequency);
+//		_globalTimer.run = mainLoop;
 //		#elseif flash
 //		addEventListener(Event.ENTER_FRAME, mainLoop);
 //		#end
 
         // force the 1st rendering, the browser will take the lead after that
-        render();
+        mainLoop();
 	}
 
 	public function switchState(pState: State)
@@ -135,50 +140,45 @@ class Engine
 
         if(_delta >= _stepRate)
         {
+            if(_delta > 50)
+            {   // pause
+                _delta = _stepRate;
+            }
+
             while(_delta >= _stepRate)
             {
-//                #if debug
-//                _stats.begin();
-//                #end
+                #if debug
+                _stats.begin();
+                #end
 
                 Input.update();
 
                 _delta -= _stepRate;
                 state.update();
 
-//                #if debug
-//                _stats.end();
-//                #end
+                if(_backgroundColor != "")
+                {
+                    _offScreenContext.fillStyle = _backgroundColor;
+                    _offScreenContext.fillRect(0, 0, _stageWidth, _stageHeight);
+                }
+                else
+                {
+                    _offScreenContext.clearRect(0, 0, _stageWidth, _stageHeight);
+                }
+
+                Global.currentState.render(_offScreenContext);
+
+                // rendering
+                _context.clearRect(0, 0, _stageWidth, _stageHeight);
+                _context.drawImage(_offScreenCanvas, 0, 0);
+
+                #if debug
+                _stats.end();
+                #end
             }
         }
+
+        js.Browser.window.requestAnimationFrame( cast mainLoop );
 	}
-
-    private function render()
-    {
-        #if debug
-        _stats.begin();
-        #end
-                                                            // function requestAnimationFrame( callback_ : RequestAnimationFrameCallback ) : Int ?
-        js.Browser.window.requestAnimationFrame( cast render );
-
-        if(_backgroundColor != "")
-        {
-            _offScreenContext.fillStyle = _backgroundColor;
-            _offScreenContext.fillRect(0, 0, _stageWidth, _stageHeight);
-        }
-        else
-        {
-            _offScreenContext.clearRect(0, 0, _stageWidth, _stageHeight);
-        }
-
-        Global.currentState.render(_offScreenContext);
-
-        // rendering
-        _context.drawImage(_offScreenCanvas, 0, 0);
-
-        #if debug
-        _stats.end();
-        #end
-    }
 	
 }
