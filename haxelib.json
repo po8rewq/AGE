@@ -1,0 +1,10 @@
+{
+	"name" : "AGE",
+	"url" : "https://github.com/po8rewq/AGE",
+	"license" : "MIT",
+    "description" : "Lightweight HTML5 engine",
+    "version" : "0.0.1",
+	"releasenote" : "",
+	"contributors" : ["RevoluGame"],
+    "dependencies" : {}
+}

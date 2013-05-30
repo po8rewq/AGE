@@ -1,9 +1,12 @@
 package age.core;
 
 //#if js
+import age.geom.Rectangle;
 import js.html.MouseEvent;
 import js.html.KeyboardEvent;
 import js.html.CanvasElement;
+import js.html.ClientRect;
+
 //#elseif flash
 //import flash.events.Event;
 //import flash.events.KeyboardEvent;
@@ -55,6 +58,11 @@ class Input
     public static function registerGlobalClickHandler(pCallback: MouseEvent->Void)
     {
         _root.addEventListener("click", pCallback);
+    }
+
+    public static function getCanvasBounds(): ClientRect
+    {
+        return _root.getBoundingClientRect();
     }
 
 //    private static function onClick(pEvt: MouseEvent)

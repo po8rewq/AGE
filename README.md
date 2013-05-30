@@ -5,7 +5,16 @@ Another Game Engine for Haxe js (Haxe 3 only)
 
 AGE is a minimal game engine for making HTML5 games
 
-Version 0.1
+Version 0.0.1
+
+
+Feature list
+------------
+
+ * A lightweight 2D sprite-based engine for HTML5 canvas
+ * Basic text support
+ * Mouse support 
+ * A simple behavior system
 
 
 Development build

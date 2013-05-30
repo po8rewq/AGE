@@ -1,5 +1,6 @@
 package age.core;
 
+import age.utils.HtmlUtils;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
 import age.core.Global;
@@ -49,6 +50,8 @@ class Engine
     #if debug
     var _stats : Stats;
     #end
+
+    var _animFunction: Dynamic;
 	
 	public function new(pWidth: Int, pHeight: Int, pFirstState: State, ?pFps: Int = 30, ?pBgColor: String = "", ?pDivContainer: String = "")
 	{
@@ -104,13 +107,23 @@ class Engine
 		body.appendChild( _stats.domElement );
         #end
 		
-//		#if js
-//		var frequency = Std.int( _stepRate );
-//		_globalTimer = new Timer(frequency);
-//		_globalTimer.run = mainLoop;
-//		#elseif flash
-//		addEventListener(Event.ENTER_FRAME, mainLoop);
-//		#end
+		#if js
+        _animFunction = HtmlUtils.getRequestAnimationFrame();
+        if(_animFunction != null)
+        {
+            // force the 1st rendering, the browser will take the lead after that
+            mainLoop();
+        }
+        else
+        {
+            trace("No requestAnimationFrame support, falling back to setInterval");
+            var frequency = Std.int( _stepRate );
+            _globalTimer = new Timer(frequency);
+            _globalTimer.run = mainLoop;
+        }
+		#elseif flash
+		addEventListener(Event.ENTER_FRAME, mainLoop);
+		#end
 
         // force the 1st rendering, the browser will take the lead after that
         mainLoop();
@@ -178,7 +191,8 @@ class Engine
             }
         }
 
-        js.Browser.window.requestAnimationFrame( cast mainLoop );
+        if( _animFunction != null )
+            Reflect.callMethod( js.Browser.window, _animFunction, [mainLoop] );
 	}
 	
 }
