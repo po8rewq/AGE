@@ -22,8 +22,8 @@ import age.debug.Stats;
 
 class Engine
 {
-	var _stageWidth : Int;
-	var _stageHeight : Int;
+    public var stageWidth(default, null) : Int;
+	public var stageHeight(default, null) : Int;
 	var _fps : Int;
 	
 	var _globalTimer : Timer;
@@ -60,8 +60,8 @@ class Engine
 //		_stage = Lib.document.body;
 		_backgroundColor = pBgColor;
 	
-		_stageWidth = pWidth;
-		_stageHeight = pHeight;
+		stageWidth = pWidth;
+		stageHeight = pHeight;
 		_fps = pFps;
 
         _last = Timer.stamp() * 1000;
@@ -172,17 +172,17 @@ class Engine
                 if(_backgroundColor != "")
                 {
                     _offScreenContext.fillStyle = _backgroundColor;
-                    _offScreenContext.fillRect(0, 0, _stageWidth, _stageHeight);
+                    _offScreenContext.fillRect(0, 0, stageWidth, stageHeight);
                 }
                 else
                 {
-                    _offScreenContext.clearRect(0, 0, _stageWidth, _stageHeight);
+                    _offScreenContext.clearRect(0, 0, stageWidth, stageHeight);
                 }
 
                 Global.currentState.render(_offScreenContext);
 
                 // rendering
-                _context.clearRect(0, 0, _stageWidth, _stageHeight);
+                _context.clearRect(0, 0, stageWidth, stageHeight);
                 _context.drawImage(_offScreenCanvas, 0, 0);
 
                 #if debug
