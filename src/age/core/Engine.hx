@@ -108,9 +108,11 @@ class Engine
         #end
 		
 //		#if js
-        _animFunction = HtmlUtils.getRequestAnimationFrame();
-        if(_animFunction != null)
+        var requestAnimFrame = HtmlUtils.loadExtension("requestAnimationFrame"); //getRequestAnimationFrame();
+        if(requestAnimFrame != null)
         {
+            _animFunction = requestAnimFrame.value;
+
             // force the 1st rendering, the browser will take the lead after that
             mainLoop();
         }

@@ -2,6 +2,7 @@ package age;
 
 import js.html.Image;
 import js.html.Event;
+import js.html.XMLHttpRequest;
 
 class Loader
 {
@@ -24,6 +25,8 @@ class Loader
     			_dataToLoad.add({type: ResourceType.IMAGE, src: pSrc, name: pName != "" ? pName : pSrc});
     		case ResourceType.TEXT:
     			_dataToLoad.add({type: ResourceType.TEXT, src: pSrc, name: pName != "" ? pName : pSrc});
+            case ResourceType.SOUND:
+                _dataToLoad.add({type: ResourceType.SOUND, src: pSrc, name: pName != "" ? pName : pSrc});
     	}
     }
 
@@ -50,16 +53,10 @@ class Loader
 		allComplete();
 	}
 
-	private static function onImageLoaded(pName: String, pData: Image)
+	private static function onResourceLoaded(pName: String)
 	{
-		trace("Loaded: " + pName);
-
-		Assets.setImage(pName, pData);
-
 		LOADED++;
-
         removeResource(pName);
-
 		allComplete();
 	}
 
@@ -78,6 +75,7 @@ class Loader
 			{
 				case ResourceType.IMAGE: loadImage(data.name, data.src);
 				case ResourceType.TEXT: loadText(data.src);
+                case ResourceType.SOUND: loadSound(data.name, data.src);
 			}
 		}
 	}
@@ -89,7 +87,8 @@ class Loader
 
 //        image.onload = onImageLoaded;
         image.onload = function(pEvt: Event){
-            onImageLoaded(pName, cast pEvt.currentTarget);
+            Assets.setImage(pName, cast pEvt.currentTarget);
+            onResourceLoaded(pName);
         };
 
         image.onerror = onImageError;
@@ -103,6 +102,18 @@ class Loader
         r.onData = function(r:String) { trace("Loaded: " + r); };
         r.request(false);
 	}
+
+    private static function loadSound(pName: String, pSrc: String)
+    {
+        var r = new XMLHttpRequest();
+        r.open("GET", pSrc, true);
+        r.responseType = "arraybuffer";
+        r.onload = function(pEvt: Event){
+            Assets.setSound(pName, cast r.response);
+            onResourceLoaded(pName);
+        };
+        r.send();
+    }
 
 	private static function allComplete()
 	{
@@ -123,5 +134,5 @@ typedef Resource = {
 enum ResourceType {
 	IMAGE;
 	TEXT;
-//	SOUND;
+	SOUND;
 }
