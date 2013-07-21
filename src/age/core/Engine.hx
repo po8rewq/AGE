@@ -104,10 +104,10 @@ class Engine
 		_stats.domElement.style.left = '0px';
 		_stats.domElement.style.top = '0px';
 
-		body.appendChild( _stats.domElement );
+		container.appendChild( _stats.domElement );
         #end
 		
-		#if js
+//		#if js
         _animFunction = HtmlUtils.getRequestAnimationFrame();
         if(_animFunction != null)
         {
@@ -121,9 +121,9 @@ class Engine
             _globalTimer = new Timer(frequency);
             _globalTimer.run = mainLoop;
         }
-		#elseif flash
-		addEventListener(Event.ENTER_FRAME, mainLoop);
-		#end
+//		#elseif flash
+//		addEventListener(Event.ENTER_FRAME, mainLoop);
+//		#end
 
         // force the 1st rendering, the browser will take the lead after that
         mainLoop();
@@ -138,11 +138,11 @@ class Engine
         Global.currentState = pState;
 	}
 	
-	#if flash
-	private function mainLoop(pEvt: Event)
-	#else
+//	#if flash
+//	private function mainLoop(pEvt: Event)
+//	#else
 	private function mainLoop()
-	#end
+//	#end
 	{
         var state = Global.currentState;
 

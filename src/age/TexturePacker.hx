@@ -1,7 +1,7 @@
 package age;
 
 import js.html.Image;
-
+import haxe.Json;
 import age.geom.Rectangle;
 
 class TexturePacker
@@ -15,17 +15,19 @@ class TexturePacker
 	/**
 	 * the atlas dictionnary
 	 */
-	var _atlas : Hash<Frame>;
+	var _spriteAtlas : Map<String, Frame>;
+	var _clipAtlas : Map<String, Map<Int, Frame>>;
 
 	/**
 	 *
 	 */
 	public function new(pAtlasFile: String, pTextureSrc: String)
 	{
-		_atlas = new Map();
+		_spriteAtlas = new Map();
+		_clipAtlas = new Map();
 	
 		// if json
-		var json = JSON.parse(pAtlasFile);
+		var json = Json.parse(pAtlasFile);
 		var frames = Reflect.field(json, "frames");
 		var frame : Frame;
 		for(frameData in frames)
@@ -44,14 +46,14 @@ class TexturePacker
 		}
 	}
 	
-	public function getRegion(pName): Frame
+	public function getSpriteRegion(pName: String): Frame
 	{
-		return _atlas.get(pName);
+		return _spriteAtlas.get(pName);
 	}
-	
-	public function createAnimationFromName(pName)
+
+	public function getClipRegion(pName: String): Map<Int, Frame>
 	{
-		// TODO
+		return _clipAtlas.get(pName);	
 	}
 
 }
