@@ -56,15 +56,6 @@ class Main extends Engine
 	public static function main() {
 		new Main();
 	}
-
-	public override function create() {
-		trace('Hello world');
-	}
-
-	public override function update() {
-		trace('main loop');
-		super.update();
-	}
 }
 ```
 
@@ -76,6 +67,15 @@ class MyFirstState extends State
 	public function new() {
 		super();
 	}
+
+	public override function create() {
+    	trace('Hello world');
+    }
+
+    public override function update() {
+    	trace('main loop');
+    	super.update();
+    }
 }
 ```
 
@@ -83,11 +83,15 @@ class MyFirstState extends State
 
 Main.hx
 ```haxe
-public static function main()
+import age.core.Engine;
+class Main extends Engine
 {
-	Loader.addResource('/path/to/myimg.png', ResourceType.IMAGE, 'img1');
-	Loader.addResource('/path/to/mysound.ogg', ResourceType.SOUND, 'snd1');
-	Loader.start( function() { new Main(); } );
+    public static function main()
+    {
+        Loader.addResource('/path/to/myimg.png', ResourceType.IMAGE, 'img1');
+        Loader.addResource('/path/to/mysound.ogg', ResourceType.SOUND, 'snd1');
+        Loader.start( function() { new Main(); } );
+    }
 }
 ```
 
