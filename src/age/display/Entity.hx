@@ -32,7 +32,7 @@ class Entity implements IEntity
     var _debugColor: String;
     #end
 
-	public function new(?pWidth: Int = 0, ?pHeight: Int = 0)
+	public function new(?pWidth: Int = 0, ?pHeight: Int = 0, ?pImgSrc: String = "")
 	{
 		visible = true;
 		x = y = 0;
@@ -57,6 +57,9 @@ class Entity implements IEntity
         _debugMode = false;
         _debugColor = "FF0000";
         #end
+
+        if(pImgSrc != "")
+            addImage("default", pImgSrc, true);
 	}
 
     public function addImage(pName: String, pSrc: String, ?pDefault: Bool = false)

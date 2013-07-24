@@ -166,8 +166,6 @@ class Engine
                 _stats.begin();
                 #end
 
-                Input.update();
-
                 _delta -= _stepRate;
                 state.update();
 
@@ -192,6 +190,8 @@ class Engine
                 #end
             }
         }
+
+        Input.update();
 
         if( _animFunction != null )
             Reflect.callMethod( js.Browser.window, _animFunction, [mainLoop] );

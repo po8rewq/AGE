@@ -45,10 +45,9 @@ class Loader
         }
     }
 
-	private static function onImageError(pEvt: Event)
+	private static function onResourceError(pName: String)
 	{
-		trace("Error: " + pEvt.currentTarget);
-
+		removeResource(pName); // ?
 		ERROR++;
 		allComplete();
 	}
@@ -73,41 +72,69 @@ class Loader
 		{
 			switch(data.type)
 			{
-				case ResourceType.IMAGE: loadImage(data.name, data.src);
-				case ResourceType.TEXT: loadText(data.src);
-                case ResourceType.SOUND: loadSound(data.name, data.src);
+				case ResourceType.IMAGE:    loadImage(data.name, data.src);
+				case ResourceType.TEXT:     loadText(data.name, data.src);
+                case ResourceType.SOUND:    loadSound(data.name, data.src);
 			}
 		}
 	}
 
+    /**
+     * Load image
+     */
 	private static function loadImage(pName: String, pSrc: String)
 	{
 		var image : Image = untyped __js__("new Image()");
         image.style.position = "absolute";
 
-//        image.onload = onImageLoaded;
         image.onload = function(pEvt: Event){
             Assets.setImage(pName, cast pEvt.currentTarget);
             onResourceLoaded(pName);
         };
 
-        image.onerror = onImageError;
+        image.onerror = function(pEvt: Event) {
+            trace("Error: " + pEvt.currentTarget);
+            onResourceError(pName);
+        };
+
         image.src = pSrc;
 	}
 
-	private static function loadText(pSrc: String)
-	{ // TODO
+    /**
+     * Load text
+     */
+	private static function loadText(pName: String, pSrc: String)
+	{
 		var r = new haxe.Http(pSrc);
-        r.onError = function(r:String) { trace("Error: " + r); };
-        r.onData = function(r:String) { trace("Loaded: " + r); };
+
+        r.onError = function(r:String) { 
+            trace("Error: " + r); 
+            onResourceError(pName);
+        };
+
+        r.onData = function(r:String) { 
+            Assets.setText(pName, r);
+            onResourceLoaded(pName);
+        };
+
         r.request(false);
 	}
 
+    /**
+     * Load sound
+     */
     private static function loadSound(pName: String, pSrc: String)
     {
         var r = new XMLHttpRequest();
         r.open("GET", pSrc, true);
         r.responseType = "arraybuffer";
+        
+        r.onerror = function(pEvt: Event)
+        {
+            trace("Error while loading "+pName);
+            onResourceError(pName);
+        };
+
         r.onload = function(pEvt: Event){
             Assets.setSound(pName, cast r.response);
             onResourceLoaded(pName);

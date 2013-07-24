@@ -22,11 +22,11 @@ class AnimatedEntity extends Entity
     var _loop: Bool;
     var _complete : Bool;
 
-    public function new(pSrc: String, pWidth: Int, pHeight : Int, pTotalFrames: Int, pFrameRate : Int)
+    public function new(pWidth: Int, pHeight : Int, pSrc: String, pTotalFrames: Int, pFrameRate : Int)
     {
         super(pWidth, pHeight);
 
-        addImage("anim", pSrc, true);
+        addImage("default", pSrc, true);
 
         _frames = pTotalFrames;
         _currentFrame = 0;

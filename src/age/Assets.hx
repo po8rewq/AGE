@@ -19,6 +19,7 @@ class Assets
 {
 	//#if js
     private static var _cacheImg : Map<String, Image> = new Map();
+    private static var _cacheText : Map<String, String> = new Map();
     private static var _cacheSounds : Map<String, ArrayBuffer> = new Map();
     //#elseif flash
     //private static var _cache : Map<String,BitmapData> = new Map();
@@ -41,7 +42,7 @@ class Assets
             image = _cacheImg.get(pName);
         }
         else
-        {
+        { // TODO refactor
         	//#if js
             image = untyped __js__("new Image()");
             image.style.position = "absolute";
@@ -57,23 +58,31 @@ class Assets
      */
     public static function setImage(pName: String, pImage: Image)
     {
-//        trace(pName);
         _cacheImg.set(pName, pImage);
     }
 
     public static function getSound(pName: String): ArrayBuffer
     {
         if( _cacheSounds.exists(pName) )
-        {
             return _cacheSounds.get(pName);
-        }
         throw "Error sound not loaded";
-//        return null;
     }
 
     public static function setSound(pName: String, pAudio: ArrayBuffer)
     {
         _cacheSounds.set(pName, pAudio);
+    }
+
+    public static function getText(pName: String): String
+    {
+        if(_cacheText.exists(pName))
+            return _cacheText.get(pName);
+        throw "Error text not loaded";
+    }
+
+    public static function setText(pName: String, pText: String)
+    {
+        _cacheText.set(pName, pText);
     }
 
 }
