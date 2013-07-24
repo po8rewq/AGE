@@ -86,6 +86,8 @@ Main.hx
 import age.core.Engine;
 class Main extends Engine
 {
+    // [...]
+
     public static function main()
     {
         Loader.addResource('/path/to/myimg.png', ResourceType.IMAGE, 'img1');
@@ -97,16 +99,12 @@ class Main extends Engine
 
 ### Add an element to the screen :
 
-```haxe
+```
 add( new Entity(10, 10, "/path/to/myimg.png") );
 ```
 
 or if you used the Loader :
 
-```haxe
+```
 add( new Entity(10, 10, "img1") );
 ```
-
-
- ### The behavior system :
- 
