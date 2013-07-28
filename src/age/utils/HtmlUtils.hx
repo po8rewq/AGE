@@ -5,36 +5,12 @@ import js.html.RequestAnimationFrameCallback;
 class HtmlUtils
 {
 
-	/** 
-	 * Use requestAnimationFrame if available, otherwise a 60 FPS setInterval
-	 * https://developer.mozilla.org/en/DOM/window.mozRequestAnimationFrame
-	 */
-//	public static function getRequestAnimationFrame(): Dynamic // RequestAnimationFrameCallback->Int
-//	{
-//		var requestFunctions : Array<String> = [
-//			"requestAnimationFrame",
-//			"webkitRequestAnimationFrame",
-//			"mozRequestAnimationFrame"
-////			"oRequestAnimationFrame", // ?
-////			"msRequestAnimationFrame" // ?
-//		];
-//
-//		var win = js.Browser.window;
-//		for(fnc in requestFunctions)
-//		{
-//			if( Reflect.field(win, fnc) )
-//			{
-//				return cast Reflect.field(win, fnc);
-//			}
-//		}
-//
-//		return null;
-//	}
-
     public static var VENDOR_PREFIXES = ["webkit", "moz", "ms", "o", "khtml"];
-    public static function loadExtension(pName: String): Extension
+    public static function loadExtension(pName: String, ?obj: Dynamic): Extension
     {
-        var obj = js.Browser.window;
+        if(obj == null)
+            obj = js.Browser.window;
+
         var extension = Reflect.field(obj, pName);
         if (extension != null)
             return {prefix: "", field: pName, value: extension};
@@ -51,16 +27,6 @@ class HtmlUtils
         // Not found
         return {prefix: null, field: null, value: null};
     }
-
-//    public static function getAudioContext(): Dynamic
-//    {
-//        var functions : Array<String> = [
-//            "AudioContext",
-//            "webkitAudioContext"
-//        ];
-//
-//
-//    }
 
 }
 

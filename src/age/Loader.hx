@@ -65,18 +65,25 @@ class Loader
 	 */
 	public static function start(pCallback: Void->Void)
 	{
-		_endCallback = pCallback;
-        _totalToLoad = _dataToLoad.length;
+        if(_dataToLoad.length == 0)
+        {
+            pCallback();
+        }
+        else
+        {
+            _endCallback = pCallback;
+            _totalToLoad = _dataToLoad.length;
 
-		for(data in _dataToLoad)
-		{
-			switch(data.type)
-			{
-				case ResourceType.IMAGE:    loadImage(data.name, data.src);
-				case ResourceType.TEXT:     loadText(data.name, data.src);
-                case ResourceType.SOUND:    loadSound(data.name, data.src);
-			}
-		}
+            for(data in _dataToLoad)
+            {
+                switch(data.type)
+                {
+                    case ResourceType.IMAGE:    loadImage(data.name, data.src);
+                    case ResourceType.TEXT:     loadText(data.name, data.src);
+                    case ResourceType.SOUND:    loadSound(data.name, data.src);
+                }
+            }
+        }
 	}
 
     /**

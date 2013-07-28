@@ -36,6 +36,7 @@ class EntityContainer implements IEntity
 	public function remove(pEntity: IEntity)
 	{
 		_entities.remove(pEntity);
+        pEntity.destroy();
 	}
 
 	public function render(pContext: CanvasRenderingContext2D):Void
@@ -51,5 +52,10 @@ class EntityContainer implements IEntity
 			en.destroy();
         _entities = new Array();
 	}
+
+    public function numChildren(): Int
+    {                  // TODO : recursif
+        return _entities.length;
+    }
 
 }

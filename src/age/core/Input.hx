@@ -1,17 +1,13 @@
 package age.core;
 
-//#if js
+import age.utils.GamepadSupport;
 import age.geom.Rectangle;
+import age.utils.HtmlUtils;
+
 import js.html.MouseEvent;
 import js.html.KeyboardEvent;
 import js.html.CanvasElement;
 import js.html.ClientRect;
-
-//#elseif flash
-//import flash.events.Event;
-//import flash.events.KeyboardEvent;
-//import flash.display.DisplayObjectContainer;
-//#end
 
 /**
  * Based on haxepunk
@@ -19,11 +15,7 @@ import js.html.ClientRect;
  **/
 class Input
 {
-//	#if js
 	static var _root : CanvasElement;
-//	#elseif flash
-//	static var _root : DisplayObjectContainer;
-//	#end
 	
 	static var _key:Array<Bool> = new Array<Bool>();
 	static var _keyNum:Int = 0;
@@ -36,23 +28,15 @@ class Input
 
 	private static var _control:Map<String,Array<Int>> = new Map();
 
-//	#if js
 	public static function new(pRoot: CanvasElement)
-//	#elseif flash
-//	public static function new(pRoot: DisplayObjectContainer)
-//	#end
 	{
 		_root = pRoot;
-//		#if js
 
         var b = js.Browser.document;
         b.addEventListener("keydown", onKeyDown);
         b.addEventListener("keyup", onKeyUp);
 
-//		#elseif flash
-//		_root.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-//		_root.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-//		#end
+        GamepadSupport.init();
 	}
 
     public static function registerGlobalClickHandler(pCallback: MouseEvent->Void)
@@ -64,11 +48,6 @@ class Input
     {
         return _root.getBoundingClientRect();
     }
-
-//    private static function onClick(pEvt: MouseEvent)
-//    {
-//
-//    }
 	
 	private static function onKeyDown(pEvt: KeyboardEvent)
 	{
@@ -116,6 +95,8 @@ class Input
 
 		while (_releaseNum-- > -1) _release[_releaseNum] = -1;
 		_releaseNum = 0;
+
+        GamepadSupport.update();
 	}
 
     /**
@@ -130,12 +111,10 @@ class Input
             var v:Array<Int> = _control.get(input), i:Int = v.length;
             while (i-- > 0)
             {
-                if (v[i] < 0)
-                {
-                    if (_keyNum > 0) return true;
-                    continue;
-                }
-                if (_key[v[i]] == true) return true;
+                if (v[i] < 0 && _keyNum > 0)
+                    return true;
+                else if (_key[v[i]] == true)
+                    return true;
             }
             return false;
         }
@@ -154,9 +133,8 @@ class Input
 			var v:Array<Int> = _control.get(input);
 			var i:Int = v.length;
 			while (i-- > 0)
-			{
-				if ((v[i] < 0) ? _pressNum != 0 : indexOf(_press, v[i]) >= 0) return true;
-			}
+				if ((v[i] < 0) ? _pressNum != 0 : indexOf(_press, v[i]) >= 0)
+                    return true;
 			return false;
 		}
 		return (input < 0) ? _pressNum != 0 : indexOf(_press, input) >= 0;
@@ -174,9 +152,8 @@ class Input
 			var v:Array<Int> = _control.get(input);
 			var i:Int = v.length;
 			while (i-- > 0)
-			{
-				if ((v[i] < 0) ? _releaseNum != 0 : indexOf(_release, v[i]) >= 0) return true;
-			}
+				if ((v[i] < 0) ? _releaseNum != 0 : indexOf(_release, v[i]) >= 0)
+                    return true;
 			return false;
 		}
 		return (input < 0) ? _releaseNum != 0 : indexOf(_release, input) >= 0;

@@ -139,4 +139,27 @@ class Key
 		}
 		return String.fromCharCode(char);
 	}
+
+    // XBOX controller
+    public inline static var GAMEPAD_A = 0;      // CROIX
+    public inline static var GAMEPAD_B = 1;      // ROND
+    public inline static var GAMEPAD_X = 2;      // carré
+    public inline static var GAMEPAD_Y = 3;      // triangle
+
+    public inline static var GAMEPAD_LB = 4;
+    public inline static var GAMEPAD_RB = 5;
+    public inline static var GAMEPAD_LT = 6;
+    public inline static var GAMEPAD_RT = 7;
+
+    public inline static var GAMEPAD_BACK = 8;
+    public inline static var GAMEPAD_START = 9;
+
+    public inline static var GAMEPAD_LEFT_STICK_BTN = 10;
+    public inline static var GAMEPAD_RIGHT_STICK_BTN = 11;
+
+    public inline static var GAMEPAD_TOP_BTN = 12;
+    public inline static var GAMEPAD_BOTTOM_BTN = 13;
+    public inline static var GAMEPAD_LEFT_BTN = 14;
+    public inline static var GAMEPAD_RIGHT_BTN = 15;
+
 }
