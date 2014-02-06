@@ -1,5 +1,6 @@
 package age.core;
 
+import age.geom.Point2D;
 import age.utils.GamepadSupport;
 import age.geom.Rectangle;
 import age.utils.HtmlUtils;
@@ -26,7 +27,9 @@ class Input
 	static var _release:Array<Int> = new Array<Int>();
 	static var _releaseNum:Int = 0;
 
-	private static var _control:Map<String,Array<Int>> = new Map();
+	static var _control:Map<String,Array<Int>> = new Map();
+
+    public static var mousePosition : Point2D = {x: 0, y: 0};
 
 	public static function new(pRoot: CanvasElement)
 	{
@@ -36,12 +39,26 @@ class Input
         b.addEventListener("keydown", onKeyDown);
         b.addEventListener("keyup", onKeyUp);
 
+        _root.addEventListener("mousemove", onMouseMove);
+
         GamepadSupport.init();
 	}
+
+    private static function onMouseMove(pEvt: MouseEvent)
+    {
+        var bounds = getCanvasBounds();
+        mousePosition.x = Math.round(pEvt.clientX - bounds.left);       //      trace(pEvt.clientX + "/" + pEvt.clientY);
+        mousePosition.y = Math.round(pEvt.clientY - bounds.top);
+    }
 
     public static function registerGlobalClickHandler(pCallback: MouseEvent->Void)
     {
         _root.addEventListener("click", pCallback);
+    }
+
+    public static function removeGlobalClickHandler(pCallback: MouseEvent->Void)
+    {
+        _root.removeEventListener("click", pCallback);
     }
 
     public static function getCanvasBounds(): ClientRect

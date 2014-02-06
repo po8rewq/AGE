@@ -35,8 +35,11 @@ class EntityContainer implements IEntity
 
 	public function remove(pEntity: IEntity)
 	{
-		_entities.remove(pEntity);
-        pEntity.destroy();
+		if(pEntity != null)
+		{
+			_entities.remove(pEntity);
+	        pEntity.destroy();
+	    }
 	}
 
 	public function render(pContext: CanvasRenderingContext2D):Void

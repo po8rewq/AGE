@@ -16,6 +16,8 @@ class Entity implements IEntity
 	public var x : Int;
 	public var y : Int;
 
+    public var dead : Bool;
+
     public var depth : Int;
     public var alpha : Float;
 
@@ -39,6 +41,8 @@ class Entity implements IEntity
         rotation = 0;
         depth = 0;
         alpha = 1;
+
+        dead = false;
 
 		width = pWidth;
 		height = pHeight;
@@ -91,14 +95,17 @@ class Entity implements IEntity
 
 	public function update()
 	{
-		for(b in _behaviors)
-			if(b.activated)
-				b.update();
+        if(!dead)
+        {
+            for(b in _behaviors)
+                if(b.activated)
+                    b.update();
+        }
 	}
 
 	public function render(pContext: CanvasRenderingContext2D)
 	{
-        if(_image == null) return;
+        if(_image == null || !visible || dead) return;
 
         pContext.save();
 
@@ -139,13 +146,32 @@ class Entity implements IEntity
 
     public function collideRect(pX: Int, pY: Int, pWidth: Int, pHeight: Int): Bool
     {
+        /*
         if(pX >= x + hitbox.x
            && pX + pWidth <= x + hitbox.x + hitbox.width
            && pY >= y + hitbox.y
            && pY + pHeight <= y + hitbox.y + hitbox.height)
             return true;
+        */
+
+        // haut gauche
+        if( pX >= x + hitbox.x && pX <= x + hitbox.x + hitbox.width && pY >= y + hitbox.y && pY <= y + hitbox.y + hitbox.height) return true;
+
+        // haut droit
+        if( pX + pWidth >= x + hitbox.x && pX + pWidth <= x + hitbox.x + hitbox.width && pY >= y + hitbox.y && pY <= y + hitbox.y + hitbox.height) return true;
+
+        // bas gauche
+        if( pX >= x + hitbox.x && pX <= x + hitbox.x + hitbox.width && pY + pHeight >= y + hitbox.y && pY + pHeight <= y + hitbox.y + hitbox.height) return true;
+
+        // bas droit
+        if( pX + pWidth >= x + hitbox.x && pX + pWidth <= x + hitbox.x + hitbox.width && pY + pHeight >= y + hitbox.y && pY + pHeight <= y + hitbox.y + hitbox.height) return true;
 
         return false;
+    }
+
+    public function collideEntity(pEntity: Entity): Bool
+    {
+        return collideRect(pEntity.x, pEntity.y, pEntity.width, pEntity.height);
     }
 
     #if debug

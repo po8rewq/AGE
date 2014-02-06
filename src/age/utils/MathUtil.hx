@@ -10,4 +10,9 @@ class MathUtil
 		return pVal;
 	}
 
+	public static function randomValue(pMin:Int, pMax:Int):Int
+	{
+		return ( pMin + Math.round( Math.random() * (pMax - pMin) ) );
+	}
+
 }

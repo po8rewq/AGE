@@ -2,9 +2,11 @@ package age.display.text;
 
 import js.html.CanvasRenderingContext2D;
 import age.display.text.TextAlignEnum.TextAlign;
+import age.display.text.TextBaselineEnum.TextBaseline;
 import age.core.IEntity;
 
 using age.display.text.TextAlignEnum;
+using age.display.text.TextBaselineEnum;
 
 class BasicText implements IEntity
 {
@@ -23,10 +25,14 @@ class BasicText implements IEntity
 
     public var font : String;
     public var textAlign : TextAlign;
+    public var textBaseline : TextBaseline;
 
     public var depth : Int;
 
-	public function new(pText: String, pX: Int, pY: Int)
+    /**
+     *
+     **/
+	public function new(pText: String, ?pX: Int = 0, ?pY: Int = 0)
 	{
         text = pText;
 
@@ -36,6 +42,7 @@ class BasicText implements IEntity
         bold = false;
         color = "#000";
         textAlign = TextAlign.LEFT;
+        textBaseline = TextBaseline.TOP;
 
         x = pX;
         y = pY;
@@ -44,7 +51,11 @@ class BasicText implements IEntity
         depth = 0;
 	}
 
-    public function setStyle(?pFont: String = "", ?pSize: Int = 0, ?pColor: String = "", ?pBold: Bool = false, ?pTextAlign: TextAlign)
+    public function setStyle(?pFont: String = "",
+                             ?pSize: Int = 0,
+                             ?pColor: String = "",
+                             ?pBold: Bool = false,
+                             ?pTextAlign: TextAlign)
     {
         if(pFont != "")
             font = pFont;
@@ -72,7 +83,7 @@ class BasicText implements IEntity
 
         pContext.font = (bold ? "bold " : "") + size + "px " + font;
         pContext.textAlign = textAlign.toStyle();
-        pContext.textBaseline = "top";
+        pContext.textBaseline = textBaseline.toStyle();
 
         pContext.fillText(text, x, y);
 	}
