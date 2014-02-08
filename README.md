@@ -11,13 +11,16 @@ Version 0.0.1
 Feature list
 ------------
 
- * A lightweight 2D sprite-based engine for HTML5 canvas
+ * A **lightweight** 2D sprite-based engine for **HTML5 canvas**
  * Basic text support
  * Mouse support 
+ * Keyboard support
+ * Gamepad support 
  * A simple behavior system
  * Basic sound support **[WIP]**
  * Tilesheet support
  * Animations
+ * Basic UI elements **[WIP]**
 
 
 Development build
@@ -29,12 +32,15 @@ Just run this command line into your terminal
 haxelib git AGE https://github.com/po8rewq/AGE src
 ```
 
-Add the lib to your project
+Add the lib to your project :
 
 ```bash
 -lib AGE
+```
 
-# Or just clone the repo and add this :
+Or just clone the repo and add :
+
+```bash
 -cp /age/directory/src/
 ```
 
