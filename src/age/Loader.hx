@@ -112,19 +112,20 @@ class Loader
      */
 	private static function loadText(pName: String, pSrc: String)
 	{
-		var r = new haxe.Http(pSrc);
+        var r = new XMLHttpRequest();
+        r.open("GET", pSrc, true);
 
-        r.onError = function(r:String) { 
-            trace("Error: " + r); 
+        r.onerror = function(pEvt: Event)
+        {
+            trace("Error while loading "+pName);
             onResourceError(pName);
         };
 
-        r.onData = function(r:String) { 
-            Assets.setText(pName, r);
+        r.onload = function(pEvt: Event){
+            Assets.setText(pName, cast r.responseText);
             onResourceLoaded(pName);
         };
-
-        r.request(false);
+        r.send();
 	}
 
     /**

@@ -146,14 +146,6 @@ class Entity implements IEntity
 
     public function collideRect(pX: Int, pY: Int, pWidth: Int, pHeight: Int): Bool
     {
-        /*
-        if(pX >= x + hitbox.x
-           && pX + pWidth <= x + hitbox.x + hitbox.width
-           && pY >= y + hitbox.y
-           && pY + pHeight <= y + hitbox.y + hitbox.height)
-            return true;
-        */
-
         // haut gauche
         if( pX >= x + hitbox.x && pX <= x + hitbox.x + hitbox.width && pY >= y + hitbox.y && pY <= y + hitbox.y + hitbox.height) return true;
 
@@ -171,7 +163,11 @@ class Entity implements IEntity
 
     public function collideEntity(pEntity: Entity): Bool
     {
-        return collideRect(pEntity.x, pEntity.y, pEntity.width, pEntity.height);
+        return collideRect(
+            pEntity.x + pEntity.hitbox.x, 
+            pEntity.y + pEntity.hitbox.y, 
+            pEntity.hitbox.width, 
+            pEntity.hitbox.height );
     }
 
     #if debug

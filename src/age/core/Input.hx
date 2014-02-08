@@ -144,7 +144,7 @@ class Input
 	 * @return	True or false.
 	 */
 	public static function pressed(input:Dynamic):Bool
-	{
+	{ // Pause pb quand on a des frames qui sautent !! idem pour released
 		if (Std.is(input, String))
 		{
 			var v:Array<Int> = _control.get(input);

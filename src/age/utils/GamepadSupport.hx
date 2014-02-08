@@ -19,9 +19,13 @@ class GamepadSupport
 {
     public static var enabled(default, null): Bool;
 
-    /**  */
+    /**  */    
     private static var _buttons : Map<Int, Map<Int, GamePadState>>;
     private static var _axes : Map<Int, AxesData>;
+
+    // TODO : gerer le branchement/debranchement des pads en cours de jeu
+    private static var _pads : Map<Int, String>; // id -> nom
+    public static var NB_PAD : Int;
 
     public static var GAMEPAD_SENSITIVITY : Float = 0.5;
 
@@ -29,18 +33,25 @@ class GamepadSupport
     {
         _buttons = new Map();
         _axes = new Map();
+        _pads = new Map();
+
+        NB_PAD = 0;
 
         enabled = HtmlUtils.loadExtension("GetGamepads", Browser.navigator).value != null;
 
-//        Browser.window.addEventListener('MozGamepadConnected',function(pEvt:js.html.Event){
+//        "MozGamepadConnected"
+//        Browser.window.addEventListener('gamepadconnected',function(pEvt:js.html.Event){
 //                                                                                         trace('ongamepadconnected');
 //                                                    }, false);
+
+        trace("GamePad support : " + enabled);
     }
 
     public static function update()
     {
         if(!enabled || _buttons == null) return;
 
+        NB_PAD = 0;
         var t : Dynamic = Browser.navigator;
 
         var gamepads = t.webkitGetGamepads();
@@ -49,14 +60,23 @@ class GamepadSupport
             var pad : Gamepad;
             for(i in 0...gamepads.length)
             {
-				pad = gamepads.item(i);
+                NB_PAD++;
+				pad = gamepads.item(i); 
 //                pad = gamepads[i];        // TODO
                 if(pad != null)
                 {
+                    if(!_pads.exists(i))
+                    {
+                        _pads.set(i, pad.id);
+//                        trace('Ajout du pad ' + pad.id);
+                    }
+
                     // Buttons handler
                     var currentPadButtons : Map<Int, GamePadState>;
                     if(_buttons.exists(i))
+                    {
                         currentPadButtons = _buttons.get(i);
+                    }
                     else
                     {
                         currentPadButtons = new Map();

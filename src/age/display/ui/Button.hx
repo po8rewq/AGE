@@ -26,9 +26,13 @@ class Button extends EntityContainer
 
     var _callback : Void->Void;
 
-    public function new(pX: Int, pY: Int, pWidth: Int, pHeight: Int, pText: String, ?pCallback: Void->Void = null)
+    public var enabled : Bool;
+
+    public function new(pX: Int, pY: Int, pWidth: Int, pHeight: Int, pText: String, pFont: String, ?pCallback: Void->Void = null)
     {
         super();
+
+        enabled = true;
 
         x = pX;
         y = pY;
@@ -46,7 +50,7 @@ class Button extends EntityContainer
         var textY : Int = Math.round(pY + pHeight*.5);
 
         text = new BasicText(pText, textX, textY);
-        text.setStyle("pixelade", 25, "#0000FF", false, TextAlign.CENTER);
+        text.setStyle(pFont, 24, "#0000FF", false, TextAlign.CENTER);
         text.textBaseline = TextBaseline.MIDDLE;
 
         if(_callback != null)
@@ -84,22 +88,30 @@ class Button extends EntityContainer
     {
         _currentState = StateEnum.NORMAL;
 
-        var mouse = Input.mousePosition;
-        if(mouse.x >= x && mouse.x <= x + width
-           && mouse.y >= y && mouse.y <= y + height)
+        if(!enabled) _currentState = StateEnum.DISABLE;
+        else
         {
-            _currentState = StateEnum.OVER;
+            var mouse = Input.mousePosition;
+            if(mouse.x >= x && mouse.x <= x + width
+               && mouse.y >= y && mouse.y <= y + height)
+            {
+                _currentState = StateEnum.OVER;
+            }
         }
 
         switch(_currentState)
         {
             case StateEnum.NORMAL:
-                text.color = "#0000FF";
+                text.color = "#000";
                 _backgroundColor = "#FFF";
 
-            case StateEnum.OVER:
-                text.color = "#FF0000";
+            case StateEnum.OVER: 
+                text.color = "#FFF";
                 _backgroundColor = "#000";
+
+            case StateEnum.DISABLE:
+                text.color = "#FFF";
+                _backgroundColor = "#DCDCDC";
         }
 
         super.update();
@@ -107,6 +119,8 @@ class Button extends EntityContainer
 
     private function onClick(pEvt:MouseEvent)
     {
+        if(!enabled) return;
+
         var bounds = Input.getCanvasBounds();
         var mouseX = pEvt.clientX - bounds.left;
         var mouseY = pEvt.clientY - bounds.top;
@@ -128,4 +142,5 @@ class Button extends EntityContainer
 enum StateEnum {
     NORMAL;
     OVER;
+    DISABLE;
 }
