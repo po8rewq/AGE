@@ -122,8 +122,9 @@ class Button extends EntityContainer
         if(!enabled) return;
 
         var bounds = Input.getCanvasBounds();
-        var mouseX = pEvt.clientX - bounds.left;
-        var mouseY = pEvt.clientY - bounds.top;
+// TMP A CAUSE DU NON SCALE -- A REVOIR
+        var mouseX = /*pEvt.clientX*/ Input.mousePosition.x;// - bounds.left;
+        var mouseY = /*pEvt.clientY*/ Input.mousePosition.y;// - bounds.top;
 
         if(mouseX >= x && mouseX <= x + width
            && mouseY >= y && mouseY <= y + height)

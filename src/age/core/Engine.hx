@@ -3,6 +3,7 @@ package age.core;
 import age.utils.HtmlUtils;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
+import js.html.Event;
 import age.core.Global;
 import age.core.Input;
 import age.display.State;
@@ -24,6 +25,10 @@ class Engine
 {
     public var stageWidth(default, null) : Int;
 	public var stageHeight(default, null) : Int;
+
+    public var stageScaleX(default, null) : Float;
+    public var stageScaleY(default, null) : Float;
+
 	var _fps : Int;
 	
 	var _globalTimer : Timer;
@@ -53,7 +58,7 @@ class Engine
 
     var _animFunction: Dynamic;
 	
-	public function new(pWidth: Int, pHeight: Int, pFirstState: State, ?pFps: Int = 30, ?pBgColor: String = "", ?pDivContainer: String = "")
+	public function new(pWidth: Int, pHeight: Int, pFirstState: State, ?pKeepRatio: Bool = true, ?pFps: Int = 30, ?pBgColor: String = "", ?pDivContainer: String = "")
 	{
         Global.engine = this;
 
@@ -87,6 +92,10 @@ class Engine
 		// setup dimensions.
 		_canvas.width = _offScreenCanvas.width = pWidth;
 		_canvas.height = _offScreenCanvas.height = pHeight;
+        
+        if(pKeepRatio)
+            _canvas.style.imageRendering  = "-webkit-optimize-contrast";
+        
 //		#elseif flash
 //
 //		#end
@@ -129,7 +138,30 @@ class Engine
 
         // force the 1st rendering, the browser will take the lead after that
         mainLoop();
+
+        js.Browser.window.onresize = onResizeEvent;
+        onResizeEvent(null);
 	}
+
+    /**
+     * Calcul du scale de l'ecran
+     */
+    private function onResizeEvent(pEvt: Event)
+    { // SCALE REMOVED !!
+        var scaleX = 1; //js.Browser.window.innerWidth / stageWidth;
+        var scaleY = 1; //js.Browser.window.innerHeight / stageHeight;
+
+        var scale = Math.min(scaleX, scaleY); // trace(scale);
+
+        var stgWidth = stageWidth * scale;
+        var stgHeight = stageHeight * scale;
+
+        _canvas.style.width = Std.string(stgWidth) + "px";
+        _canvas.style.height = Std.string(stgHeight) + "px";
+
+        stageScaleX = 1; //stageWidth / stgWidth;
+        stageScaleY = 1; //stageHeight / stgHeight;
+    }
 
 	public function switchState(pState: State)
 	{

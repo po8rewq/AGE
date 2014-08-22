@@ -15,16 +15,18 @@ class Img implements IEntity
 
 	public var alpha : Float;
 	public var rotation : Float;
+	public var scale : Float;
 
 	public var depth : Int;
 	public var visible : Bool;
 
-	public function new(pX: Int, pY: Int, pSrc: String)
+	public function new(pX: Int, pY: Int, pSrc: String, ?pScale: Float = 1)
 	{
 		visible = true;
 
 		x = pX;
 		y = pY;
+		scale = pScale;
 
 		rotation = 0;
         depth = 0;
@@ -59,6 +61,16 @@ class Img implements IEntity
 
             pContext.translate(decX, decY);
             pContext.rotate(rotation * Math.PI/180);
+            pContext.translate(-decX, -decY );
+        }
+
+        if(scale != 1)
+        {
+        	var decX : Int = Std.int( x + width * .5 );
+            var decY : Int = Std.int( y + height * .5 );
+
+            pContext.translate(decX, decY);
+            pContext.scale(scale, scale);
             pContext.translate(-decX, -decY );
         }
 

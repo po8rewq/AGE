@@ -40,7 +40,7 @@ class Key
 	public inline static var K = 107;
 	public inline static var L = 108;
 	public inline static var M = 109;
-	public inline static var N = 110;
+	public inline static var N = 78; // 110;
 	public inline static var O = 111;
 	public inline static var P = 112;
 	public inline static var Q = 113;

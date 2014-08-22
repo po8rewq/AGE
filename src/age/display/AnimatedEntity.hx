@@ -21,6 +21,7 @@ class AnimatedEntity extends Entity
 
     var _loop: Bool;
     var _complete : Bool;
+    var _pauseAnim : Bool;
 
     public function new(pWidth: Int, pHeight : Int, pSrc: String, pTotalFrames: Int, pFrameRate : Int)
     {
@@ -30,6 +31,7 @@ class AnimatedEntity extends Entity
 
         _frames = pTotalFrames;
         _currentFrame = 0;
+        _pauseAnim = false;
 
         _frameRate = pFrameRate;
 
@@ -50,7 +52,7 @@ class AnimatedEntity extends Entity
         var oldIndex : Int = _currentFrame;
 
         _timer += _frameRate * Global.elapsed;
-        if (_timer >= 1)
+        if (_timer >= 1 && !_pauseAnim)
         {
             while (_timer >= 1)
             {
@@ -81,6 +83,16 @@ class AnimatedEntity extends Entity
     {
         pContext.save();
 
+        if(mirror)
+        {
+            var decX : Int = Std.int( x + width * .5 );
+            var decY : Int = Std.int( y + height * .5 );
+
+            pContext.translate(decX, decY);
+            pContext.scale(-1, 1);
+            pContext.translate(-decX, -decY );
+        }
+
         if(rotation != 0)
         {
             var decX : Int = Std.int( x + width * .5 );
@@ -89,7 +101,7 @@ class AnimatedEntity extends Entity
             pContext.translate(decX, decY);
             pContext.rotate(rotation * Math.PI/180);
             pContext.translate(-decX, -decY );
-        }
+        }        
 
         var globalAlpha = pContext.globalAlpha;
 

@@ -31,7 +31,7 @@ class Input
 
     public static var mousePosition : Point2D = {x: 0, y: 0};
 
-	public static function new(pRoot: CanvasElement)
+	public /*static*/ function new(pRoot: CanvasElement)
 	{
 		_root = pRoot;
 
@@ -45,10 +45,13 @@ class Input
 	}
 
     private static function onMouseMove(pEvt: MouseEvent)
-    {
+    { 
         var bounds = getCanvasBounds();
-        mousePosition.x = Math.round(pEvt.clientX - bounds.left);       //      trace(pEvt.clientX + "/" + pEvt.clientY);
-        mousePosition.y = Math.round(pEvt.clientY - bounds.top);
+        mousePosition.x = Math.round(pEvt.clientX - bounds.left);          //   trace(pEvt.clientX + "/" + pEvt.clientY);
+        mousePosition.y = Math.round(pEvt.clientY - bounds.top);		//		trace(mousePosition.x+"/"+mousePosition.y);
+        
+        mousePosition.x = Math.round(mousePosition.x * Global.engine.stageScaleX);
+        mousePosition.y = Math.round(mousePosition.y * Global.engine.stageScaleY);
     }
 
     public static function registerGlobalClickHandler(pCallback: MouseEvent->Void)

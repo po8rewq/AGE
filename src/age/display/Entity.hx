@@ -24,7 +24,7 @@ class Entity implements IEntity
     public var hitbox : Rectangle;
 
 	public var visible : Bool;
-
+    public var mirror : Bool;
     public var rotation : Float;
 
 	var _behaviors : Map<String,IBehavior>;
@@ -41,6 +41,7 @@ class Entity implements IEntity
         rotation = 0;
         depth = 0;
         alpha = 1;
+        mirror = false;
 
         dead = false;
 
@@ -108,6 +109,16 @@ class Entity implements IEntity
         if(_image == null || !visible || dead) return;
 
         pContext.save();
+
+        if(mirror)
+        {
+            var decX : Int = Std.int( x + width * .5 );
+            var decY : Int = Std.int( y + height * .5 );
+
+            pContext.translate(decX, decY);
+            pContext.scale(-1, 1);
+            pContext.translate(-decX, -decY );
+        }
 
         if(rotation != 0)
         {
