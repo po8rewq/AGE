@@ -29,12 +29,15 @@ class BasicText implements IEntity
 
     public var depth : Int;
 
+    private var _maxWidth : Int;
+
     /**
      *
      **/
-	public function new(pText: String, ?pX: Int = 0, ?pY: Int = 0)
+	public function new(pText: String, ?pX: Int = 0, ?pY: Int = 0, ?pMaxWidth: Int = -1)
 	{
         text = pText;
+        _maxWidth = pMaxWidth;
 
         visible = true;
         font = "sans-serif";
@@ -85,7 +88,10 @@ class BasicText implements IEntity
         pContext.textAlign = textAlign.toStyle();
         pContext.textBaseline = textBaseline.toStyle();
 
-        pContext.fillText(text, x, y);
+        if(_maxWidth > 0)
+            pContext.fillText(text, x, y, _maxWidth);
+        else 
+            pContext.fillText(text, x, y);
 	}
 
     public function destroy()

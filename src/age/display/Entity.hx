@@ -181,6 +181,11 @@ class Entity implements IEntity
             pEntity.hitbox.height );
     }
 
+    public function collidePoint(pX: Int, pY:Int): Bool
+    {
+        return collideRect(pX, pY, 0, 0);
+    }
+
     #if debug
     private function setDebugMode(pActive: Bool, ?pColor: String = "")
     {
