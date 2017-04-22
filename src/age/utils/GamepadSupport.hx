@@ -8,7 +8,6 @@
 package age.utils;
 
 import js.Browser;
-import js.html.GamepadList;
 import js.html.Gamepad;
 
 /**
@@ -52,16 +51,16 @@ class GamepadSupport
         if(!enabled || _buttons == null) return;
 
         NB_PAD = 0;
-        var t : Dynamic = Browser.navigator;
+        var t = Browser.navigator;
 
-        var gamepads = t.webkitGetGamepads();
+        var gamepads = t.getGamepads(); //t.webkitGetGamepads();
         if(gamepads != null)
         {
             var pad : Gamepad;
             for(i in 0...gamepads.length)
             {
                 NB_PAD++;
-				pad = gamepads.item(i); 
+				pad = gamepads[i]; 
 //                pad = gamepads[i];        // TODO
                 if(pad != null)
                 {
@@ -86,7 +85,7 @@ class GamepadSupport
                     var btnIndex : Int = 0;
                     for(b in pad.buttons)
                     {
-                        if(currentPadButtons.exists(btnIndex) && b == 1)
+                        if(currentPadButtons.exists(btnIndex) && b.value == 1 && b.pressed)
                         {
                             var state = currentPadButtons.get(btnIndex);
                             if( state == GamePadState.OFF )
@@ -94,7 +93,7 @@ class GamepadSupport
                         }
                         else
                         {
-                            currentPadButtons.set(btnIndex, b == 1 ? GamePadState.PRESSED : GamePadState.OFF);
+                            currentPadButtons.set(btnIndex, (b.value == 1 && b.pressed) ? GamePadState.PRESSED : GamePadState.OFF);
                         }
                         btnIndex++;
                     }

@@ -1,7 +1,5 @@
 package age.utils;
 
-import js.html.RequestAnimationFrameCallback;
-
 class HtmlUtils
 {
 

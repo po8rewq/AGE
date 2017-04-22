@@ -32,11 +32,6 @@ class Engine
 	var _fps : Int;
 	
 	var _globalTimer : Timer;
-//	#if js
-//	var _stage : Body;
-//	#elseif flash
-//	var _stage : DisplayObjectContainer;
-//	#end
 
 	var _backgroundColor : String;
 
@@ -94,11 +89,7 @@ class Engine
 		_canvas.height = _offScreenCanvas.height = pHeight;
         
         if(pKeepRatio)
-            _canvas.style.imageRendering  = "-webkit-optimize-contrast";
-        
-//		#elseif flash
-//
-//		#end
+            untyped _canvas.style.imageRendering  = "auto"; //"-webkit-optimize-contrast";
 
         new Input(_canvas);
 
@@ -116,8 +107,7 @@ class Engine
 		container.appendChild( _stats.domElement );
         #end
 		
-//		#if js
-        var requestAnimFrame = HtmlUtils.loadExtension("requestAnimationFrame"); //getRequestAnimationFrame();
+        var requestAnimFrame = HtmlUtils.loadExtension("requestAnimationFrame");
         if(requestAnimFrame != null)
         {
             _animFunction = requestAnimFrame.value;
@@ -132,9 +122,6 @@ class Engine
             _globalTimer = new Timer(frequency);
             _globalTimer.run = mainLoop;
         }
-//		#elseif flash
-//		addEventListener(Event.ENTER_FRAME, mainLoop);
-//		#end
 
         // force the 1st rendering, the browser will take the lead after that
         mainLoop();
@@ -172,11 +159,7 @@ class Engine
         Global.currentState = pState;
 	}
 	
-//	#if flash
-//	private function mainLoop(pEvt: Event)
-//	#else
 	private function mainLoop()
-//	#end
 	{
         var state = Global.currentState;
 

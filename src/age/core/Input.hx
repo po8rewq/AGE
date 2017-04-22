@@ -8,7 +8,7 @@ import age.utils.HtmlUtils;
 import js.html.MouseEvent;
 import js.html.KeyboardEvent;
 import js.html.CanvasElement;
-import js.html.ClientRect;
+import js.html.DOMRect;
 
 /**
  * Based on haxepunk
@@ -30,6 +30,7 @@ class Input
 	static var _control:Map<String,Array<Int>> = new Map();
 
     public static var mousePosition : Point2D = {x: 0, y: 0};
+    public static var mouseOverGame : Bool = false;
 
 	public /*static*/ function new(pRoot: CanvasElement)
 	{
@@ -39,7 +40,8 @@ class Input
         b.addEventListener("keydown", onKeyDown);
         b.addEventListener("keyup", onKeyUp);
 
-        _root.addEventListener("mousemove", onMouseMove);
+        //_root.addEventListener("mousemove", onMouseMove);
+        b.addEventListener("mousemove", onMouseMove);
 
         GamepadSupport.init();
 	}
@@ -50,8 +52,11 @@ class Input
         mousePosition.x = Math.round(pEvt.clientX - bounds.left);          //   trace(pEvt.clientX + "/" + pEvt.clientY);
         mousePosition.y = Math.round(pEvt.clientY - bounds.top);		//		trace(mousePosition.x+"/"+mousePosition.y);
         
+    //    if( mousePosition.x >  )
         mousePosition.x = Math.round(mousePosition.x * Global.engine.stageScaleX);
         mousePosition.y = Math.round(mousePosition.y * Global.engine.stageScaleY);
+
+        mouseOverGame = mousePosition.x >= 0 && mousePosition.x <= bounds.width && mousePosition.y >= 0 && mousePosition.y <= bounds.height;
     }
 
     public static function registerGlobalClickHandler(pCallback: MouseEvent->Void)
@@ -64,30 +69,40 @@ class Input
         _root.removeEventListener("click", pCallback);
     }
 
-    public static function getCanvasBounds(): ClientRect
+    public static function getCanvasBounds(): DOMRect
     {
         return _root.getBoundingClientRect();
     }
 	
 	private static function onKeyDown(pEvt: KeyboardEvent)
 	{
-		var code:Int = pEvt.keyCode;
-		if (!_key[code])
+		if(mouseOverGame)
 		{
-			_key[code] = true;
-			_keyNum++;
-			_press[_pressNum++] = code;
+			var code:Int = pEvt.keyCode;
+			if (!_key[code])
+			{
+				_key[code] = true;
+				_keyNum++;
+				_press[_pressNum++] = code;
+			}
+
+			pEvt.preventDefault();
 		}
 	}
 	
 	private static function onKeyUp(pEvt: KeyboardEvent)
 	{
-		var code:Int = pEvt.keyCode;
-		if (_key[code])
+		if(mouseOverGame)
 		{
-			_key[code] = false;
-			_keyNum--;
-			_release[_releaseNum++] = code;
+			var code:Int = pEvt.keyCode;
+			if (_key[code])
+			{
+				_key[code] = false;
+				_keyNum--;
+				_release[_releaseNum++] = code;
+			}
+		
+			pEvt.preventDefault();
 		}
 	}
 

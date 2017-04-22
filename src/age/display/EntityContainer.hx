@@ -42,6 +42,12 @@ class EntityContainer implements IEntity
 	    }
 	}
 
+	public function removeAll()
+	{
+		for(e in _entities)
+			remove(e);
+	}
+
 	public function render(pContext: CanvasRenderingContext2D):Void
 	{
 		for(en in _entities)
