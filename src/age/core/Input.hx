@@ -40,7 +40,6 @@ class Input
         b.addEventListener("keydown", onKeyDown);
         b.addEventListener("keyup", onKeyUp);
 
-        //_root.addEventListener("mousemove", onMouseMove);
         b.addEventListener("mousemove", onMouseMove);
 
         GamepadSupport.init();
@@ -49,10 +48,9 @@ class Input
     private static function onMouseMove(pEvt: MouseEvent)
     { 
         var bounds = getCanvasBounds();
-        mousePosition.x = Math.round(pEvt.clientX - bounds.left);          //   trace(pEvt.clientX + "/" + pEvt.clientY);
-        mousePosition.y = Math.round(pEvt.clientY - bounds.top);		//		trace(mousePosition.x+"/"+mousePosition.y);
-        
-    //    if( mousePosition.x >  )
+        mousePosition.x = Math.round(pEvt.clientX - bounds.left);
+        mousePosition.y = Math.round(pEvt.clientY - bounds.top);
+		
         mousePosition.x = Math.round(mousePosition.x * Global.engine.stageScaleX);
         mousePosition.y = Math.round(mousePosition.y * Global.engine.stageScaleY);
 

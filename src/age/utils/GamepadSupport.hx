@@ -38,11 +38,6 @@ class GamepadSupport
 
         enabled = HtmlUtils.loadExtension("GetGamepads", Browser.navigator).value != null;
 
-//        "MozGamepadConnected"
-//        Browser.window.addEventListener('gamepadconnected',function(pEvt:js.html.Event){
-//                                                                                         trace('ongamepadconnected');
-//                                                    }, false);
-
         trace("GamePad support : " + enabled);
     }
 
@@ -61,13 +56,12 @@ class GamepadSupport
             {
                 NB_PAD++;
 				pad = gamepads[i]; 
-//                pad = gamepads[i];        // TODO
                 if(pad != null)
                 {
                     if(!_pads.exists(i))
                     {
                         _pads.set(i, pad.id);
-//                        trace('Ajout du pad ' + pad.id);
+                       trace('Ajout du pad ' + pad.id);
                     }
 
                     // Buttons handler
